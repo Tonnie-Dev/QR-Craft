@@ -4,15 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.tonyxlab.qrcraft.navigation.AppNavHost
+import com.tonyxlab.qrcraft.navigation.rememberNavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,34 +20,19 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().apply {
             setKeepOnScreenCondition { false }
         }
-
         enableEdgeToEdge()
 
         setContent {
             QRCraftTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                val padding = MaterialTheme.spacing.spaceDefault
+
+                AppNavHost(
+                        navOperations = rememberNavOperations(),
+                        modifier = Modifier.padding(all = padding)
+                )
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    QRCraftTheme {
-        Greeting("Android")
-    }
-}
