@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.ui.theme
+package com.tonyxlab.qrcraft.presentation.core.base.theme.ui
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

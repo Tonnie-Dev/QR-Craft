@@ -1,8 +1,7 @@
-package com.tonyxlab.qrcraft
+package com.tonyxlab.qrcraft.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.tonyxlab.qrcraft.ui.theme.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.core.base.theme.ui.QRCraftTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
