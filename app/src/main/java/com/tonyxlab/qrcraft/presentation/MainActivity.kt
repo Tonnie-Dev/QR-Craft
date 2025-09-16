@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
             QRCraftTheme {
 
                 val padding = MaterialTheme.spacing.spaceDefault
-
                 AppNavHost(
                         navOperations = rememberNavOperations(),
                         modifier = Modifier.padding(all = padding)

@@ -1,3 +1,56 @@
 <resources>
+
+    <!-- App Name-->
     <string name="app_name">QR Craft</string>
+
+    <!-- Blank Text-->
+    <string name="blank_text" />
+
+    <!-- Top Bar Texts-->
+    <string name="topbar_text_all_notes">ALL NOTES</string>
+
+    <!--Header Texts-->
+    <string name="header_text_your_notes">Your Own Collection of Notes</string>
+
+    <!--Caption Texts-->
+    <string name="cap_text_point_camera">Point your Camera at a QR Code</string>
+    <string name="cap_text_loading">Loading</string>
+
+    <!--Button Texts-->
+    <string name="btn_text_guest_login">Guest Login</string>
+
+    <!--Text Button Texts-->
+    <string name="txt_btn_no_account">Don’t have an account?</string>
+
+    <!--Settings Presets-->
+    <string name="settings_sync_interval">Sync Interval</string>
+
+    <!--Label Texts-->
+    <string name="lab_text_email_label">Email</string>
+
+    <!--Placeholder Texts-->
+    <string name="placeholder_text_email">john.doe@example.com</string>
+
+    <!--Snackbar Texts-->
+    <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
+
+    This app cannot function without camera access. To scan QR codes, please grant permission
+
+    <!--Dialog Texts-->
+    <string name="dialog_text_camera_required">Camera Required</string>
+    <string name="dialog_text_close_app">Close App</string>
+    <string name="dialog_text_grant_access">Grant Access</string>
+    <string name="dialog_text_rationale">This app cannot function without camera access.
+        To scan QR codes, please grant permission
+    </string>
+
+    <!--Supporting Texts-->
+    <string name="sup_text_def_username">Use between 3 and 20 characters for your username.</string>
+
+    <!--Content Description Texts-->
+    <string name="cds_text_add">Add</string>
+
+    <!--Meta Data Texts-->
+    <string name="meta_text_created_on">Date Created</string>
+
 </resources>
