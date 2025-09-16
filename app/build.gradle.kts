@@ -87,6 +87,11 @@ dependencies {
     // Accompanist Permissions
     implementation(Google.accompanist.permissions)
 
+    // Camera
+    implementation(AndroidX.camera.camera2)
+    implementation(AndroidX.camera.view)
+    implementation(AndroidX.camera.lifecycle)
+
     // Logging
     implementation(JakeWharton.timber)
 
