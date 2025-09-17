@@ -28,10 +28,11 @@ private val AppColorScheme = lightColorScheme(
         // Surfaces / background
         background = Surface,                 // app background (light grey)
         onBackground = OnSurface,
-        surface = SurfaceHigher,              // cards/sheets (white)
+        surface = Surface,              // Edited from SurfaceHigher
         onSurface = OnSurface,
         surfaceVariant = Surface,             // subtle alt-surface
         onSurfaceVariant = OnSurfaceAlt,
+        surfaceContainerHigh = SurfaceHigher, // Edited - added SurfaceHighter
 
         // Status
         error = Error,
