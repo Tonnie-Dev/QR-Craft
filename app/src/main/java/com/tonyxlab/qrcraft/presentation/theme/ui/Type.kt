@@ -10,7 +10,6 @@ import com.tonyxlab.qrcraft.R
 
 val SuseFontFamily = FontFamily(Font(R.font.suse_variable))
 
-
 val Typography = Typography(
 
         titleMedium = TextStyle(
@@ -20,21 +19,18 @@ val Typography = Typography(
                 lineHeight = 32.sp
 
         ),
-
         titleSmall = TextStyle(
                 fontFamily = SuseFontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 19.sp,
                 lineHeight = 24.sp
         ),
-
         labelLarge = TextStyle(
                 fontFamily = SuseFontFamily,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 lineHeight = 20.sp
         ),
-
         bodyLarge = TextStyle(
                 fontFamily = SuseFontFamily,
                 fontWeight = FontWeight.Normal,
