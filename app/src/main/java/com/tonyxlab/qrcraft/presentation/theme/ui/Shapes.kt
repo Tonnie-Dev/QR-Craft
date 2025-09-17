@@ -20,7 +20,7 @@ val customMaterialShapes = Shapes(
 )
 
 @Composable
-fun getClippingShape(): RoundedCornerShape{
+fun getClippingShape(): RoundedCornerShape {
 
     return RoundedCornerShape(
             topStart = MaterialTheme.spacing.spaceTen * 2,
