@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.tonyxlab.qrcraft.presentation.core.base.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
 @Composable
 fun AppDialog(

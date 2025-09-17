@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.presentation.core.base.theme.ui
+package com.tonyxlab.qrcraft.presentation.theme.ui
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.tonyxlab.qrcraft.navigation.AppNavHost
 import com.tonyxlab.qrcraft.navigation.rememberNavOperations
-import com.tonyxlab.qrcraft.presentation.core.base.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 
 class MainActivity : ComponentActivity() {

@@ -23,7 +23,7 @@ import timber.log.Timber
 
 @Composable
 fun BoxScope.CamPermissionHandler(onPermissionGranted: () -> Unit) {
-Timber.tag("CamPermissionHandler").i("Handler Called")
+
     val camPermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
 
@@ -31,11 +31,9 @@ Timber.tag("CamPermissionHandler").i("Handler Called")
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
-
     // Automatically Check Permission State
-    LaunchedEffect(true) {
+    LaunchedEffect(permissionStatus.isGranted) {
 
-        Timber.tag("CamPermissionHandler").i("Handler Launch Block called")
         if (permissionStatus.isGranted) {
            onPermissionGranted()
             val snackbarMessage = context
@@ -46,13 +44,8 @@ Timber.tag("CamPermissionHandler").i("Handler Called")
     }
 
     when {
-        // Already Granted
-        permissionStatus.isGranted -> {
-            Timber.tag("CamPermissionHandler").i("When already Granted called")
-           // onPermissionGranted()
-        }
-
         permissionStatus.shouldShowRationale -> {
+
             AppDialog(
                     dialogTitle = stringResource(id = R.string.dialog_text_camera_required),
                     dialogText = stringResource(id = R.string.dialog_text_rationale),
@@ -62,7 +55,6 @@ Timber.tag("CamPermissionHandler").i("Handler Called")
                     onDismissRequest = { (context as? Activity)?.finish() },
             )
         }
-
         else -> {
 
             // First launch — just ask
