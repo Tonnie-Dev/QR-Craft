@@ -22,7 +22,7 @@ import com.tonyxlab.qrcraft.R
 import timber.log.Timber
 
 @Composable
-fun BoxScope.CamPermissionHandler(onPermissionGranted: () -> Unit) {
+fun BoxScope.CamPermissionHandler() {
 
     val camPermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
@@ -35,7 +35,7 @@ fun BoxScope.CamPermissionHandler(onPermissionGranted: () -> Unit) {
     LaunchedEffect(permissionStatus.isGranted) {
 
         if (permissionStatus.isGranted) {
-           onPermissionGranted()
+         //  onPermissionGranted()
             val snackbarMessage = context
                     .getText(R.string.snack_text_camera_perm_granted)
                     .toString()
