@@ -18,30 +18,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
+import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import kotlin.math.min
 
 @Composable
-fun ScanOverlay(
-    modifier: Modifier = Modifier,
-    hint: String
-) {
-
-    val scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.65f)
+fun ScanOverlay(modifier: Modifier = Modifier) {
 
     Box(modifier = modifier) {
-        Canvas(
-                Modifier
-                        .matchParentSize()
-                        .graphicsLayer {
-                            compositingStrategy = CompositingStrategy.Offscreen
-                        }
-
-        ) {
+        Canvas(Modifier.matchParentSize()) {
 
             val w = size.width
             val h = size.height
@@ -56,11 +45,11 @@ fun ScanOverlay(
             val radius = 20.dp.toPx()
 
             // Draw scrim
-            drawRect(scrimColor)
+            drawRect(Overlay)
 
             // Punch a transparent hole for the frame
             drawRoundRect(
-                    color = Color.Transparent,
+                    color = Color.Red,
                     topLeft = Offset(left, top),
                     size = Size(width = frameSquareDimen, height = frameSquareDimen),
                     cornerRadius = CornerRadius(radius, radius),
@@ -78,7 +67,7 @@ fun ScanOverlay(
         ) {
             Spacer(Modifier.fillMaxHeight(0.25f))
             Text(
-                    text = hint,
+                    text = stringResource(id = R.string.cap_text_point_camera),
                     style = MaterialTheme.typography.titleSmall.copy(color = OnOverlay),
                     textAlign = TextAlign.Center
             )

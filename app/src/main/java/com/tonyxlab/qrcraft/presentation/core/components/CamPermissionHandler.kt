@@ -4,9 +4,21 @@ package com.tonyxlab.qrcraft.presentation.core.components
 
 import android.Manifest
 import android.app.Activity
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -19,7 +31,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.qrcraft.R
-import timber.log.Timber
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.theme.ui.Success
 
 @Composable
 fun BoxScope.CamPermissionHandler() {
@@ -35,7 +48,7 @@ fun BoxScope.CamPermissionHandler() {
     LaunchedEffect(permissionStatus.isGranted) {
 
         if (permissionStatus.isGranted) {
-         //  onPermissionGranted()
+            //  onPermissionGranted()
             val snackbarMessage = context
                     .getText(R.string.snack_text_camera_perm_granted)
                     .toString()
@@ -55,6 +68,7 @@ fun BoxScope.CamPermissionHandler() {
                     onDismissRequest = { (context as? Activity)?.finish() },
             )
         }
+
         else -> {
 
             // First launch — just ask
@@ -67,4 +81,29 @@ fun BoxScope.CamPermissionHandler() {
             modifier = Modifier.align(Alignment.BottomCenter),
             hostState = snackbarHostState
     )
+    {
+        Snackbar(
+                modifier = Modifier.fillMaxWidth(.8f),
+                shape = MaterialTheme.shapes.small,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                containerColor = Success
+        ) {
+            Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+            ) {
+
+                Icon(modifier = Modifier.padding(end = MaterialTheme.spacing.spaceSmall),
+                        imageVector = Icons.Default.Check,
+                        contentDescription = stringResource(id = R.string.cds_text_check_mark))
+                Text(
+                        text = stringResource(id = R.string.snack_text_camera_perm_granted),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                                color = MaterialTheme.colorScheme.onSurface
+                        )
+                )
+            }
+
+        }
+    }
 }

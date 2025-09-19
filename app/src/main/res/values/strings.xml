@@ -49,6 +49,7 @@
 
     <!--Content Description Texts-->
     <string name="cds_text_add">Add</string>
+    <string name="cds_text_check_mark">Check Mark</string>
 
     <!--Meta Data Texts-->
     <string name="meta_text_created_on">Date Created</string>

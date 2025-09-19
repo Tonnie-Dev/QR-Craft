@@ -13,16 +13,14 @@ import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.core.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
-import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlayTwo
 
 @Composable
 fun ScanScreen(
     navOperations: NavOperations,
     modifier: Modifier = Modifier
 ) {
-
     Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
     ) {
         var permissionGranted by remember { mutableStateOf(false) }
@@ -30,18 +28,6 @@ fun ScanScreen(
 
         CamPermissionHandler ()
 
-      //  ScanOverlayTwo()
-        ScanOverlay(
-                modifier = Modifier.matchParentSize(),
-                hint = "Point your camera at a QR code"
-        )
-      /*  var permissionGranted by remember { mutableStateOf(false) }
-
-        if (permissionGranted) {
-            CameraPreview(modifier = Modifier.fillMaxSize())
-        } else {
-
-            CamPermissionHandler { permissionGranted = true }
-        }*/
+        ScanOverlay(modifier = Modifier.matchParentSize())
     }
 }
