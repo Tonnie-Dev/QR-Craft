@@ -28,6 +28,6 @@ fun ScanScreen(
 
         CamPermissionHandler ()
 
-        ScanOverlay(modifier = Modifier.matchParentSize())
+        ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)
     }
 }

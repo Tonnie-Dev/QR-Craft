@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,12 +24,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import kotlin.math.min
 
 @Composable
-fun ScanOverlay(modifier: Modifier = Modifier) {
+fun ScanOverlay(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean
+
+) {
 
     Box(modifier = modifier) {
         Canvas(Modifier.matchParentSize()) {
@@ -72,5 +79,27 @@ fun ScanOverlay(modifier: Modifier = Modifier) {
                     textAlign = TextAlign.Center
             )
         }
+
+        if (isLoading) {
+            Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                CircularProgressIndicator(
+                        modifier = Modifier
+                                .size(MaterialTheme.spacing.spaceLarge)
+                                .padding(bottom = MaterialTheme.spacing.spaceMedium),
+                        color = OnOverlay
+                )
+                Text(
+                        text = stringResource(id = R.string.cap_text_loading),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                                color = OnOverlay
+                        )
+                )
+            }
+        }
     }
+
 }
