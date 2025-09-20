@@ -1,18 +1,10 @@
 package com.tonyxlab.qrcraft.presentation.core.components
 
-import android.hardware.camera2.CameraCaptureSession
-import android.view.ViewGroup
 import androidx.annotation.OptIn
 import androidx.camera.camera2.interop.ExperimentalCamera2Interop
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 enum class FocusState {
@@ -30,6 +22,7 @@ fun CameraPreview(modifier: Modifier = Modifier) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+/*
     AndroidView(
             modifier = modifier,
             factory = { ctx ->
@@ -91,4 +84,5 @@ fun CameraPreview(modifier: Modifier = Modifier) {
                 executor
         )
     }
+*/
 }
