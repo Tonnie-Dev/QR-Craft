@@ -1,6 +1,9 @@
 package com.tonyxlab.qrcraft
 
 import android.app.Application
+import com.tonyxlab.qrcraft.di.viewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class QRCraftApp : Application() {
@@ -9,6 +12,12 @@ class QRCraftApp : Application() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+
+        startKoin {
+
+            androidContext(this@QRCraftApp)
+            modules( listOf(viewModelModule))
         }
 
     }
