@@ -3,6 +3,7 @@ package com.tonyxlab.qrcraft.navigation
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
 import kotlinx.serialization.Serializable
 
@@ -15,10 +16,18 @@ fun NavGraphBuilder.appDestinations(
 
         ScanScreen(modifier = modifier, navOperations = navOperations)
     }
+
+    composable < Destinations.ResultScreenDestination> {
+
+        ResultScreen(modifier = modifier, navOperations = navOperations)
+    }
 }
 
 sealed class Destinations {
 
     @Serializable
     data object ScanScreenDestination : Destinations()
+
+    @Serializable
+    data object ResultScreenDestination : Destinations()
 }

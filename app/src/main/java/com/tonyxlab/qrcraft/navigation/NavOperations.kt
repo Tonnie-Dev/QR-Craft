@@ -11,6 +11,11 @@ class NavOperations(val navHostController: NavHostController) {
 
         navHostController.navigate(route = Destinations.ScanScreenDestination)
     }
+
+    fun popBackStack() {
+
+        navHostController.popBackStack()
+    }
 }
 
 @Composable

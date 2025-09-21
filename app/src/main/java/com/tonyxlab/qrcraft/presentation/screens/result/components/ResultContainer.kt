@@ -21,20 +21,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.components.AppButton
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.presentation.theme.ui.SurfaceHigher
-import com.tonyxlab.qrcraft.util.generateLoremIpsum
 
 @Composable
 fun ResultContainer(
-    qrData: QrData,
-    onClickButton: () -> Unit,
+    uiState: ResultUiState,
+    onEvent: (ResultUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val qrData = uiState.dataState.qrData
     val shape = MaterialTheme.shapes.large
 
     val qrBoxSize = MaterialTheme.spacing.spaceMedium * 10
@@ -83,7 +84,7 @@ fun ResultContainer(
                                 .fillMaxWidth()
                                 .weight(1f),
                         buttonText = stringResource(id = R.string.btn_text_share),
-                        onClick = onClickButton,
+                        onClick = { onEvent(ResultUiEvent.ShareContent) },
                         leadingIcon = painterResource(R.drawable.share_icon)
                 )
 
@@ -92,7 +93,7 @@ fun ResultContainer(
                                 .fillMaxWidth()
                                 .weight(1f),
                         buttonText = stringResource(id = R.string.btn_text_copy),
-                        onClick = onClickButton,
+                        onClick = { onEvent(ResultUiEvent.CopyContent) },
                         leadingIcon = painterResource(R.drawable.copy_icon)
                 )
             }
@@ -122,12 +123,10 @@ private fun ResultContainer_Preview() {
                         .padding(horizontal = MaterialTheme.spacing.spaceMedium)
 
         ) {
-            val data = QrData(
-                    displayName = "Text",
-                    data = generateLoremIpsum(26),
-                    qrDataType = QrDataType.TEXT
+            ResultContainer(
+                    uiState = ResultUiState(),
+                    onEvent = {}
             )
-            ResultContainer(qrData = data, onClickButton = {})
         }
     }
 }
