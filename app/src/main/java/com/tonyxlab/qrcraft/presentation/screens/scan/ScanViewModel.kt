@@ -20,7 +20,7 @@ typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanAction
 
 class ScanViewModel : ScanBaseViewModel() {
 
-    private val _surfaceRequest = MutableStateFlow<SurfaceRequest?>(null)
+  /*  private val _surfaceRequest = MutableStateFlow<SurfaceRequest?>(null)
     val surfaceRequest = _surfaceRequest.asStateFlow()
 
     private val cameraPreviewUseCase = Preview.Builder()
@@ -49,7 +49,7 @@ class ScanViewModel : ScanBaseViewModel() {
         } finally {
             processCameraProvider.unbindAll()
         }
-    }
+    }*/
 
     override val initialState: ScanUiState
         get() = ScanUiState()

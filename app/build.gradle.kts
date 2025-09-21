@@ -88,13 +88,14 @@ dependencies {
     implementation(Google.accompanist.permissions)
 
     // Camera
-
     implementation(AndroidX.camera.core)
     implementation(AndroidX.camera.camera2)
     implementation(AndroidX.camera.lifecycle)
     implementation(libs.androidx.camera.compose)
+    implementation(AndroidX.camera.view)
 
-    //implementation(AndroidX.camera.view)
+    // ML Kit
+    implementation(Google.mlKit.vision.barcodeScanning)
 
     // Logging
     implementation(JakeWharton.timber)

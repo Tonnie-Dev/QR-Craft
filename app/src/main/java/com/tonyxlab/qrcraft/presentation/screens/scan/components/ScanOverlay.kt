@@ -20,6 +20,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,7 +39,13 @@ fun ScanOverlay(
 ) {
 
     Box(modifier = modifier) {
-        Canvas(Modifier.matchParentSize()) {
+        Canvas(
+                modifier = Modifier
+                        .matchParentSize()
+                        .graphicsLayer {
+
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        }) {
 
             val w = size.width
             val h = size.height
@@ -101,5 +109,4 @@ fun ScanOverlay(
             }
         }
     }
-
 }
