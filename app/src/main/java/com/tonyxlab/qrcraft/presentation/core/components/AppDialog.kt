@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,39 +60,20 @@ fun AppDialog(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve)
                 ) {
                     if (!negativeButtonText.isNullOrBlank()) {
-                        Button(
+                        AppButton(
                                 modifier = Modifier
-                                        .weight(1f)
                                         .padding(vertical = MaterialTheme.spacing.spaceSmall)
                                         .padding(horizontal = MaterialTheme.spacing.spaceMedium),
+                                buttonText = negativeButtonText,
                                 onClick = onDismissRequest,
-                                shape = MaterialTheme.shapes.extraLarge,
-                                colors = ButtonDefaults.outlinedButtonColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                        contentColor = MaterialTheme.colorScheme.error
-                                )
-                        ) {
-                            Text(
-                                    text = negativeButtonText,
-                                    style = MaterialTheme.typography.labelLarge
-                            )
-                        }
-                    }
-
-                    Button(
-                            modifier = Modifier.weight(1f),
-                            onClick = onConfirm,
-                            shape = MaterialTheme.shapes.extraLarge,
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                    contentColor = MaterialTheme.colorScheme.onSurface
-                            )
-                    ) {
-                        Text(
-                                text = positiveButtonText,
-                                style = MaterialTheme.typography.labelLarge
+                                contentColor = MaterialTheme.colorScheme.error
                         )
                     }
+
+                    AppButton(
+                            buttonText = positiveButtonText,
+                            onClick = onConfirm,
+                    )
                 }
             },
             properties = DialogProperties(usePlatformDefaultWidth = false)
