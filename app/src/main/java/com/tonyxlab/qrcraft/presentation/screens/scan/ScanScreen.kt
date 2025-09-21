@@ -1,7 +1,5 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
-import android.content.ClipboardManager
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,17 +19,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.components.CamPermissionHandler
-import com.tonyxlab.qrcraft.presentation.core.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.core.components.QRCodeScannerWithBottomSheet
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import org.koin.androidx.compose.koinViewModel
