@@ -54,7 +54,8 @@ fun ResultContainer(
             Column(
                     modifier = Modifier
                             .padding(bottom = MaterialTheme.spacing.spaceTwelve * 2),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTen)
             ) {
 
                 Text(
