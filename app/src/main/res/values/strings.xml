@@ -17,7 +17,8 @@
     <string name="cap_text_loading">Loading…</string>
 
     <!--Button Texts-->
-    <string name="btn_text_guest_login">Guest Login</string>
+    <string name="btn_text_share">Share</string>
+    <string name="btn_text_copy">Copy</string>
 
     <!--Text Button Texts-->
     <string name="txt_btn_no_account">Don’t have an account?</string>

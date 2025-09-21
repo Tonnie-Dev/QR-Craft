@@ -26,7 +26,7 @@ private val AppColorScheme = lightColorScheme(
         onTertiaryContainer = TextAccent,
 
         // Surfaces / background
-        background = Surface,                 // app background (light grey)
+        background = OnSurface ,                // Edited - set background ton OnSurface
         onBackground = OnSurface,
         surface = Surface,              // Edited from SurfaceHigher
         onSurface = OnSurface,
