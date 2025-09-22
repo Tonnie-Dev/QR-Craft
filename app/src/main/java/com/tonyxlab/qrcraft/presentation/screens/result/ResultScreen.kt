@@ -7,9 +7,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
+import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.components.ResultContainer
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
@@ -26,6 +29,15 @@ fun ResultScreen(
 ) {
     BaseContentLayout(
             viewModel = viewModel,
+            topBar = {
+                AppTopBar(
+                        modifier = modifier,
+                        screenTitle = stringResource(id = R.string.topbar_text_scan_result),
+                        onChevronIconClick = {
+                            viewModel.onEvent(ResultUiEvent.ExitResultScreen)
+                        },
+                )
+            },
             actionEventHandler = { _, action ->
 
                 when (action) {
@@ -35,7 +47,8 @@ fun ResultScreen(
                         navOperations.navigateToScanScreenDestination()
                     }
                 }
-            }
+            },
+            onBackPressed = { viewModel.onEvent(ResultUiEvent.ExitResultScreen) }
     ) {
 
         ResultContentScreen(
@@ -43,7 +56,6 @@ fun ResultScreen(
                 uiState = it,
                 onEvent = viewModel::onEvent
         )
-
     }
 }
 
@@ -65,7 +77,6 @@ fun ResultContentScreen(
                 onEvent = onEvent,
                 modifier = modifier
         )
-
     }
 }
 

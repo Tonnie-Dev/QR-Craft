@@ -7,7 +7,7 @@
     <string name="blank_text" />
 
     <!-- Top Bar Texts-->
-    <string name="topbar_text_all_notes">ALL NOTES</string>
+    <string name="topbar_text_scan_result">Scan Result</string>
 
     <!--Header Texts-->
     <string name="header_text_your_notes">Your Own Collection of Notes</string>
@@ -50,6 +50,7 @@
 
     <!--Content Description Texts-->
     <string name="cds_text_add">Add</string>
+    <string name="cds_text_back">Back</string>
     <string name="cds_text_check_mark">Check Mark</string>
 
     <!--Meta Data Texts-->
