@@ -24,10 +24,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.data.QRCodeAnalyzer
+import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.screens.scan.ScanViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 
@@ -35,7 +36,8 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 @Composable
 fun CameraPreview(
     uiState: ScanUiState,
-    viewModel: ScanViewModel,
+    onScanSuccess: (QrData) -> Unit,
+    onAnalyzing: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -74,12 +76,10 @@ fun CameraPreview(
                                         QRCodeAnalyzer(
                                                 onCodeScanned = { data ->
 
-                                                    viewModel.onScanSuccess(data)
+                                                    onScanSuccess(data)
                                                 },
                                                 onAnalyzing = { active ->
-                                                    viewModel.onAnalyzing(
-                                                            active
-                                                    )
+                                                    onAnalyzing(active)
                                                 },
                                                 consumeOnce = true
                                         )

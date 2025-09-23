@@ -4,5 +4,5 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
 
 sealed class ResultActionEvent: ActionEvent{
 
-    data object NavigateToScanScreen: ResultUiEvent
+    data object NavigateToScanScreen: ResultActionEvent()
 }

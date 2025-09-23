@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
@@ -44,12 +45,19 @@ fun ScanScreen(
             actionEventHandler = { _, action ->
                 when (action) {
 
-                    is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination()
+                    is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination(
+                            action.qrData
+                    )
                 }
 
             }) {
 
-        HomeScreenContent(viewModel = viewModel, uiState = it, modifier = modifier)
+        HomeScreenContent(
+                modifier = modifier,
+                uiState = it,
+                onAnalyzing = viewModel::onAnalyzing,
+                onScanSuccess = viewModel::onScanSuccess
+        )
     }
 
     /*  val lifecycleOwner = LocalLifecycleOwner.current
@@ -87,8 +95,9 @@ fun ScanScreen(
 
 @Composable
 fun HomeScreenContent(
-    viewModel: ScanViewModel,
     uiState: ScanUiState,
+    onScanSuccess: (QrData) -> Unit,
+    onAnalyzing: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -98,7 +107,12 @@ fun HomeScreenContent(
     ) {
 
         CamPermissionHandler()
-        CameraPreview(modifier = Modifier.fillMaxSize(), uiState = uiState, viewModel = viewModel)
+        CameraPreview(
+                modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                onScanSuccess = onScanSuccess,
+                onAnalyzing = onAnalyzing,
+        )
         //QRCodeScannerWithBottomSheet()
 
         ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)

@@ -48,6 +48,7 @@ fun ResultScreen(
                     }
                 }
             },
+            containerColor = MaterialTheme.colorScheme.onSurface,
             onBackPressed = { viewModel.onEvent(ResultUiEvent.ExitResultScreen) }
     ) {
 

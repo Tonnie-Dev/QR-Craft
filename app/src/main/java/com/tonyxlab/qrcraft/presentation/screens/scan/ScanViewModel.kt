@@ -41,6 +41,6 @@ class ScanViewModel : ScanBaseViewModel() {
         updateState { it.copy(qrDataState = ScanUiState.DataState(qrData = qrData)) }
         // _scannedQrData.value = qrData
         updateState { it.copy(isLoading = false) }
-        sendActionEvent(ScanActionEvent.NavigateToScanResult)
+        sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
     }
 }
