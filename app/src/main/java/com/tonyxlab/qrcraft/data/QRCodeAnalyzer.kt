@@ -15,6 +15,7 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class QRCodeAnalyzer(
     private val onCodeScanned: (QrData) -> Unit,
+    private val onAnalyzing: (Boolean) -> Unit = {},
     private val consumeOnce: Boolean = true
 ) : ImageAnalysis.Analyzer {
 
@@ -28,6 +29,7 @@ class QRCodeAnalyzer(
     private val scanner = BarcodeScanning.getClient(options)
 
     @OptIn(ExperimentalGetImage::class)
+    @kotlin.OptIn(ExperimentalAtomicApi::class)
     override fun analyze(imageProxy: ImageProxy) {
 
         val mediaImage = imageProxy.image ?: run {
@@ -45,15 +47,18 @@ class QRCodeAnalyzer(
 
                     barcodes.ifEmpty { return@addOnSuccessListener }
 
+                    onAnalyzing(true)
+
                     val barcode =
                         barcodes.maxByOrNull { it.boundingBox?.width() ?: 0 } ?: barcodes.first()
 
                     val data = barcode.toQrData()
-                    barcodes.forEach { barcode ->
-                        barcode.rawValue?.let {
-                            onCodeScanned(it)
-                        }
-
+                    if (!consumeOnce || onShotGuard.compareAndSet(
+                                expectedValue = false,
+                                newValue = true
+                        )
+                    ) {
+                        onCodeScanned(data)
                     }
                 }
                 .addOnCompleteListener {
