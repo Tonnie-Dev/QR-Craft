@@ -88,7 +88,7 @@ fun ScanOverlay(
             )
         }
 
-        if (isLoading) {
+       /* if (isLoading) {
             Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -107,6 +107,6 @@ fun ScanOverlay(
                         )
                 )
             }
-        }
+        }*/
     }
 }

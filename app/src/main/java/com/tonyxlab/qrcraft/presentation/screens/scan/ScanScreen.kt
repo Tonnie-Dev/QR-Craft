@@ -24,30 +24,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.navigation.NavOperations
-import com.tonyxlab.qrcraft.presentation.core.components.CamPermissionHandler
-import com.tonyxlab.qrcraft.presentation.core.components.QRCodeScannerWithBottomSheet
+import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
+import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
+import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
+import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
+import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ScanScreen(
     navOperations: NavOperations,
     modifier: Modifier = Modifier,
-    scanViewModel: ScanViewModel = koinViewModel()
+    viewModel: ScanViewModel = koinViewModel()
 ) {
 
-    Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-    ) {
+    BaseContentLayout(
+            viewModel = viewModel,
+            actionEventHandler = { _, action ->
+                when (action) {
 
-      //  CameraPreview(modifier = Modifier.fillMaxSize())
-        CamPermissionHandler()
-        QRCodeScannerWithBottomSheet()
+                    is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination()
+                }
 
+            }) {
 
-      ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)
+        HomeScreenContent(viewModel = viewModel, uiState = it, modifier = modifier)
     }
+
     /*  val lifecycleOwner = LocalLifecycleOwner.current
       val surfaceRequest by scanViewModel.surfaceRequest.collectAsStateWithLifecycle()
       val context = LocalContext.current
@@ -79,6 +83,26 @@ fun ScanScreen(
           ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)
       }*/
 
+}
+
+@Composable
+fun HomeScreenContent(
+    viewModel: ScanViewModel,
+    uiState: ScanUiState,
+    modifier: Modifier = Modifier
+) {
+
+    Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+    ) {
+
+        CamPermissionHandler()
+        CameraPreview(modifier = Modifier.fillMaxSize(), uiState = uiState, viewModel = viewModel)
+        //QRCodeScannerWithBottomSheet()
+
+        ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)
+    }
 }
 
 @Composable
