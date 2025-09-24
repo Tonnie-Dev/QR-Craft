@@ -11,8 +11,9 @@ data class ResultUiState(val dataState: DataState = DataState()) : UiState {
     data class DataState(
         val qrData: QrData = QrData(
                 displayName = "Text",
-                data = generateLoremIpsum(26),
-                qrDataType = QrDataType.TEXT
+                prettifiedData = generateLoremIpsum(26),
+                qrDataType = QrDataType.TEXT,
+                rawDataValue = ""
         )
     )
 }

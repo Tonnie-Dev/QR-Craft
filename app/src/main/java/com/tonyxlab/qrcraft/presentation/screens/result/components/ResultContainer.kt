@@ -7,16 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -26,7 +23,6 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.presentation.theme.ui.SurfaceHigher
 
 @Composable
 fun ResultContainer(
@@ -66,7 +62,7 @@ fun ResultContainer(
                         )
                 )
                 Text(
-                        text = qrData.data,
+                        text = qrData.prettifiedData,
                         style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onSurface
                         )
@@ -98,15 +94,11 @@ fun ResultContainer(
                 )
             }
         }
-
-        Box(
-                modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .size(qrBoxSize)
-                        .offset(y = -overlapSize)
-                        .shadow(MaterialTheme.spacing.spaceSmall, shape, clip = false)
-                        .clip(shape)
-                        .background(SurfaceHigher, shape)
+        QrImageTile(
+                data = uiState.dataState.qrData.rawDataValue,
+                qrBoxSizeInDp = qrBoxSize,
+                overlapSize = overlapSize,
+                shape = shape
         )
     }
 }

@@ -11,6 +11,7 @@ enum class QrDataType {
 @Serializable
 data class QrData(
     val displayName: String,
-    val data: String,
-    val qrDataType: QrDataType
+    val prettifiedData: String,
+    val rawDataValue: String,
+    val qrDataType: QrDataType,
 )

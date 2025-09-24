@@ -18,8 +18,9 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
         updateQrData(
                 qrData = QrData(
                         displayName = navArgs.displayName,
-                        data = navArgs.data,
-                        qrDataType = navArgs.qrDataType
+                        prettifiedData = navArgs.prettifiedData,
+                        qrDataType = navArgs.qrDataType,
+                        rawDataValue = navArgs.rawDataValue
                 )
         )
     }

@@ -72,8 +72,9 @@ class QRCodeAnalyzer(
             val urlTitle = url.title ?: "Link"
             return QrData(
                     displayName = urlTitle,
-                    data = url.url ?: displayValue.orEmpty(),
-                    qrDataType = QrDataType.LINK
+                    prettifiedData = url.url ?: displayValue.orEmpty(),
+                    qrDataType = QrDataType.LINK,
+                    rawDataValue = rawValue.orEmpty()
             )
         }
 
@@ -97,18 +98,20 @@ class QRCodeAnalyzer(
 
             return QrData(
                     displayName = name,
-                    data = pieces.joinToString("\n")
+                    prettifiedData = pieces.joinToString("\n")
                             .ifBlank { displayValue.orEmpty() },
-                    qrDataType = QrDataType.CONTACT
+                    qrDataType = QrDataType.CONTACT,
 
+                    rawDataValue = rawValue.orEmpty()
             )
         }
 
         this.phone?.let { phone ->
             return QrData(
                     displayName = "Phone Number",
-                    data = phone.number ?: displayValue.orEmpty(),
-                    qrDataType = QrDataType.PHONE_NUMBER
+                    prettifiedData = phone.number ?: displayValue.orEmpty(),
+                    qrDataType = QrDataType.PHONE_NUMBER,
+                    rawDataValue = rawValue.orEmpty()
             )
         }
 
@@ -116,8 +119,9 @@ class QRCodeAnalyzer(
             val latLng = "${geoPoint.lat}, ${geoPoint.lng}"
             return QrData(
                     displayName = "Geolocation",
-                    data = latLng,
-                    qrDataType = QrDataType.GEOLOCATION
+                    prettifiedData = latLng,
+                    qrDataType = QrDataType.GEOLOCATION,
+                    rawDataValue = rawValue.orEmpty()
             )
         }
 
@@ -137,15 +141,17 @@ class QRCodeAnalyzer(
 
             return QrData(
                     displayName = "Wi-Fi",
-                    data = block,
-                    qrDataType = QrDataType.WIFI
+                    prettifiedData = block,
+                    qrDataType = QrDataType.WIFI,
+                    rawDataValue = rawValue.orEmpty()
             )
         }
 
         return QrData(
                 displayName = "Text",
-                data = displayValue ?: rawValue.orEmpty(),
-                qrDataType = QrDataType.TEXT
+                prettifiedData = displayValue ?: rawValue.orEmpty(),
+                qrDataType = QrDataType.TEXT,
+                rawDataValue = rawValue.orEmpty()
         )
 
     }
