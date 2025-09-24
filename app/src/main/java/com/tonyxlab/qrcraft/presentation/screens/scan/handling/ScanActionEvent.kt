@@ -5,8 +5,5 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
 
 sealed interface ScanActionEvent : ActionEvent {
 
-    data class NavigateToScanResult(
-
-        val qrData: QrData
-    ) : ScanActionEvent
+    data class NavigateToScanResult(val qrData: QrData) : ScanActionEvent
 }

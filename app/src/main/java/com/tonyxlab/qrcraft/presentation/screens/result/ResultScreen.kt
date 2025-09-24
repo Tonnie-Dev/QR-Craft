@@ -66,7 +66,6 @@ fun ResultContentScreen(
     onEvent: (ResultUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Box(
             modifier = Modifier
                     .fillMaxSize()
@@ -85,7 +84,6 @@ fun ResultContentScreen(
 @Composable
 private fun ResultContentScreen_Preview() {
     QRCraftTheme {
-
         ResultContentScreen(
                 uiState = ResultUiState(),
                 onEvent = {}

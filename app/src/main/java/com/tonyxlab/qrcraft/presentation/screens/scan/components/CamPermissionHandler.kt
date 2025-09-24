@@ -92,9 +92,11 @@ fun BoxScope.CamPermissionHandler() {
                     horizontalArrangement = Arrangement.Center
             ) {
 
-                Icon(modifier = Modifier.padding(end = MaterialTheme.spacing.spaceSmall),
+                Icon(
+                        modifier = Modifier.padding(end = MaterialTheme.spacing.spaceSmall),
                         imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(id = R.string.cds_text_check_mark))
+                        contentDescription = stringResource(id = R.string.cds_text_check_mark)
+                )
                 Text(
                         text = stringResource(id = R.string.snack_text_camera_perm_granted),
                         style = MaterialTheme.typography.labelLarge.copy(
@@ -102,7 +104,6 @@ fun BoxScope.CamPermissionHandler() {
                         )
                 )
             }
-
         }
     }
 }

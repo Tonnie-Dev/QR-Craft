@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.data.QRCodeAnalyzer
 import com.tonyxlab.qrcraft.domain.QrData
@@ -65,7 +64,6 @@ fun CameraPreview(
 
         cameraProviderFuture.addListener(
                 {
-
                     val analyzer = ImageAnalysis.Builder()
                             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                             .build()
@@ -75,7 +73,6 @@ fun CameraPreview(
                                         executor,
                                         QRCodeAnalyzer(
                                                 onCodeScanned = { data ->
-
                                                     onScanSuccess(data)
                                                 },
                                                 onAnalyzing = { active ->
@@ -83,7 +80,6 @@ fun CameraPreview(
                                                 },
                                                 consumeOnce = true
                                         )
-
                                 )
                             }
                     val cameraProvider = cameraProviderFuture.get()
