@@ -88,10 +88,11 @@ fun ScanOverlay(
             )
         }
 
-       /* if (isLoading) {
+        if (isLoading) {
             Column(
                     modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
             ) {
 
                 CircularProgressIndicator(
@@ -107,6 +108,6 @@ fun ScanOverlay(
                         )
                 )
             }
-        }*/
+        }
     }
 }

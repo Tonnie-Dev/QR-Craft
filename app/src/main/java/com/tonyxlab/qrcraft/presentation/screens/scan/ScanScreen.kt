@@ -62,7 +62,7 @@ fun HomeScreenContent(
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )
-        ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = true)
+        ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
     }
 }
 

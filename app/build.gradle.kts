@@ -96,7 +96,7 @@ dependencies {
 
     // ML Kit
     implementation(Google.mlKit.vision.barcodeScanning)
-
+   
     // Zxing
     implementation(libs.zxing.core)
 

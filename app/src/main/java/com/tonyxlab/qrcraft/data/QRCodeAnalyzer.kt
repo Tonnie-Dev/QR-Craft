@@ -3,6 +3,8 @@
 
 package com.tonyxlab.qrcraft.data
 
+import android.R.attr.rotation
+import android.graphics.Rect
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -13,8 +15,10 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.util.Constants
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.math.min
 
 class QRCodeAnalyzer(
     private val onCodeScanned: (QrData) -> Unit,
@@ -36,7 +40,15 @@ class QRCodeAnalyzer(
             imageProxy.close()
             return
         }
+        val imgW = imageProxy.width
+        val imgH = imageProxy.height
+        val side = (minOf(imgW, imgH) * 0.65f).toInt()
+        val left = (imgW - side) / 2
+        val top  = (imgH - side) / 2
+        val roi = android.graphics.Rect(left, top, left + side, top + side)
 
+        // ✅ Crop at CameraX layer
+        imageProxy.setCropRect(roi)
         val image = InputImage.fromMediaImage(
                 mediaImage, imageProxy.imageInfo.rotationDegrees
         )

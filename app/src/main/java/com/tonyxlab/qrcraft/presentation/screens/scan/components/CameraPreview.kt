@@ -9,27 +9,21 @@ import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.tonyxlab.qrcraft.R
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 import com.tonyxlab.qrcraft.data.QRCodeAnalyzer
 import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
+import kotlin.math.min
 
 @OptIn(ExperimentalCamera2Interop::class)
 @Composable
@@ -107,27 +101,6 @@ fun CameraPreview(
         )
     }
 
-
-    if (uiState.isLoading) {
-        Column(
-
-                horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            CircularProgressIndicator(
-                    modifier = Modifier
-                            .size(MaterialTheme.spacing.spaceLarge)
-                            .padding(bottom = MaterialTheme.spacing.spaceMedium),
-                    color = OnOverlay
-            )
-            Text(
-                    text = stringResource(id = R.string.cap_text_loading),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                            color = OnOverlay
-                    )
-            )
-        }
-    }
 }
 
 fun lockCenterFocus(previewView: PreviewView, camera: Camera) {
@@ -144,3 +117,4 @@ fun lockCenterFocus(previewView: PreviewView, camera: Camera) {
     camera.cameraControl.startFocusAndMetering(action)
 
 }
+
