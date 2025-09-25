@@ -1,3 +1,6 @@
+@file:kotlin.OptIn(ExperimentalAtomicApi::class)
+@file:OptIn(ExperimentalGetImage::class)
+
 package com.tonyxlab.qrcraft.data
 
 import androidx.annotation.OptIn
@@ -19,7 +22,6 @@ class QRCodeAnalyzer(
     private val consumeOnce: Boolean = true
 ) : ImageAnalysis.Analyzer {
 
-    @kotlin.OptIn(ExperimentalAtomicApi::class)
     private val onShotGuard = AtomicBoolean(false)
 
     private val options = BarcodeScannerOptions.Builder()
@@ -28,12 +30,9 @@ class QRCodeAnalyzer(
 
     private val scanner = BarcodeScanning.getClient(options)
 
-    @OptIn(ExperimentalGetImage::class)
-    @kotlin.OptIn(ExperimentalAtomicApi::class)
     override fun analyze(imageProxy: ImageProxy) {
 
         val mediaImage = imageProxy.image ?: run {
-
             imageProxy.close()
             return
         }
@@ -69,9 +68,8 @@ class QRCodeAnalyzer(
     private fun Barcode.toQrData(): QrData {
 
         this.url?.let { url ->
-            val urlTitle = url.title ?: "Link"
             return QrData(
-                    displayName = urlTitle,
+                    displayName = "Link",
                     prettifiedData = url.url ?: displayValue.orEmpty(),
                     qrDataType = QrDataType.LINK,
                     rawDataValue = rawValue.orEmpty()
@@ -82,22 +80,22 @@ class QRCodeAnalyzer(
             val name = listOfNotNull(
                     contactInfo.name?.formattedName,
                     contactInfo.name?.first,
-                    contactInfo.name?.last
+                    // contactInfo.name?.last
             ).joinToString(" ")
                     .ifBlank { "Contact" }
 
             val pieces = buildList {
-
-                contactInfo.emails.firstOrNull()?.address?.let { add("Email: $it") }
-                contactInfo.phones.firstOrNull()?.number?.let { add("Phone:$it") }
+                add(name)
+                contactInfo.emails.firstOrNull()?.address?.let { add(it) }
+                contactInfo.phones.firstOrNull()?.number?.let { add(it) }
                 contactInfo.organization?.firstOrNull()
-                        ?.let { add("Org: $it") }
+                        ?.let { add(it) }
                 contactInfo.addresses.firstOrNull()?.addressLines?.joinToString()
-                        ?.let { add("Addr: $it") }
+                        ?.let { add(it) }
             }
 
             return QrData(
-                    displayName = name,
+                    displayName = "Contact",
                     prettifiedData = pieces.joinToString("\n")
                             .ifBlank { displayValue.orEmpty() },
                     qrDataType = QrDataType.CONTACT,
