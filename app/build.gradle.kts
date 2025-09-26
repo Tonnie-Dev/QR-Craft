@@ -91,7 +91,7 @@ dependencies {
     implementation(AndroidX.camera.core)
     implementation(AndroidX.camera.camera2)
     implementation(AndroidX.camera.lifecycle)
-    implementation(libs.androidx.camera.compose)
+    implementation(AndroidX.camera.mlKitVision)
     implementation(AndroidX.camera.view)
 
     // ML Kit

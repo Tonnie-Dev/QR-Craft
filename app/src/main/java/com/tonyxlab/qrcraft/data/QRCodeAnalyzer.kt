@@ -13,7 +13,7 @@ import com.tonyxlab.qrcraft.domain.QrDataType
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
-class QRCodeAnalyzer(
+/*class QRCodeAnalyzer(
     private val onCodeScanned: (QrData) -> Unit,
     private val onAnalyzing: (Boolean) -> Unit = {},
     private val consumeOnce: Boolean = true
@@ -64,9 +64,9 @@ class QRCodeAnalyzer(
                 .addOnCompleteListener {
                     imageProxy.close()
                 }
-    }
+    }*/
 
-    private fun Barcode.toQrData(): QrData {
+    fun Barcode.toQrData(): QrData {
 
         this.url?.let { url ->
             val urlTitle = url.title ?: "Link"
@@ -150,7 +150,7 @@ class QRCodeAnalyzer(
 
     }
 
-}
+
 
 
 

@@ -1,36 +1,29 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan.components
 
+import android.graphics.Rect
 import android.view.ViewGroup
-import androidx.annotation.OptIn
-import androidx.camera.camera2.interop.ExperimentalCamera2Interop
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.mlkit.vision.MlKitAnalyzer
+import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.data.QRCodeAnalyzer
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 
+import com.tonyxlab.qrcraft.data.toQrData
+import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.util.Constants
+import kotlin.math.min
+
+/*
 @OptIn(ExperimentalCamera2Interop::class)
 @Composable
 fun CameraPreview(
@@ -143,4 +136,100 @@ fun lockCenterFocus(previewView: PreviewView, camera: Camera) {
 
     camera.cameraControl.startFocusAndMetering(action)
 
+}*/
+
+@Composable
+fun CameraPreview(
+    onScanSuccess: (QrData) -> Unit,
+    onAnalyzing: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val executor = ContextCompat.getMainExecutor(context)
+
+    AndroidView(
+            modifier = modifier,
+            factory = { cxt ->
+
+                val previewView = PreviewView(cxt).apply {
+
+                    layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    scaleType = PreviewView.ScaleType.FILL_CENTER
+                }
+
+                val options = BarcodeScannerOptions.Builder()
+                        .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                        .build()
+
+                val scanner = BarcodeScanning.getClient(options)
+
+                val cameraController =
+                    LifecycleCameraController(cxt).apply {
+
+                        cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+                        setImageAnalysisAnalyzer(
+                                executor,
+                                MlKitAnalyzer(
+                                        listOf(scanner),
+                                        ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                        executor
+
+                                ) { result ->
+
+                                    val barcodes = result?.getValue(scanner)
+                                            .orEmpty()
+
+                                    barcodes.ifEmpty {
+                                        onAnalyzing(false)
+                                        return@MlKitAnalyzer
+                                    }
+
+                                    onAnalyzing(true)
+
+                                    val w = previewView.width
+                                    val h = previewView.height
+
+                                    if (w == 0 || h == 0) return@MlKitAnalyzer
+
+                                    val sideDimen =
+                                        (min(
+                                                w,
+                                                h
+                                        ) * Constants.SCREEN_REGION_OF_INTEREST_FRACTION).toInt()
+
+                                    val left = (w - sideDimen) / 2
+                                    val top = (h - sideDimen) / 2
+
+                                    val roiRectangle =
+                                        Rect(left, top, (left + sideDimen), top + sideDimen)
+
+                                    val hit = barcodes.firstOrNull { barcode ->
+                                        barcode.boundingBox?.let { boundingBox ->
+
+                                            roiRectangle.contains(
+                                                    boundingBox.centerX(),
+                                                    boundingBox.centerY()
+                                            )
+
+                                        } == true
+                                    }
+
+                                    hit?.let { onScanSuccess(it.toQrData()) }
+
+                                }
+                        )
+                    }
+
+                previewView.controller = cameraController
+                cameraController.bindToLifecycle(lifecycleOwner)
+                previewView
+
+            }
+
+    )
 }

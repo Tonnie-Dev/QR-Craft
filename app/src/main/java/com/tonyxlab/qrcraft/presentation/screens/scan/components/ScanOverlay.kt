@@ -29,6 +29,7 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
+import com.tonyxlab.qrcraft.util.Constants
 import kotlin.math.min
 
 @Composable
@@ -50,7 +51,7 @@ fun ScanOverlay(
             val w = size.width
             val h = size.height
 
-            val punchHoleFraction = .9f
+            val punchHoleFraction = Constants.SCREEN_REGION_OF_INTEREST_FRACTION
 
             val frameSquareDimen = min(w, h) * punchHoleFraction
 
@@ -88,7 +89,7 @@ fun ScanOverlay(
             )
         }
 
-       /* if (isLoading) {
+      if (isLoading) {
             Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -107,6 +108,6 @@ fun ScanOverlay(
                         )
                 )
             }
-        }*/
+        }
     }
 }
