@@ -86,7 +86,8 @@ fun ScanOverlay(
                     top = top,
                     right = right,
                     bottom = bottom,
-                    strokeWidth = strokeWidth
+                    strokeWidth = strokeWidth,
+                    sideDimen = sideDimen
             )
         }
 
@@ -136,31 +137,31 @@ fun DrawScope.drawCornerGuides(
     right: Float,
     bottom: Float,
     strokeWidth: Float,
-    sideDimen: Float = 0f
+    sideDimen: Float
 ) {
 
-    val handleLength = 0.15f * sideDimen
-    val curveRadius = 25f
+    val handleLength = .2f * sideDimen
+    val curveRadius = 40f
     // Draw Top-Left Corner Guide Handle
     drawPath(
             path = Path().apply {
-                moveTo(x = left, y = top + 150)
-                lineTo(x = left, y = top + 40)
-                quadraticTo(x1 = left + 5, y1 = top, x2 = left + 50, y2 = top)
-                lineTo(x = left + 150, y = top)
+                moveTo(x = left, y = top + handleLength)
+                lineTo(x = left, y = top + curveRadius)
+                quadraticTo(x1 = left, y1 = top, x2 = left + curveRadius, y2 = top)
+                lineTo(x = left + handleLength, y = top)
 
             },
             color = Primary,
-            style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
     )
     // Draw Top-Right Corner Guide Handle
 
     drawPath(
             path = Path().apply {
-                moveTo(x = right - 150, y = top)
-                lineTo(x = right - 40, y = top)
-                quadraticTo(x1 = right + 5, y1 = top + 5, x2 = right, y2 = top + 50)
-                lineTo(x = right, y = top + 150)
+                moveTo(x = right - handleLength, y = top)
+                lineTo(x = right - curveRadius, y = top)
+                quadraticTo(x1 = right, y1 = top, x2 = right, y2 = top + curveRadius)
+                lineTo(x = right, y = top + handleLength)
             },
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
@@ -169,10 +170,10 @@ fun DrawScope.drawCornerGuides(
 
     drawPath(
             path = Path().apply {
-                moveTo(x =left, y = bottom-150)
-                lineTo(x = left , y = bottom-40)
-                quadraticTo(x1 =left + 5, y1 = bottom , x2 = left + 50, y2 = bottom )
-                lineTo(x = left + 150, y = bottom )
+                moveTo(x = left, y = bottom - handleLength)
+                lineTo(x = left, y = bottom - curveRadius)
+                quadraticTo(x1 = left, y1 = bottom, x2 = left + curveRadius, y2 = bottom)
+                lineTo(x = left + handleLength, y = bottom)
             },
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
@@ -180,10 +181,10 @@ fun DrawScope.drawCornerGuides(
     // Draw Bottom-Right Corner Guide Handle
     drawPath(
             path = Path().apply {
-                moveTo(x = right - 150, y = bottom)
-                lineTo(x = right - 40, y = bottom)
-                quadraticTo(x1 = right -5, y1 = bottom , x2 = right , y2 = bottom - 50)
-                lineTo(x = right, y = bottom - 150)
+                moveTo(x = right - handleLength, y = bottom)
+                lineTo(x = right - curveRadius, y = bottom)
+                quadraticTo(x1 = right, y1 = bottom, x2 = right, y2 = bottom - curveRadius)
+                lineTo(x = right, y = bottom - handleLength)
             },
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
