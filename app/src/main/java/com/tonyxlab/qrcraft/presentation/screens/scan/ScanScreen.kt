@@ -40,7 +40,6 @@ fun ScanScreen(
                 onScanSuccess = viewModel::onScanSuccess
         )
     }
-
 }
 
 @Composable
@@ -56,9 +55,9 @@ fun HomeScreenContent(
     ) {
 
         CamPermissionHandler()
+
         CameraPreview(
                 modifier = Modifier.fillMaxSize(),
-                uiState = uiState,
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )
