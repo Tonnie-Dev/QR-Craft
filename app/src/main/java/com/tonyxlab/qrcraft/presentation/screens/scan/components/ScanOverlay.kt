@@ -36,9 +36,7 @@ import kotlin.math.min
 fun ScanOverlay(
     modifier: Modifier = Modifier,
     isLoading: Boolean
-
 ) {
-
     Box(modifier = modifier) {
         Canvas(
                 modifier = Modifier
@@ -51,12 +49,12 @@ fun ScanOverlay(
             val w = size.width
             val h = size.height
 
-            val punchHoleFraction = Constants.SCREEN_REGION_OF_INTEREST_FRACTION
+            val roi = Constants.SCREEN_REGION_OF_INTEREST_FRACTION
 
-            val frameSquareDimen = min(w, h) * punchHoleFraction
+            val sideDimen = min(w, h) * roi
 
-            val left = (w - frameSquareDimen) / 2f
-            val top = (h - frameSquareDimen) / 2f
+            val left = (w - sideDimen) / 2f
+            val top = (h - sideDimen) / 2f
 
             val radius = 20.dp.toPx()
 
@@ -67,7 +65,7 @@ fun ScanOverlay(
             drawRoundRect(
                     color = Color.Red,
                     topLeft = Offset(left, top),
-                    size = Size(width = frameSquareDimen, height = frameSquareDimen),
+                    size = Size(width = sideDimen, height = sideDimen),
                     cornerRadius = CornerRadius(radius, radius),
                     blendMode = BlendMode.Clear
             )
@@ -89,10 +87,11 @@ fun ScanOverlay(
             )
         }
 
-      if (isLoading) {
+        if (isLoading) {
             Column(
                     modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
             ) {
 
                 CircularProgressIndicator(

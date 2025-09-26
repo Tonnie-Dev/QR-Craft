@@ -5,10 +5,14 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
+import kotlinx.coroutines.delay
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
 
 class ScanViewModel : ScanBaseViewModel() {
+
+    private var loadingSinceMs: Long? = null
+    private val MIN_SPINNER_MS = 2050L
 
     override val initialState: ScanUiState
         get() = ScanUiState()
@@ -26,7 +30,10 @@ class ScanViewModel : ScanBaseViewModel() {
     }
 
     fun onScanSuccess(qrData: QrData) {
-        updateState { it.copy(isLoading = false) }
-        sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
+        launch {
+            delay(1_000)
+            updateState { it.copy(isLoading = false) }
+            sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
+        }
     }
 }

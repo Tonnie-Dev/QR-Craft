@@ -52,7 +52,7 @@
     <string name="cds_text_add">Add</string>
     <string name="cds_text_back">Back</string>
     <string name="cds_text_check_mark">Check Mark</string>
-
+    <string name="cds_text_qr_code">QR Code</string>
     <!--Meta Data Texts-->
     <string name="meta_text_created_on">Date Created</string>
 

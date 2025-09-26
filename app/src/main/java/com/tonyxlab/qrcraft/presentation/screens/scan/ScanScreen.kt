@@ -10,7 +10,6 @@ import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
-
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
@@ -41,7 +40,6 @@ fun ScanScreen(
                 onScanSuccess = viewModel::onScanSuccess
         )
     }
-
 }
 
 @Composable
@@ -57,9 +55,9 @@ fun HomeScreenContent(
     ) {
 
         CamPermissionHandler()
+
         CameraPreview(
                 modifier = Modifier.fillMaxSize(),
-               // uiState = uiState,
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )

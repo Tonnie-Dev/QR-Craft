@@ -96,6 +96,10 @@ dependencies {
 
     // ML Kit
     implementation(Google.mlKit.vision.barcodeScanning)
+    implementation(AndroidX.camera.mlKitVision)
+
+    // Zxing
+    implementation(libs.zxing.core)
 
     // Logging
     implementation(JakeWharton.timber)

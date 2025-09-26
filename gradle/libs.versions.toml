@@ -10,6 +10,8 @@ ksp-plugin = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serializer-plugin = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 
+
+
 [versions]
 
 agp = "8.13.0"
@@ -21,6 +23,7 @@ espressoCore = "3.7.0"
 adaptive = "1.1.0"
 junitJupiter = "5.13.4"
 camerax = "1.5.0"
+zxing = "3.5.3"
 
 
 [libraries]
@@ -34,3 +37,4 @@ kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref
 material3-adaptive = {group = "androidx.compose.material3.adaptive" ,name = "adaptive", version.ref = "adaptive"}
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "camerax" }
+zxing-core = { group= "com.google.zxing", name ="core" ,version.ref = "zxing" }

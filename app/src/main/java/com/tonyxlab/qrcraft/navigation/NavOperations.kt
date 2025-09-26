@@ -1,6 +1,5 @@
 package com.tonyxlab.qrcraft.navigation
 
-import android.R.attr.data
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -16,11 +15,14 @@ class NavOperations(val navHostController: NavHostController) {
 
     fun navigateToResultScreenDestination(qrData: QrData) {
 
-        navHostController.navigate(route = Destinations.ResultScreenDestination(
-                displayName = qrData.displayName,
-                data = qrData.data,
-                qrDataType = qrData.qrDataType
-        ))
+        navHostController.navigate(
+                route = Destinations.ResultScreenDestination(
+                        displayName = qrData.displayName,
+                        prettifiedData = qrData.prettifiedData,
+                        qrDataType = qrData.qrDataType,
+                        rawDataValue = qrData.rawDataValue
+                )
+        )
     }
 
     fun popBackStack() {

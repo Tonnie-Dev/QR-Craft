@@ -3,7 +3,6 @@ package com.tonyxlab.qrcraft.navigation
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
@@ -33,7 +32,8 @@ sealed class Destinations {
     @Serializable
     data class ResultScreenDestination(
         val displayName: String,
-        val data: String,
+        val prettifiedData: String,
+        val rawDataValue: String,
         val qrDataType: QrDataType
     ) : Destinations()
 
