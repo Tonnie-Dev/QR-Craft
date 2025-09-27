@@ -2,12 +2,15 @@ package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
+import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
@@ -21,8 +24,13 @@ fun ScanScreen(
     modifier: Modifier = Modifier,
     viewModel: ScanViewModel = koinViewModel()
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     BaseContentLayout(
             viewModel = viewModel,
+            snackbarHost = {
+                AppSnackbarHost(snackbarHostState = snackbarHostState)
+            },
             actionEventHandler = { _, action ->
                 when (action) {
 
@@ -30,12 +38,12 @@ fun ScanScreen(
                             action.qrData
                     )
                 }
-
-            }) {
-
+            }
+    ) {
         HomeScreenContent(
                 modifier = modifier,
                 uiState = it,
+                snackbarHostState = snackbarHostState,
                 onAnalyzing = viewModel::onAnalyzing,
                 onScanSuccess = viewModel::onScanSuccess
         )
@@ -45,6 +53,7 @@ fun ScanScreen(
 @Composable
 fun HomeScreenContent(
     uiState: ScanUiState,
+    snackbarHostState: SnackbarHostState,
     onScanSuccess: (QrData) -> Unit,
     onAnalyzing: (Boolean) -> Unit,
     modifier: Modifier = Modifier
@@ -54,7 +63,7 @@ fun HomeScreenContent(
             contentAlignment = Alignment.Center
     ) {
 
-        CamPermissionHandler()
+        CamPermissionHandler(snackbarHostState = snackbarHostState)
 
         CameraPreview(
                 modifier = Modifier.fillMaxSize(),

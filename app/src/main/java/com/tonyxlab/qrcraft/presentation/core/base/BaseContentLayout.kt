@@ -63,6 +63,7 @@ fun <S : UiState, E : UiEvent, A : ActionEvent> BaseContentLayout(
             enabled = onBackPressed != null,
             onBack = { onBackPressed?.invoke() }
     )
+
     Surface(
             modifier = Modifier.fillMaxSize(),
             color = containerColor

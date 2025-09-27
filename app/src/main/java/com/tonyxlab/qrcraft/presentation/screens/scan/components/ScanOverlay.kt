@@ -51,13 +51,13 @@ fun ScanOverlay(
                 modifier = Modifier
                         .matchParentSize()
                         .graphicsLayer {
-
                             compositingStrategy = CompositingStrategy.Offscreen
-                        }) {
+                        }
+        ) {
 
             val w = size.width
             val h = size.height
-
+            // Using a constant of 0.75f
             val roiFraction = Constants.SCREEN_REGION_OF_INTEREST_FRACTION
 
             val sideDimen = min(w, h) * roiFraction
@@ -100,6 +100,7 @@ fun ScanOverlay(
                 verticalArrangement = Arrangement.Top
         ) {
             Spacer(Modifier.fillMaxHeight(0.25f))
+
             Text(
                     text = stringResource(id = R.string.cap_text_point_camera),
                     style = MaterialTheme.typography.titleSmall.copy(color = OnOverlay),
@@ -113,7 +114,6 @@ fun ScanOverlay(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
             ) {
-
                 CircularProgressIndicator(
                         modifier = Modifier
                                 .size(MaterialTheme.spacing.spaceLarge)
@@ -142,6 +142,7 @@ fun DrawScope.drawCornerGuides(
 
     val handleLength = .2f * sideDimen
     val curveRadius = 40f
+
     // Draw Top-Left Corner Guide Handle
     drawPath(
             path = Path().apply {
@@ -154,8 +155,8 @@ fun DrawScope.drawCornerGuides(
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
     )
-    // Draw Top-Right Corner Guide Handle
 
+    // Draw Top-Right Corner Guide Handle
     drawPath(
             path = Path().apply {
                 moveTo(x = right - handleLength, y = top)
@@ -166,8 +167,8 @@ fun DrawScope.drawCornerGuides(
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
     )
-    // Draw Bottom-Left Corner Guide Handle
 
+    // Draw Bottom-Left Corner Guide Handle
     drawPath(
             path = Path().apply {
                 moveTo(x = left, y = bottom - handleLength)
@@ -178,6 +179,7 @@ fun DrawScope.drawCornerGuides(
             color = Primary,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
     )
+
     // Draw Bottom-Right Corner Guide Handle
     drawPath(
             path = Path().apply {
@@ -196,7 +198,6 @@ fun DrawScope.drawCornerGuides(
 private fun ScanOverlay_Preview() {
 
     QRCraftTheme {
-
         ScanOverlay(
                 modifier = Modifier.fillMaxSize(),
                 isLoading = false
