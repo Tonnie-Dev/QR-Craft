@@ -13,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.window.DialogProperties
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
@@ -28,6 +30,11 @@ fun AppDialog(
     positiveButtonText: String,
     negativeButtonText: String? = null
 ) {
+
+    val buttonModifier = Modifier
+            .padding(vertical = MaterialTheme.spacing.spaceSmall)
+            .padding(horizontal = MaterialTheme.spacing.spaceMedium)
+
     AlertDialog(
             modifier = Modifier.padding(
                     vertical = MaterialTheme.spacing.spaceExtraSmall * 7,
@@ -57,19 +64,16 @@ fun AppDialog(
                 Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve)
+                        horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     if (!negativeButtonText.isNullOrBlank()) {
                         AppButton(
-                                modifier = Modifier
-                                        .padding(vertical = MaterialTheme.spacing.spaceSmall)
-                                        .padding(horizontal = MaterialTheme.spacing.spaceMedium),
+                                modifier = buttonModifier,
                                 buttonText = negativeButtonText,
                                 onClick = onDismissRequest,
                                 contentColor = MaterialTheme.colorScheme.error
                         )
                     }
-
                     AppButton(
                             buttonText = positiveButtonText,
                             onClick = onConfirm,
@@ -96,8 +100,8 @@ private fun AppDialog_Preview() {
                     onConfirm = {},
                     dialogTitle = "Delete",
                     dialogText = "Delete Note?",
-                    positiveButtonText = "OK",
-                    negativeButtonText = "Cancel"
+                    positiveButtonText = stringResource(id = R.string.dialog_text_grant_access),
+                    negativeButtonText = stringResource(id = R.string.dialog_text_close_app)
             )
         }
     }

@@ -44,6 +44,7 @@ fun ScanScreen(
                 modifier = modifier,
                 uiState = it,
                 snackbarHostState = snackbarHostState,
+                updateCamSnackbarShownStatus = viewModel::updateCamSnackbarShownStatus,
                 onAnalyzing = viewModel::onAnalyzing,
                 onScanSuccess = viewModel::onScanSuccess
         )
@@ -56,14 +57,19 @@ fun HomeScreenContent(
     snackbarHostState: SnackbarHostState,
     onScanSuccess: (QrData) -> Unit,
     onAnalyzing: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    updateCamSnackbarShownStatus: (Boolean) -> Unit
 ) {
     Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
     ) {
 
-        CamPermissionHandler(snackbarHostState = snackbarHostState)
+        CamPermissionHandler(
+                snackbarHostState = snackbarHostState,
+                uiState = uiState,
+                updateCamSnackbarShownStatus = updateCamSnackbarShownStatus
+        )
 
         CameraPreview(
                 modifier = Modifier.fillMaxSize(),

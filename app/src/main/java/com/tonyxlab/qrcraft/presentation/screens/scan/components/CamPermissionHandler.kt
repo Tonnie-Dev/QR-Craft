@@ -15,10 +15,14 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.components.AppDialog
+import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
+import timber.log.Timber
 
 @Composable
 fun CamPermissionHandler(
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    uiState: ScanUiState,
+    updateCamSnackbarShownStatus: (Boolean) -> Unit
 ) {
 
     val camPermissionState =
@@ -26,7 +30,8 @@ fun CamPermissionHandler(
 
     val permissionStatus = camPermissionState.status
     val context = LocalContext.current
-
+    val camSnackbarShown = uiState.camSnackbarShown
+    Timber.tag("CamPermissionHandler").i("Inside Cam-Handler - Initial State: $camSnackbarShown")
     when {
         permissionStatus.shouldShowRationale -> {
 
@@ -38,25 +43,37 @@ fun CamPermissionHandler(
                     onConfirm = { camPermissionState.launchPermissionRequest() },
                     onDismissRequest = { (context as? Activity)?.finish() },
             )
+            updateCamSnackbarShownStatus(false)
         }
 
-   /*     permissionStatus.isGranted -> {
-            // Automatically Check Permission State
-            LaunchedEffect(permissionStatus.isGranted) {
+        permissionStatus.isGranted -> {
 
-                if (permissionStatus.isGranted) {
-                    //  onPermissionGranted()
-                    val snackbarMessage = context
-                            .getText(R.string.snack_text_camera_perm_granted)
-                            .toString()
-                    snackbarHostState.showSnackbar(snackbarMessage)
+            Timber.tag("CamPermissionHandler").i("Inside is Granted Branch")
+            // Automatically Check Permission State
+            if (camSnackbarShown != null){
+                LaunchedEffect(permissionStatus.isGranted, camSnackbarShown) {
+
+                    Timber.tag("CamPermissionHandler").i("Inside Launch Block called")
+
+                    if (permissionStatus.isGranted && !camSnackbarShown) {
+
+                        Timber.tag("CamPermissionHandler").i("Inside if-Block - snackbar about to be shown")
+                        val snackbarMessage = context
+                                .getText(R.string.snack_text_camera_perm_granted)
+                                .toString()
+                        snackbarHostState.showSnackbar(snackbarMessage)
+                        updateCamSnackbarShownStatus(true)
+                    }
                 }
+
             }
-        }*/
+
+        }
 
         else -> {
             // First launch — just ask
             LaunchedEffect(Unit) {
+//                updateCamSnackbarShownStatus(false)
                 camPermissionState.launchPermissionRequest()
             }
         }
