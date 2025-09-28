@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +25,9 @@ import com.tonyxlab.qrcraft.presentation.core.components.AppButton
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
+import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.util.ifThen
 
 @Composable
 fun ResultContainer(
@@ -37,6 +40,8 @@ fun ResultContainer(
 
     val qrBoxSize = MaterialTheme.spacing.spaceMedium * 10
     val overlapSize = qrBoxSize / 2
+
+    val qrDataType = uiState.dataState.qrData.qrDataType
 
     Box(modifier = modifier.fillMaxWidth()) {
 
@@ -60,17 +65,20 @@ fun ResultContainer(
                         text = qrData.displayName,
                         style = MaterialTheme.typography.titleMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurface,
-
-                                ),
-
                         )
+                )
                 Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                                .ifThen(qrDataType == QrDataType.LINK)
+                                {
+                                    background(color = LinkBg)
+                                            .widthIn()
+                                },
                         text = qrData.prettifiedData,
                         style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onSurface
                         ),
-                        textAlign = if (uiState.dataState.qrData.qrDataType == QrDataType.TEXT)
+                        textAlign = if (qrDataType == QrDataType.TEXT)
                             TextAlign.Start
                         else
                             TextAlign.Center
