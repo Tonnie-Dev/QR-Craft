@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
+import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.components.AppButton
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
@@ -61,16 +61,19 @@ fun ResultContainer(
                         style = MaterialTheme.typography.titleMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurface,
 
-                        ),
+                                ),
 
-                )
+                        )
                 Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = qrData.prettifiedData,
                         style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onSurface
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = if (uiState.dataState.qrData.qrDataType == QrDataType.TEXT)
+                            TextAlign.Start
+                        else
+                            TextAlign.Center
                 )
             }
             Row(
