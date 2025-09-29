@@ -19,6 +19,9 @@ val OnOverlay      = Color(0xFFFFFFFF)
 val Link           = Color(0xFF373F05)
 val LinkBg         = Color(0x4DEBFF69) // Primary @ 30%
 
+// Show Less Button
+val ShowLess       = Color(0xFF8C99A2)
+
 // Status
 val Error          = Color(0xFFF12244)
 val Success        = Color(0xFF4DDA9D)

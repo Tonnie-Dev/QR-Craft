@@ -19,6 +19,8 @@
     <!--Button Texts-->
     <string name="btn_text_share">Share</string>
     <string name="btn_text_copy">Copy</string>
+    <string name="btn_text_show_more"> Show More</string>
+    <string name="btn_text_show_less"> Show Less</string>
 
     <!--Text Button Texts-->
     <string name="txt_btn_no_account">Don’t have an account?</string>

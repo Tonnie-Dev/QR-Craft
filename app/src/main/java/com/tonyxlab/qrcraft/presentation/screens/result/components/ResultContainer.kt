@@ -25,6 +25,7 @@ import com.tonyxlab.qrcraft.presentation.core.components.AppButton
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
+import com.tonyxlab.qrcraft.presentation.theme.ui.Link
 import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.ifThen
@@ -67,22 +68,32 @@ fun ResultContainer(
                                 color = MaterialTheme.colorScheme.onSurface,
                         )
                 )
-                Text(
-                        modifier = Modifier
-                                .ifThen(qrDataType == QrDataType.LINK)
-                                {
-                                    background(color = LinkBg)
-                                            .widthIn()
-                                },
-                        text = qrData.prettifiedData,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurface
-                        ),
-                        textAlign = if (qrDataType == QrDataType.TEXT)
-                            TextAlign.Start
-                        else
-                            TextAlign.Center
-                )
+
+                if (qrDataType == QrDataType.TEXT) {
+
+                    ExpandableText(text = qrData.prettifiedData)
+                }else{
+                    Text(
+                            modifier = Modifier
+                                    .ifThen(qrDataType == QrDataType.LINK)
+                                    {
+                                        background(color = LinkBg)
+                                                .widthIn()
+                                    },
+                            text = qrData.prettifiedData,
+                            style = if (qrDataType == QrDataType.LINK) {
+                                MaterialTheme.typography.labelLarge.copy(
+                                        color = Link
+                                )
+                            } else {
+
+                                MaterialTheme.typography.bodyLarge.copy(
+                                        color = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            textAlign = TextAlign.Center
+                    )
+                }
             }
             Row(
                     modifier = Modifier.fillMaxWidth(),
