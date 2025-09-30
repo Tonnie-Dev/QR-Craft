@@ -15,6 +15,7 @@
     <!--Caption Texts-->
     <string name="cap_text_point_camera">Point your Camera at a QR Code</string>
     <string name="cap_text_loading">Loading…</string>
+    <string name="cap_text_share_with">Share with…</string>
 
     <!--Button Texts-->
     <string name="btn_text_share">Share</string>
@@ -55,6 +56,10 @@
     <string name="cds_text_back">Back</string>
     <string name="cds_text_check_mark">Check Mark</string>
     <string name="cds_text_qr_code">QR Code</string>
+
+    <!--Toast Texts-->
+    <string name="toast_text_copied">Copied to Clipboard</string>
+
     <!--Meta Data Texts-->
     <string name="meta_text_created_on">Date Created</string>
 
