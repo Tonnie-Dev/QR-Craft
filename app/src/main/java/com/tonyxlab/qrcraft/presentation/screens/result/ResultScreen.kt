@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,8 @@ import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEve
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.util.DeviceType
+import com.tonyxlab.qrcraft.util.ifThen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -103,10 +106,29 @@ fun ResultContentScreen(
     onEvent: (ResultUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+    val deviceType = DeviceType.fromWindowSizeClass(windowClass)
+    val isWideDevice = when (deviceType) {
+
+        DeviceType.MOBILE_PORTRAIT -> true
+        else -> false
+    }
+
+
     Box(
             modifier = Modifier
                     .fillMaxSize()
-                    .padding(MaterialTheme.spacing.spaceMedium),
+                    .ifThen(isWideDevice) {
+                        padding(horizontal = MaterialTheme.spacing.spaceTen * 6)
+                                .padding(vertical = MaterialTheme.spacing.spaceMedium)
+                    }
+                    .ifThen(isWideDevice.not()) {
+
+                        padding(horizontal = MaterialTheme.spacing.spaceMedium)
+                                .padding(vertical = MaterialTheme.spacing.spaceMedium)
+                    },
+
             contentAlignment = Alignment.Center
     ) {
         ResultContainer(
