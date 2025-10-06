@@ -56,6 +56,9 @@
     <string name="cds_text_back">Back</string>
     <string name="cds_text_check_mark">Check Mark</string>
     <string name="cds_text_qr_code">QR Code</string>
+    <string name="cds_text_view_history">View History</string>
+    <string name="cds_text_scan_qr_code">Scan Qr Code</string>
+    <string name="cds_text_create_qr">Create QR Code</string>
 
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>

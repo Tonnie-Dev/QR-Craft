@@ -18,6 +18,7 @@ fun AppNavHost(
 
         appDestinations(
                 navOperations = navOperations,
+                navController =navController,
                 modifier = modifier
         )
     }
