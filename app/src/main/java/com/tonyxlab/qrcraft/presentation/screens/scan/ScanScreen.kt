@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.navigation.NavController
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
@@ -18,13 +17,13 @@ import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ExtendedFabButton
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
+import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ScanScreen(
     navOperations: NavOperations,
-    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: ScanViewModel = koinViewModel()
 ) {
@@ -41,6 +40,10 @@ fun ScanScreen(
                     is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination(
                             action.qrData
                     )
+
+                    ScanActionEvent.NavigateToCreateScreen -> { navOperations.navigateToCreateScreenDestination()}
+                    ScanActionEvent.NavigateToHistoryScreen -> {navOperations.navigateToHistoryScreenDestination()}
+                    ScanActionEvent.NavigateToScanScreen -> {navOperations.navigateToScanScreenDestination()}
                 }
             }
     ) {
@@ -48,8 +51,8 @@ fun ScanScreen(
                 modifier = modifier,
                 uiState = it,
                 snackbarHostState = snackbarHostState,
-                navController = navController,
                 updateCamSnackbarShownStatus = viewModel::updateCamSnackbarShownStatus,
+                onEvent = viewModel::onEvent,
                 onAnalyzing = viewModel::onAnalyzing,
                 onScanSuccess = viewModel::onScanSuccess
         )
@@ -62,7 +65,7 @@ fun HomeScreenContent(
     snackbarHostState: SnackbarHostState,
     onScanSuccess: (QrData) -> Unit,
     onAnalyzing: (Boolean) -> Unit,
-    navController: NavController,
+    onEvent: (ScanUiEvent) -> Unit,
     modifier: Modifier = Modifier,
     updateCamSnackbarShownStatus: (Boolean) -> Unit
 ) {
@@ -84,7 +87,11 @@ fun HomeScreenContent(
         )
         ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
 
-        ExtendedFabButton(navController = navController,modifier = Modifier.align(alignment = Alignment.BottomCenter))
+        ExtendedFabButton(
+                modifier = Modifier.align(alignment = Alignment.BottomCenter),
+                uiState = uiState,
+                onEvent = onEvent
+        )
     }
 }
 

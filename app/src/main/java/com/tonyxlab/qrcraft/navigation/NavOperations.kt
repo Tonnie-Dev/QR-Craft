@@ -8,9 +8,25 @@ import com.tonyxlab.qrcraft.domain.QrData
 
 class NavOperations(val navHostController: NavHostController) {
 
+    fun navigateToHistoryScreenDestination() {
+
+        navHostController.navigate(route = Destinations.HistoryScreenDestination) {
+            launchSingleTop = true
+        }
+    }
+
     fun navigateToScanScreenDestination() {
 
-        navHostController.navigate(route = Destinations.ScanScreenDestination)
+        navHostController.navigate(route = Destinations.ScanScreenDestination) {
+            launchSingleTop = true
+        }
+    }
+
+    fun navigateToCreateScreenDestination() {
+
+        navHostController.navigate(route = Destinations.CreateScreenDestination) {
+            launchSingleTop = true
+        }
     }
 
     fun navigateToResultScreenDestination(qrData: QrData) {
