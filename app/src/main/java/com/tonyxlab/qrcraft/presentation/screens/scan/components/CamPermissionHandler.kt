@@ -16,13 +16,13 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.components.AppDialog
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import timber.log.Timber
 
 @Composable
 fun CamPermissionHandler(
     snackbarHostState: SnackbarHostState,
     uiState: ScanUiState,
-    updateCamSnackbarShownStatus: (Boolean) -> Unit
+    updateCamSnackbarShownStatus: (Boolean) -> Unit,
+
 ) {
 
     val camPermissionState =
@@ -31,7 +31,7 @@ fun CamPermissionHandler(
     val permissionStatus = camPermissionState.status
     val context = LocalContext.current
     val camSnackbarShown = uiState.camSnackbarShown
-    Timber.tag("CamPermissionHandler").i("Inside Cam-Handler - Initial State: $camSnackbarShown")
+
     when {
         permissionStatus.shouldShowRationale -> {
 
@@ -48,16 +48,13 @@ fun CamPermissionHandler(
 
         permissionStatus.isGranted -> {
 
-            Timber.tag("CamPermissionHandler").i("Inside is Granted Branch")
-            // Automatically Check Permission State
-            if (camSnackbarShown != null){
-                LaunchedEffect(permissionStatus.isGranted, camSnackbarShown) {
 
-                    Timber.tag("CamPermissionHandler").i("Inside Launch Block called")
+            // Automatically Check Permission State
+            if (camSnackbarShown != null) {
+                LaunchedEffect(permissionStatus.isGranted, camSnackbarShown) {
 
                     if (permissionStatus.isGranted && !camSnackbarShown) {
 
-                        Timber.tag("CamPermissionHandler").i("Inside if-Block - snackbar about to be shown")
                         val snackbarMessage = context
                                 .getText(R.string.snack_text_camera_perm_granted)
                                 .toString()
@@ -73,7 +70,7 @@ fun CamPermissionHandler(
         else -> {
             // First launch — just ask
             LaunchedEffect(Unit) {
-//                updateCamSnackbarShownStatus(false)
+
                 camPermissionState.launchPermissionRequest()
             }
         }

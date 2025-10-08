@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
+import android.Manifest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -7,14 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
+import com.tonyxlab.qrcraft.presentation.screens.scan.components.AnimatedBottomNavButton
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
-import com.tonyxlab.qrcraft.presentation.screens.scan.components.ExtendedFabButton
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
@@ -41,9 +44,17 @@ fun ScanScreen(
                             action.qrData
                     )
 
-                    ScanActionEvent.NavigateToCreateScreen -> { navOperations.navigateToCreateScreenDestination()}
-                    ScanActionEvent.NavigateToHistoryScreen -> {navOperations.navigateToHistoryScreenDestination()}
-                    ScanActionEvent.NavigateToScanScreen -> {navOperations.navigateToScanScreenDestination()}
+                    ScanActionEvent.NavigateToCreateScreen -> {
+                        navOperations.navigateToCreateScreenDestination()
+                    }
+
+                    ScanActionEvent.NavigateToHistoryScreen -> {
+                        navOperations.navigateToHistoryScreenDestination()
+                    }
+
+                    ScanActionEvent.NavigateToScanScreen -> {
+                        navOperations.navigateToScanScreenDestination()
+                    }
                 }
             }
     ) {
@@ -59,6 +70,7 @@ fun ScanScreen(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreenContent(
     uiState: ScanUiState,
@@ -69,6 +81,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     updateCamSnackbarShownStatus: (Boolean) -> Unit
 ) {
+
     Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -87,10 +100,13 @@ fun HomeScreenContent(
         )
         ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
 
-        ExtendedFabButton(
-                modifier = Modifier.align(alignment = Alignment.BottomCenter),
+        val camPermission = rememberPermissionState(Manifest.permission.CAMERA)
+        val isCamPermissionGranted = camPermission.status.isGranted
+        AnimatedBottomNavButton(
+                modifier = modifier,
                 uiState = uiState,
-                onEvent = onEvent
+                onEvent = onEvent,
+                isCamPermissionGranted = isCamPermissionGranted
         )
     }
 }
