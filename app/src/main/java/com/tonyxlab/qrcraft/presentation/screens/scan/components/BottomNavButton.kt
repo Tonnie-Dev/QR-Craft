@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -15,18 +16,16 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -41,7 +40,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.FabNavOption
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
@@ -104,7 +105,9 @@ fun BoxScope.AnimatedBottomNavButton(
         BottomNavButton(
                 uiState = uiState,
                 onEvent = onEvent,
-                modifier = modifier.align(Alignment.BottomCenter).padding(bottom = MaterialTheme.spacing.spaceMedium)
+                modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = MaterialTheme.spacing.spaceMedium)
         )
     }
 
@@ -133,7 +136,7 @@ fun BottomNavButton(
             val selected = uiState.fabNavOption == option.navOption
             val isPrimary = option.navOption == FabNavOption.SCAN
             NavButtonItem(
-                    imageVector = option.icon,
+                    icon = option.icon,
                     semanticLabel = option.semanticLabel,
                     selected = selected,
                     isPrimary = isPrimary
@@ -150,7 +153,8 @@ fun BottomNavButton(
 
 @Composable
 private fun NavButtonItem(
-    imageVector: ImageVector,
+    @DrawableRes
+    icon: Int,
     semanticLabel: String,
     isPrimary: Boolean,
     selected: Boolean,
@@ -168,15 +172,16 @@ private fun NavButtonItem(
         MaterialTheme.spacing.spaceExtraSmall * 7
     else
 
-        MaterialTheme.spacing.spaceExtraSmall * 7
-    //  MaterialTheme.spacing.spaceMedium
+
+    MaterialTheme.spacing.spaceMedium
 
     val containerSize = if (isPrimary)
 
         MaterialTheme.spacing.spaceTwelve * 6
     else
-        MaterialTheme.spacing.spaceTwelve * 6
-    //        MaterialTheme.spacing.spaceDoubleDp * 22
+
+
+           MaterialTheme.spacing.spaceDoubleDp * 22
 
     val iconTint = if (isPrimary)
         MaterialTheme.colorScheme.onPrimary
@@ -190,7 +195,7 @@ private fun NavButtonItem(
     Box(
             modifier = modifier
 
-                    .ifThen(elevate) {
+                    .ifThen(isPrimary) {
                         shadow(
                                 elevation = MaterialTheme.spacing.spaceExtraSmall,
                                 shape = CircleShape,
@@ -213,8 +218,8 @@ private fun NavButtonItem(
     ) {
 
         Icon(
-                modifier = Modifier.size(iconSize),
-                imageVector = imageVector,
+                modifier = Modifier,
+                painter = painterResource(icon) ,
                 contentDescription = semanticLabel,
                 tint = iconTint
         )
@@ -223,25 +228,26 @@ private fun NavButtonItem(
 
 enum class BottomNavOptions(
     val semanticLabel: String,
-    val icon: ImageVector,
+    @DrawableRes
+    val icon: Int,
     val navOption: FabNavOption
 ) {
 
     History(
             semanticLabel = "History",
-            icon = Icons.Default.History,
+            icon = R.drawable.icon_history,
             navOption = FabNavOption.HISTORY
     ),
 
     Scan(
             semanticLabel = "Scan",
-            icon = Icons.Default.QrCodeScanner,
+            icon = R.drawable.icon_scan,
             navOption = FabNavOption.SCAN
     ),
 
     Create(
             semanticLabel = "Create",
-            icon = Icons.Default.AddCircleOutline,
+            icon = R.drawable.icon_create,
             navOption = FabNavOption.CREATE
     )
 }
@@ -251,18 +257,24 @@ enum class BottomNavOptions(
 private fun BottomNavButton_Preview() {
     QRCraftTheme {
 
-        Box(
-                modifier = Modifier
+        Column(
+                modifier = Modifier.fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
-                        .fillMaxSize(),
-                contentAlignment = Alignment.Center
         ) {
-
-            BottomNavButton(
-                    uiState = ScanUiState(),
-                    onEvent = {},
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceExtraLarge))
+            Column(
                     modifier = Modifier
-            )
+                            .fillMaxSize()
+                            .padding(MaterialTheme.spacing.spaceMedium),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
+            ) {
+                BottomNavButton(
+                        uiState = ScanUiState(fabNavOption = FabNavOption.CREATE),
+                        onEvent = {},
+                        modifier = Modifier
+                )
+            }
         }
     }
 }
