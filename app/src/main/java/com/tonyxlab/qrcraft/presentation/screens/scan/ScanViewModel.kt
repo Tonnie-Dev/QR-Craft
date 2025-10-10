@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.domain.repository.QrRepository
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
-import com.tonyxlab.qrcraft.presentation.screens.scan.handling.FabNavOption
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
@@ -12,7 +11,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
 
@@ -28,12 +26,7 @@ class ScanViewModel(private val qrRepository: QrRepository) : ScanBaseViewModel(
     override fun onEvent(event: ScanUiEvent) {
         when (event) {
 
-            is ScanUiEvent.FabOptionSelected -> {
-
-                updateFabOption(event.fabNavOption)
-                sendNavigationActionEvent(event.fabNavOption)
-            }
-
+            is ScanUiEvent.FabOptionSelected -> {}
         }
     }
 
@@ -54,48 +47,17 @@ class ScanViewModel(private val qrRepository: QrRepository) : ScanBaseViewModel(
                 .getSnackbarShownStatus()
                 .distinctUntilChanged()
                 .onEach { shown ->
-
                     updateState { it.copy(camSnackbarShown = shown) }
-
-                    Timber.tag("ScanViewModel")
-                            .i("VW State Ejection: $shown")
                 }
                 .launchIn(viewModelScope)
-
     }
 
     fun updateCamSnackbarShownStatus(isShown: Boolean) {
 
         launch {
 
-            Timber.tag("ScanViewModel")
-                    .i("VW Update Cam-Shown-Status: $isShown")
             qrRepository.setSnackbarShownStatus(isShown)
 
-        }
-    }
-
-    private fun updateFabOption(option: FabNavOption) {
-
-        updateState { it.copy(fabNavOption = option) }
-    }
-
-    private fun sendNavigationActionEvent(option: FabNavOption) {
-
-        when (option) {
-            FabNavOption.HISTORY -> {
-                sendActionEvent(ScanActionEvent.NavigateToHistoryScreen)
-            }
-
-            FabNavOption.SCAN -> {
-
-                sendActionEvent(ScanActionEvent.NavigateToScanScreen)
-
-            }
-
-            FabNavOption.CREATE -> {
-                sendActionEvent(ScanActionEvent.NavigateToCreateScreen)
-            }
         }
     }
 }

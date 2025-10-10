@@ -1,6 +1,5 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
-import android.Manifest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -9,13 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
-import com.tonyxlab.qrcraft.presentation.screens.scan.components.AnimatedBottomNavButton
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
@@ -43,18 +39,7 @@ fun ScanScreen(
                     is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination(
                             action.qrData
                     )
-
-                    ScanActionEvent.NavigateToCreateScreen -> {
-                        navOperations.navigateToCreateScreenDestination()
-                    }
-
-                    ScanActionEvent.NavigateToHistoryScreen -> {
-                        navOperations.navigateToHistoryScreenDestination()
-                    }
-
-                    ScanActionEvent.NavigateToScanScreen -> {
-                        navOperations.navigateToScanScreenDestination()
-                    }
+                   
                 }
             }
     ) {
@@ -98,16 +83,9 @@ fun HomeScreenContent(
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )
+
         ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
 
-        val camPermission = rememberPermissionState(Manifest.permission.CAMERA)
-        val isCamPermissionGranted = camPermission.status.isGranted
-        AnimatedBottomNavButton(
-                modifier = modifier,
-                uiState = uiState,
-                onEvent = onEvent,
-                isCamPermissionGranted = isCamPermissionGranted
-        )
     }
 }
 

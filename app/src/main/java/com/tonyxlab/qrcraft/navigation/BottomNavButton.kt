@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.presentation.screens.scan.components
+package com.tonyxlab.qrcraft.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -43,9 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.screens.scan.handling.FabNavOption
-import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
-import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.ifThen
@@ -53,8 +50,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun BoxScope.AnimatedBottomNavButton(
-    uiState: ScanUiState,
-    onEvent: (ScanUiEvent) -> Unit,
+    currentNavOption: BottomNavOption,
+    onClickIcon: (BottomNavOption) -> Unit,
     isCamPermissionGranted: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -85,7 +82,7 @@ fun BoxScope.AnimatedBottomNavButton(
 
     AnimatedVisibility(
             modifier = modifier
-                    .align(Alignment.BottomCenter)
+
                     .offset(y = offSetY),
             visible = showBar,
             enter = slideInVertically(
@@ -102,8 +99,8 @@ fun BoxScope.AnimatedBottomNavButton(
     ) {
 
         BottomNavButton(
-                uiState = uiState,
-                onEvent = onEvent,
+                currentNavOption = currentNavOption,
+                onClickIcon = onClickIcon,
                 modifier = modifier
                         .align(Alignment.BottomCenter)
                         .padding(bottom = MaterialTheme.spacing.spaceMedium)
@@ -113,8 +110,8 @@ fun BoxScope.AnimatedBottomNavButton(
 
 @Composable
 fun BottomNavButton(
-    uiState: ScanUiState,
-    onEvent: (ScanUiEvent) -> Unit,
+    currentNavOption: BottomNavOption,
+    onClickIcon: (BottomNavOption) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -139,20 +136,20 @@ fun BottomNavButton(
             NavButtonItem(
                     icon = R.drawable.icon_history,
                     semanticLabel = stringResource(id = R.string.cds_text_view_history),
-                    selected = uiState.fabNavOption == BottomNavOptions.History.navOption,
+                    selected = currentNavOption == BottomNavOption.History,
                     isPrimary = false
             ) {
-                onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.HISTORY))
+                onClickIcon(BottomNavOption.History)
             }
 
             // Right NavButtonItem
             NavButtonItem(
                     icon = R.drawable.icon_create,
                     semanticLabel = stringResource(id = R.string.cds_text_create_qr),
-                    selected = uiState.fabNavOption == BottomNavOptions.Create.navOption,
+                    selected = currentNavOption == BottomNavOption.Create,
                     isPrimary = false
             ) {
-                onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.CREATE))
+                onClickIcon(BottomNavOption.Create)
             }
         }
 
@@ -164,7 +161,7 @@ fun BottomNavButton(
                 selected = true,
                 isPrimary = true
         ) {
-            onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.SCAN))
+            onClickIcon(BottomNavOption.Scan)
         }
     }
 }
@@ -211,8 +208,7 @@ private fun NavButtonItem(
                     .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
-                    ) { onClickIcon() }
-            , contentAlignment = Alignment.Center
+                    ) { onClickIcon() }, contentAlignment = Alignment.Center
     ) {
         Icon(
                 modifier = Modifier,
@@ -220,34 +216,7 @@ private fun NavButtonItem(
                 contentDescription = semanticLabel,
                 tint = iconTint
         )
-
     }
-}
-
-enum class BottomNavOptions(
-    val semanticLabel: String,
-    @DrawableRes
-    val icon: Int,
-    val navOption: FabNavOption
-) {
-
-    History(
-            semanticLabel = "History",
-            icon = R.drawable.icon_history,
-            navOption = FabNavOption.HISTORY
-    ),
-
-    Scan(
-            semanticLabel = "Scan",
-            icon = R.drawable.icon_scan,
-            navOption = FabNavOption.SCAN
-    ),
-
-    Create(
-            semanticLabel = "Create",
-            icon = R.drawable.icon_create,
-            navOption = FabNavOption.CREATE
-    )
 }
 
 @PreviewLightDark
@@ -268,8 +237,8 @@ private fun BottomNavButton_Preview() {
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
             ) {
                 BottomNavButton(
-                        uiState = ScanUiState(fabNavOption = FabNavOption.CREATE),
-                        onEvent = {},
+                        currentNavOption = BottomNavOption.Create,
+                        onClickIcon = {},
                         modifier = Modifier
                 )
             }

@@ -34,27 +34,45 @@ fun NavGraphBuilder.appDestinations(
     }
 
     composable<Destinations.HistoryScreenDestination> {
-        FakeDestination()
+        FakeHistoryDestination()
 
     }
 
 
     composable<Destinations.CreateScreenDestination> {
 
-        FakeDestination()
+        FakeCreateDestination()
 
     }
 }
 
 @Composable
-fun FakeDestination(modifier: Modifier = Modifier) {
+fun FakeHistoryDestination(modifier: Modifier = Modifier) {
     Box(
             modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center
     ) {
-        Text(text = "This is a Fake Destinations")
+        Text(text = "This is a Fake History Destination")
+
+
+
+    }
+}
+
+@Composable
+fun FakeCreateDestination(modifier: Modifier = Modifier) {
+    Box(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+            contentAlignment = Alignment.Center
+    ) {
+        Text(text = "This is a Fake Create Destination")
+
+
+
     }
 }
 
