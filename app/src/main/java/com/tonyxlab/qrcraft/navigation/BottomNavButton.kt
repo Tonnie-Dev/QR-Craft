@@ -3,7 +3,6 @@ package com.tonyxlab.qrcraft.navigation
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -11,7 +10,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -20,7 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -31,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,6 +37,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
@@ -47,6 +49,7 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.ifThen
 import kotlinx.coroutines.delay
+import java.lang.System.exit
 
 @Composable
 fun BoxScope.AnimatedBottomNavButton(
@@ -58,20 +61,7 @@ fun BoxScope.AnimatedBottomNavButton(
 
     var showBar by rememberSaveable { mutableStateOf(false) }
 
-    val offSetY by animateDpAsState(
-            targetValue = if (showBar)
-                MaterialTheme.spacing.spaceDefault
-            else
-                MaterialTheme.spacing.spaceTen * 8,
-            animationSpec = spring(
-                    dampingRatio = 0.55f,
-                    stiffness = Spring.StiffnessMediumLow
-            ),
-            label = "bottomBarOffset"
-    )
-
     LaunchedEffect(isCamPermissionGranted) {
-
         if (isCamPermissionGranted) {
             delay(300)
             showBar = true
@@ -82,13 +72,12 @@ fun BoxScope.AnimatedBottomNavButton(
 
     AnimatedVisibility(
             modifier = modifier
-
-                    .offset(y = offSetY),
-            visible = showBar,
+                    .navigationBarsPadding()
+                    .align(alignment = Alignment.BottomCenter), visible = showBar,
             enter = slideInVertically(
                     initialOffsetY = { full -> (full * 0.35f).toInt() },
                     animationSpec = spring(
-                            dampingRatio = .7f,
+                            dampingRatio = .5f,
                             stiffness = Spring.StiffnessLow
                     )
             ) + fadeIn(),
@@ -136,7 +125,7 @@ fun BottomNavButton(
             NavButtonItem(
                     icon = R.drawable.icon_history,
                     semanticLabel = stringResource(id = R.string.cds_text_view_history),
-                    selected = currentNavOption == BottomNavOption.History,
+                    isSelected = currentNavOption == BottomNavOption.History,
                     isPrimary = false
             ) {
                 onClickIcon(BottomNavOption.History)
@@ -146,7 +135,7 @@ fun BottomNavButton(
             NavButtonItem(
                     icon = R.drawable.icon_create,
                     semanticLabel = stringResource(id = R.string.cds_text_create_qr),
-                    selected = currentNavOption == BottomNavOption.Create,
+                    isSelected = currentNavOption == BottomNavOption.Create,
                     isPrimary = false
             ) {
                 onClickIcon(BottomNavOption.Create)
@@ -158,7 +147,7 @@ fun BottomNavButton(
                 modifier = Modifier.align(Alignment.Center),
                 icon = R.drawable.icon_scan,
                 semanticLabel = stringResource(id = R.string.cds_text_scan_qr_code),
-                selected = true,
+                isSelected = true,
                 isPrimary = true
         ) {
             onClickIcon(BottomNavOption.Scan)
@@ -172,14 +161,14 @@ private fun NavButtonItem(
     icon: Int,
     semanticLabel: String,
     isPrimary: Boolean,
-    selected: Boolean,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
     onClickIcon: () -> Unit,
 ) {
 
     val containerColor = when {
         isPrimary -> MaterialTheme.colorScheme.primary
-        selected && !isPrimary -> LinkBg
+        isSelected && !isPrimary -> LinkBg
         else -> MaterialTheme.colorScheme.surfaceContainerHigh
     }
 
@@ -195,6 +184,11 @@ private fun NavButtonItem(
 
     Box(
             modifier = modifier
+                    .semantics {
+                        role = Role.Button
+                        selected = isSelected || isPrimary
+                        contentDescription = semanticLabel
+                    }
                     .ifThen(isPrimary) {
                         shadow(
                                 elevation = MaterialTheme.spacing.spaceExtraSmall,
@@ -205,10 +199,7 @@ private fun NavButtonItem(
                     .clip(CircleShape)
                     .background(color = containerColor, shape = CircleShape)
                     .size(containerSize)
-                    .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                    ) { onClickIcon() }, contentAlignment = Alignment.Center
+                    .clickable { onClickIcon() }, contentAlignment = Alignment.Center
     ) {
         Icon(
                 modifier = Modifier,

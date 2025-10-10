@@ -39,7 +39,7 @@ fun ScanScreen(
                     is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination(
                             action.qrData
                     )
-                   
+
                 }
             }
     ) {

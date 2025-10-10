@@ -12,6 +12,8 @@ class NavOperations(val navHostController: NavHostController) {
 
         navHostController.navigate(route = Destinations.HistoryScreenDestination) {
             launchSingleTop = true
+            restoreState = true
+            popUpTo(navHostController.graph.startDestinationId){saveState = true}
         }
     }
 
@@ -19,6 +21,8 @@ class NavOperations(val navHostController: NavHostController) {
 
         navHostController.navigate(route = Destinations.ScanScreenDestination) {
             launchSingleTop = true
+            restoreState = true
+            popUpTo(navHostController.graph.startDestinationId){saveState = true}
         }
     }
 
@@ -26,6 +30,8 @@ class NavOperations(val navHostController: NavHostController) {
 
         navHostController.navigate(route = Destinations.CreateScreenDestination) {
             launchSingleTop = true
+            restoreState = true
+            popUpTo(navHostController.graph.startDestinationId){saveState = true}
         }
     }
 
