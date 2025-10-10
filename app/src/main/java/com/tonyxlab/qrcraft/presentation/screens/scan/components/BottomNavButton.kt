@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -39,8 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
@@ -56,7 +55,7 @@ import kotlinx.coroutines.delay
 fun BoxScope.AnimatedBottomNavButton(
     uiState: ScanUiState,
     onEvent: (ScanUiEvent) -> Unit,
-   isCamPermissionGranted: Boolean,
+    isCamPermissionGranted: Boolean,
     modifier: Modifier = Modifier
 ) {
 
@@ -74,12 +73,12 @@ fun BoxScope.AnimatedBottomNavButton(
             label = "bottomBarOffset"
     )
 
-    LaunchedEffect (isCamPermissionGranted){
+    LaunchedEffect(isCamPermissionGranted) {
 
-        if (isCamPermissionGranted){
-            delay(220)
+        if (isCamPermissionGranted) {
+            delay(300)
             showBar = true
-        }else{
+        } else {
             showBar = false
         }
     }
@@ -110,7 +109,6 @@ fun BoxScope.AnimatedBottomNavButton(
                         .padding(bottom = MaterialTheme.spacing.spaceMedium)
         )
     }
-
 }
 
 @Composable
@@ -119,35 +117,55 @@ fun BottomNavButton(
     onEvent: (ScanUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-            modifier = modifier
-                    .clip(RoundedCornerShape(MaterialTheme.spacing.spaceOneHundred))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                    .padding(horizontal = MaterialTheme.spacing.spaceSmall)
-                    .padding(vertical = MaterialTheme.spacing.spaceExtraSmall),
 
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceExtraSmall),
-            verticalAlignment = Alignment.CenterVertically,
+    val rowHeight = MaterialTheme.spacing.spaceDoubleDp * 26
 
-            ) {
+    Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
+    ) {
+        Row(
+                modifier = Modifier
+                        .clip(RoundedCornerShape(MaterialTheme.spacing.spaceOneHundred))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .height(rowHeight)
+                        .padding(horizontal = MaterialTheme.spacing.spaceSmall)
+                        .padding(vertical = MaterialTheme.spacing.spaceExtraSmall),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve * 6),
+                verticalAlignment = Alignment.CenterVertically
+        ) {
 
-        BottomNavOptions.entries.forEachIndexed { i, option ->
-
-            val selected = uiState.fabNavOption == option.navOption
-            val isPrimary = option.navOption == FabNavOption.SCAN
+            // Left NavButtonItem
             NavButtonItem(
-                    icon = option.icon,
-                    semanticLabel = option.semanticLabel,
-                    selected = selected,
-                    isPrimary = isPrimary
+                    icon = R.drawable.icon_history,
+                    semanticLabel = stringResource(id = R.string.cds_text_view_history),
+                    selected = uiState.fabNavOption == BottomNavOptions.History.navOption,
+                    isPrimary = false
             ) {
-
-                onEvent(ScanUiEvent.FabOptionSelected(option.navOption))
-
+                onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.HISTORY))
             }
 
+            // Right NavButtonItem
+            NavButtonItem(
+                    icon = R.drawable.icon_create,
+                    semanticLabel = stringResource(id = R.string.cds_text_create_qr),
+                    selected = uiState.fabNavOption == BottomNavOptions.Create.navOption,
+                    isPrimary = false
+            ) {
+                onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.CREATE))
+            }
         }
 
+        // Center NavButtonItem
+        NavButtonItem(
+                modifier = Modifier.align(Alignment.Center),
+                icon = R.drawable.icon_scan,
+                semanticLabel = stringResource(id = R.string.cds_text_scan_qr_code),
+                selected = true,
+                isPrimary = true
+        ) {
+            onEvent(ScanUiEvent.FabOptionSelected(fabNavOption = FabNavOption.SCAN))
+        }
     }
 }
 
@@ -167,34 +185,19 @@ private fun NavButtonItem(
         selected && !isPrimary -> LinkBg
         else -> MaterialTheme.colorScheme.surfaceContainerHigh
     }
-    val iconSize = if (isPrimary)
-
-        MaterialTheme.spacing.spaceExtraSmall * 7
-    else
-
-
-    MaterialTheme.spacing.spaceMedium
 
     val containerSize = if (isPrimary)
-
-        MaterialTheme.spacing.spaceTwelve * 6
+        MaterialTheme.spacing.spaceExtraLarge
     else
-
-
-           MaterialTheme.spacing.spaceDoubleDp * 22
+        MaterialTheme.spacing.spaceDoubleDp * 22
 
     val iconTint = if (isPrimary)
         MaterialTheme.colorScheme.onPrimary
     else
         MaterialTheme.colorScheme.onSurface
 
-    val elevate = isPrimary || selected
-
-    val scale by animateFloatAsState(if (elevate) 1.1f else 1f)
-
     Box(
             modifier = modifier
-
                     .ifThen(isPrimary) {
                         shadow(
                                 elevation = MaterialTheme.spacing.spaceExtraSmall,
@@ -204,25 +207,20 @@ private fun NavButtonItem(
                     }
                     .clip(CircleShape)
                     .background(color = containerColor, shape = CircleShape)
-                    //  .scale(scale = scale)
                     .size(containerSize)
                     .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
-                    ) {
-                        onClickIcon()
-                    }
-                    .padding(horizontal = MaterialTheme.spacing.spaceMedium)
-                    .padding(vertical = MaterialTheme.spacing.spaceSmall),
-            contentAlignment = Alignment.Center
+                    ) { onClickIcon() }
+            , contentAlignment = Alignment.Center
     ) {
-
         Icon(
                 modifier = Modifier,
-                painter = painterResource(icon) ,
+                painter = painterResource(icon),
                 contentDescription = semanticLabel,
                 tint = iconTint
         )
+
     }
 }
 
@@ -256,9 +254,9 @@ enum class BottomNavOptions(
 @Composable
 private fun BottomNavButton_Preview() {
     QRCraftTheme {
-
         Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                        .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
         ) {
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceExtraLarge))
