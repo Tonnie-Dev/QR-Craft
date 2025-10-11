@@ -30,7 +30,12 @@
     <string name="settings_sync_interval">Sync Interval</string>
 
     <!--Label Texts-->
-    <string name="lab_text_email_label">Email</string>
+    <string name="lab_text_text">Text</string>
+    <string name="lab_text_link">Link</string>
+    <string name="lab_text_contact">Contact</string>
+    <string name="lab_text_phone">Phone Number</string>
+    <string name="lab_text_geo">Geolocation</string>
+    <string name="lab_text_wifi">Wi-Fi</string>
 
     <!--Placeholder Texts-->
     <string name="placeholder_text_email">john.doe@example.com</string>
@@ -59,7 +64,12 @@
     <string name="cds_text_view_history">View History</string>
     <string name="cds_text_scan_qr_code">Scan Qr Code</string>
     <string name="cds_text_create_qr">Create QR Code</string>
-
+    <string name="cds_text_text">Text</string>
+    <string name="cds_text_link">Link</string>
+    <string name="cds_text_contact">Contact</string>
+    <string name="cds_text_phone">Phone Number</string>
+    <string name="cds_text_geo">Geolocation</string>
+    <string name="cds_text_wifi">Wi-Fi</string>
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>
 

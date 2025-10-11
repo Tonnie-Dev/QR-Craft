@@ -49,7 +49,6 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.ifThen
 import kotlinx.coroutines.delay
-import java.lang.System.exit
 
 @Composable
 fun BoxScope.AnimatedBottomNavButton(
