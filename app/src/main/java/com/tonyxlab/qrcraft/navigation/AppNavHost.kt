@@ -41,6 +41,12 @@ fun AppNavHost(
         }
     }
 
+    val showBottomNavButton = remember(backStackEntry) {
+        destination?.hasRoute<Destinations.HistoryScreenDestination>() == true ||
+                destination?.hasRoute<Destinations.ScanScreenDestination>() == true ||
+                destination?.hasRoute<Destinations.CreateScreenDestination>() == true
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         NavHost(
@@ -50,32 +56,30 @@ fun AppNavHost(
 
             appDestinations(
                     navOperations = navOperations,
-
                     modifier = modifier
             )
         }
+        if (showBottomNavButton) {
+            AnimatedBottomNavButton(
+                    modifier = modifier,
+                    currentNavOption = currentNavOption,
+                    isCamPermissionGranted = camPermission.status.isGranted,
+                    onClickIcon = {
+                        when (it) {
+                            BottomNavOption.History -> {
+                                navOperations.navigateToHistoryScreenDestination()
+                            }
 
-        AnimatedBottomNavButton(
-                modifier = modifier,
-                currentNavOption = currentNavOption,
-                isCamPermissionGranted = camPermission.status.isGranted,
-                onClickIcon = {
+                            BottomNavOption.Scan -> {
+                                navOperations.navigateToScanScreenDestination()
+                            }
 
-                    when (it) {
-
-                        BottomNavOption.History -> {
-                            navOperations.navigateToHistoryScreenDestination()
-                        }
-
-                        BottomNavOption.Scan -> {
-                            navOperations.navigateToScanScreenDestination()
-                        }
-
-                        BottomNavOption.Create -> {
-                            navOperations.navigateToCreateScreenDestination()
+                            BottomNavOption.Create -> {
+                                navOperations.navigateToCreateScreenDestination()
+                            }
                         }
                     }
-                }
-        )
+            )
+        }
     }
 }

@@ -51,7 +51,7 @@ fun ResultScreen(
                 when (action) {
                     ResultActionEvent.NavigateToScanScreen -> {
                         navOperations.popBackStack()
-                        navOperations.navigateToScanScreenDestination()
+                        navOperations.navigateToScanScreenDestination(true)
                     }
 
                     is ResultActionEvent.ShareText -> {

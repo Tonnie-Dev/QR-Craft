@@ -9,34 +9,35 @@ import com.tonyxlab.qrcraft.domain.QrData
 class NavOperations(val navHostController: NavHostController) {
 
     fun navigateToHistoryScreenDestination() {
-
         navHostController.navigate(route = Destinations.HistoryScreenDestination) {
             launchSingleTop = true
             restoreState = true
-            popUpTo(navHostController.graph.startDestinationId){saveState = true}
+            popUpTo(navHostController.graph.startDestinationId) { saveState = true }
         }
     }
 
-    fun navigateToScanScreenDestination() {
+    fun navigateToScanScreenDestination(fromResultScreen: Boolean = false) {
+        if (fromResultScreen) {
+            navHostController.navigate(route = Destinations.ScanScreenDestination)
+        } else {
 
-        navHostController.navigate(route = Destinations.ScanScreenDestination) {
-            launchSingleTop = true
-            restoreState = true
-            popUpTo(navHostController.graph.startDestinationId){saveState = true}
+            navHostController.navigate(route = Destinations.ScanScreenDestination) {
+                launchSingleTop = true
+                restoreState = true
+                popUpTo(navHostController.graph.startDestinationId) { saveState = true }
+            }
         }
     }
 
     fun navigateToCreateScreenDestination() {
-
         navHostController.navigate(route = Destinations.CreateScreenDestination) {
             launchSingleTop = true
             restoreState = true
-            popUpTo(navHostController.graph.startDestinationId){saveState = true}
+            popUpTo(navHostController.graph.startDestinationId) { saveState = true }
         }
     }
 
     fun navigateToResultScreenDestination(qrData: QrData) {
-
         navHostController.navigate(
                 route = Destinations.ResultScreenDestination(
                         displayName = qrData.displayName,
@@ -48,7 +49,6 @@ class NavOperations(val navHostController: NavHostController) {
     }
 
     fun popBackStack() {
-
         navHostController.popBackStack()
     }
 }
