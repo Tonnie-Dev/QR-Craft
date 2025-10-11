@@ -8,6 +8,7 @@
 
     <!-- Top Bar Texts-->
     <string name="topbar_text_scan_result">Scan Result</string>
+    <string name="topbar_text_create_qr">Create QR</string>
 
     <!--Header Texts-->
     <string name="header_text_your_notes">Your Own Collection of Notes</string>

@@ -8,9 +8,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.presentation.screens.create.CreateScreen
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
 import kotlinx.serialization.Serializable
@@ -38,10 +40,12 @@ fun NavGraphBuilder.appDestinations(
 
     }
 
-
     composable<Destinations.CreateScreenDestination> {
 
-        FakeCreateDestination()
+        CreateScreen(
+                navOperations = navOperations,
+                modifier = modifier
+        )
 
     }
 }

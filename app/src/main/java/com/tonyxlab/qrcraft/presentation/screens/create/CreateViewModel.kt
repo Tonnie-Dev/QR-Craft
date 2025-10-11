@@ -12,6 +12,13 @@ class CreateViewModel: CreateBaseViewModel(){
         get() = CreateUiState()
 
     override fun onEvent(event: CreateUiEvent) {
-        TODO("Not yet implemented")
+
+        when(event){
+            CreateUiEvent.ExitCreateScreen -> {
+
+                sendActionEvent(CreateActionEvent.NavigateToScanScreen)
+            }
+            is CreateUiEvent.SelectQrTab -> TODO()
+        }
     }
 }

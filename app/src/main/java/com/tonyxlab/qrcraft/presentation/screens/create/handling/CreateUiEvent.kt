@@ -5,5 +5,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 
 sealed interface CreateUiEvent: UiEvent{
 
-    data class ClickTab(val qrDataType: QrDataType)
+    data class SelectQrTab(val qrDataType: QrDataType): CreateUiEvent
+    data object ExitCreateScreen: CreateUiEvent
 }

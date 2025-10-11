@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -27,13 +28,15 @@ import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
+import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
 @Composable
 fun AppTopBar(
     screenTitle: String,
-    onChevronIconClick: () -> Unit,
     modifier: Modifier = Modifier,
+   topBarTextColor: Color = Overlay,
+    onChevronIconClick: () -> Unit = {},
     height: Dp = Dp.Unspecified,
 ) {
     Row(
@@ -60,7 +63,7 @@ fun AppTopBar(
                 text = screenTitle,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium.copy(
-                        color = OnOverlay
+                        color = topBarTextColor
                 )
         )
     }

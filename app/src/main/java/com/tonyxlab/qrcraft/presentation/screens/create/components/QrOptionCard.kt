@@ -46,7 +46,7 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.WiFiBg
 
 @Composable
 fun QrOptionCard(
-    qrTypeUi: QrTypeUi,
+    qrUiType: QrUiType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -65,27 +65,27 @@ fun QrOptionCard(
                         .clickable { onClick() }
                         .padding(horizontal = MaterialTheme.spacing.spaceMedium)
                         .padding(vertical = MaterialTheme.spacing.spaceTen * 2),
-
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
         ) {
 
             Box(
                     modifier = Modifier
                             .clip(CircleShape)
-                            .background(color = qrTypeUi.tintBg, shape = CircleShape)
+                            .background(color = qrUiType.tintBg, shape = CircleShape)
                             .size(MaterialTheme.spacing.spaceLarge),
                     contentAlignment = Alignment.Center
             ) {
 
                 Icon(
-                        painter = painterResource(qrTypeUi.iconRes),
-                        contentDescription = stringResource(qrTypeUi.label),
-                        tint = qrTypeUi.tint
+                        painter = painterResource(qrUiType.iconRes),
+                        contentDescription = stringResource(qrUiType.label),
+                        tint = qrUiType.tint
                 )
             }
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceTwelve))
             Text(
-                    text = stringResource(qrTypeUi.label),
+                    text = stringResource(qrUiType.label),
                     style = MaterialTheme.typography.titleSmall.copy(
                             color = MaterialTheme.colorScheme.onSurface
                     )
@@ -94,7 +94,7 @@ fun QrOptionCard(
     }
 }
 
-data class QrTypeUi(
+data class QrUiType(
     @StringRes
     val label: Int,
     @DrawableRes
@@ -103,45 +103,45 @@ data class QrTypeUi(
     val tintBg: Color
 )
 
-private fun QrDataType.toUi(): QrTypeUi {
+ fun QrDataType.toUi(): QrUiType {
 
     return when (this) {
-        QrDataType.TEXT -> QrTypeUi(
+        QrDataType.TEXT -> QrUiType(
                 label = R.string.lab_text_text,
                 iconRes = R.drawable.icon_text,
                 tint = TextAccent,
                 tintBg = TextAccentBg
         )
 
-        QrDataType.LINK -> QrTypeUi(
+        QrDataType.LINK -> QrUiType(
                 label = R.string.lab_text_link,
                 iconRes = R.drawable.icon_link,
                 tint = Link,
                 tintBg = LinkBg
         )
 
-        QrDataType.CONTACT -> QrTypeUi(
+        QrDataType.CONTACT -> QrUiType(
                 label = R.string.lab_text_contact,
                 iconRes = R.drawable.icon_contact,
                 tint = Contact,
                 tintBg = ContactBg
         )
 
-        QrDataType.PHONE_NUMBER -> QrTypeUi(
+        QrDataType.PHONE_NUMBER -> QrUiType(
                 label = R.string.lab_text_phone,
                 iconRes = R.drawable.icon_phone,
                 tint = Phone,
                 tintBg = PhoneBg
         )
 
-        QrDataType.GEOLOCATION -> QrTypeUi(
+        QrDataType.GEOLOCATION -> QrUiType(
                 label = R.string.lab_text_geo,
                 iconRes = R.drawable.icon_geo,
                 tint = Geo,
                 tintBg = GeoBg
         )
 
-        QrDataType.WIFI -> QrTypeUi(
+        QrDataType.WIFI -> QrUiType(
                 label = R.string.lab_text_wifi,
                 iconRes = R.drawable.icon_wifi,
                 tint = WiFi,
@@ -167,7 +167,7 @@ private fun QrOptionCard_Preview() {
         ) {
 
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_text,
                             iconRes = R.drawable.icon_text,
                             tint = TextAccent,
@@ -177,7 +177,7 @@ private fun QrOptionCard_Preview() {
             )
 
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_link,
                             iconRes = R.drawable.icon_link,
                             tint = Link,
@@ -186,7 +186,7 @@ private fun QrOptionCard_Preview() {
                     onClick = {}
             )
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_contact,
                             iconRes = R.drawable.icon_contact,
                             tint = Contact,
@@ -196,7 +196,7 @@ private fun QrOptionCard_Preview() {
             )
 
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_phone,
                             iconRes = R.drawable.icon_phone,
                             tint = Phone,
@@ -206,7 +206,7 @@ private fun QrOptionCard_Preview() {
             )
 
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_geo,
                             iconRes = R.drawable.icon_geo,
                             tint = Geo,
@@ -216,7 +216,7 @@ private fun QrOptionCard_Preview() {
             )
 
             QrOptionCard(
-                    qrTypeUi = QrTypeUi(
+                    qrUiType = QrUiType(
                             label = R.string.lab_text_wifi,
                             iconRes = R.drawable.icon_wifi,
                             tint = WiFi,
