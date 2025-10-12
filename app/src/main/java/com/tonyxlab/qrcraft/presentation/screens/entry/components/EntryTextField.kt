@@ -32,29 +32,26 @@ fun EntryTextField(
     placeholderString: String,
     modifier: Modifier = Modifier
 ) {
-
     val isTextFieldEmpty = textFieldState.text.isEmpty()
     var isFocused by remember { mutableStateOf(false) }
 
-
-
-
-      BasicTextField(
-                modifier = Modifier
-                        .onFocusChanged { isFocused = it.isFocused },
-                state = textFieldState,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.error),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                decorator = { innerTextField ->
-                    TextFieldDecorator(
-                            isFocused = isFocused,
-                            innerTextField = innerTextField,
-                            placeholderString = placeholderString,
-                            isTextFieldEmpty = isTextFieldEmpty
-
-                    )
-                }
-        )
+    BasicTextField(
+            modifier = modifier
+                    .onFocusChanged { isFocused = it.isFocused },
+            state = textFieldState,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.onSurface
+            ),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+            decorator = { innerTextField ->
+                TextFieldDecorator(
+                        isFocused = isFocused,
+                        innerTextField = innerTextField,
+                        placeholderString = placeholderString,
+                        isTextFieldEmpty = isTextFieldEmpty
+                )
+            }
+    )
 }
 
 @Composable
@@ -63,29 +60,27 @@ private fun TextFieldDecorator(
     isFocused: Boolean,
     placeholderString: String,
     isTextFieldEmpty: Boolean,
-
+    modifier: Modifier = Modifier
 ) {
-
     Box(
-            modifier = Modifier
+            modifier = modifier
                     .fillMaxWidth()
                     .background(
-                           color =  MaterialTheme.colorScheme.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = MaterialTheme.shapes.RoundedCornerShape100
                     )
-
                     .padding(horizontal = MaterialTheme.spacing.spaceMedium)
                     .padding(vertical = MaterialTheme.spacing.spaceDoubleDp * 9)
     ) {
-            if (isTextFieldEmpty && !isFocused) {
-                Text(
-                        text = placeholderString,
-                        style = MaterialTheme.typography.bodyLarge
-                )
-            } else {
-                innerTextField()
-            }
+        if (isTextFieldEmpty && !isFocused) {
+            Text(
+                    text = placeholderString,
+                    style = MaterialTheme.typography.bodyLarge
+            )
+        } else {
+            innerTextField()
         }
+    }
 }
 
 @PreviewLightDark
@@ -104,7 +99,6 @@ private fun EntryTextField_Preview() {
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
 
             EntryTextField(
                     textFieldState = emptyTextFieldState,
