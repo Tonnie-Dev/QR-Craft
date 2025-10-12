@@ -21,7 +21,6 @@ fun NavGraphBuilder.appDestinations(
     navOperations: NavOperations,
     modifier: Modifier = Modifier
 ) {
-
     composable<Destinations.ScanScreenDestination> {
 
         ScanScreen(
@@ -46,7 +45,6 @@ fun NavGraphBuilder.appDestinations(
                 navOperations = navOperations,
                 modifier = modifier
         )
-
     }
 }
 
@@ -59,26 +57,9 @@ fun FakeHistoryDestination(modifier: Modifier = Modifier) {
             contentAlignment = Alignment.Center
     ) {
         Text(text = "This is a Fake History Destination")
-
-
-
     }
 }
 
-@Composable
-fun FakeCreateDestination(modifier: Modifier = Modifier) {
-    Box(
-            modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-            contentAlignment = Alignment.Center
-    ) {
-        Text(text = "This is a Fake Create Destination")
-
-
-
-    }
-}
 
 sealed class Destinations {
 
@@ -98,5 +79,4 @@ sealed class Destinations {
         val rawDataValue: String,
         val qrDataType: QrDataType
     ) : Destinations()
-
 }

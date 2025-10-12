@@ -32,8 +32,7 @@ private val AppColorScheme = lightColorScheme(
         onSurface = OnSurface,
         surfaceVariant = Surface,             // subtle alt-surface
         onSurfaceVariant = OnSurfaceAlt,
-        surfaceContainerHigh = SurfaceHigher, // Edited - added SurfaceHighter
-
+        surfaceContainerHigh = SurfaceHigher, // Edited - added SurfaceHigher
         // Status
         error = Error,
         onError = OnOverlay,                  // white on error
