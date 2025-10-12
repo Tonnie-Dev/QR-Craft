@@ -1,11 +1,9 @@
 package com.tonyxlab.qrcraft.presentation.theme.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 
 val customMaterialShapes = Shapes(
         // Pre-Defined M3 Shapes
@@ -19,11 +17,11 @@ val customMaterialShapes = Shapes(
 
 )
 
-@Composable
-fun getClippingShape(): RoundedCornerShape {
+object ExtendedShapes {
 
-    return RoundedCornerShape(
-            topStart = MaterialTheme.spacing.spaceTen * 2,
-            topEnd = MaterialTheme.spacing.spaceTen * 2
-    )
+    val RoundedCornerShape100 = RoundedCornerShape(100.dp)
 }
+
+val Shapes.RoundedCornerShape100
+    @Composable
+    get() = ExtendedShapes.RoundedCornerShape100
