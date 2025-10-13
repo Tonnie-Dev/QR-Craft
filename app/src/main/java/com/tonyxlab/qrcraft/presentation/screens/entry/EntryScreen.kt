@@ -85,7 +85,7 @@ fun EntryScreenContent(
             )
         }
 
-        EntryButton(enabled = false) {
+        EntryButton(enabled = uiState.isValidForm) {
             onEvent(EntryUiEvent.GenerateQrCode)
         }
 
