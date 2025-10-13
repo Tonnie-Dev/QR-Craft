@@ -9,6 +9,12 @@
     <!-- Top Bar Texts-->
     <string name="topbar_text_scan_result">Scan Result</string>
     <string name="topbar_text_create_qr">Create QR</string>
+    <string name="topbar_text_text">Text</string>
+    <string name="topbar_text_link">Link</string>
+    <string name="topbar_text_contact">Contact</string>
+    <string name="topbar_text_phone_number">Phone Number</string>
+    <string name="topbar_text_geo">Geolocation</string>
+    <string name="topbar_text_wi_fi">Wi-Fi</string>
 
     <!--Header Texts-->
     <string name="header_text_your_notes">Your Own Collection of Notes</string>

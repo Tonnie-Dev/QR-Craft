@@ -5,6 +5,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
 
 sealed interface CreateActionEvent: ActionEvent{
 
-    data class NavigateToDataScreen(val qrDataType: QrDataType): CreateActionEvent
+    data class NavigateToEntryScreen(val qrDataType: QrDataType): CreateActionEvent
     data object NavigateToScanScreen: CreateActionEvent
 }

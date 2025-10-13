@@ -18,7 +18,11 @@ class CreateViewModel: CreateBaseViewModel(){
 
                 sendActionEvent(CreateActionEvent.NavigateToScanScreen)
             }
-            is CreateUiEvent.SelectQrTab -> TODO()
+            is CreateUiEvent.SelectQrTab -> {
+
+
+                sendActionEvent(CreateActionEvent.NavigateToEntryScreen(qrDataType = event.qrDataType))
+            }
         }
     }
 }

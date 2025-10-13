@@ -42,8 +42,9 @@ fun CreateScreen(
             actionEventHandler = { _, action ->
 
                 when (action) {
-                    is CreateActionEvent.NavigateToDataScreen -> {
+                    is CreateActionEvent.NavigateToEntryScreen -> {
 
+                        navOperations.navigateToEntryScreenDestination(action.qrDataType)
                     }
 
                     CreateActionEvent.NavigateToScanScreen -> {
