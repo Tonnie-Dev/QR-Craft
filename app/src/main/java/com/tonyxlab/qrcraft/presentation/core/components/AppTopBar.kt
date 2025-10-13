@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
@@ -35,9 +34,10 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 fun AppTopBar(
     screenTitle: String,
     modifier: Modifier = Modifier,
-   topBarTextColor: Color = Overlay,
-    onChevronIconClick: () -> Unit = {},
+    topBarTextColor: Color = Overlay,
+    iconTintColor: Color = Overlay,
     height: Dp = Dp.Unspecified,
+    onChevronIconClick: () -> Unit = {},
 ) {
     Row(
             modifier = modifier
@@ -54,7 +54,7 @@ fun AppTopBar(
                         .padding(end = MaterialTheme.spacing.spaceDoubleDp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.cds_text_back),
-                tint = OnOverlay
+                tint = iconTintColor
         )
         Text(
                 modifier = Modifier

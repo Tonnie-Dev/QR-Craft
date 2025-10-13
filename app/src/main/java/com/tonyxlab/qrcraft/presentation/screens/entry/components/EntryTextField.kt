@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,16 +22,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.presentation.theme.ui.RoundedCornerShape100
 
 @Composable
 fun EntryTextField(
     textFieldState: TextFieldState,
     placeholderString: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     val isTextFieldEmpty = textFieldState.text.isEmpty()
     var isFocused by remember { mutableStateOf(false) }
@@ -50,7 +52,8 @@ fun EntryTextField(
                         placeholderString = placeholderString,
                         isTextFieldEmpty = isTextFieldEmpty
                 )
-            }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
 }
 
@@ -67,7 +70,7 @@ private fun TextFieldDecorator(
                     .fillMaxWidth()
                     .background(
                             color = MaterialTheme.colorScheme.surface,
-                            shape = MaterialTheme.shapes.RoundedCornerShape100
+                            shape = MaterialTheme.shapes.extraLarge
                     )
                     .padding(horizontal = MaterialTheme.spacing.spaceMedium)
                     .padding(vertical = MaterialTheme.spacing.spaceDoubleDp * 9)
@@ -75,7 +78,9 @@ private fun TextFieldDecorator(
         if (isTextFieldEmpty && !isFocused) {
             Text(
                     text = placeholderString,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
             )
         } else {
             innerTextField()
