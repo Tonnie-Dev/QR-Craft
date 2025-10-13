@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.domain.QrDataType
 
 class NavOperations(val navHostController: NavHostController) {
 
@@ -29,11 +30,16 @@ class NavOperations(val navHostController: NavHostController) {
         }
     }
 
-    fun navigateToCreateScreenDestination() {
-        navHostController.navigate(route = Destinations.CreateScreenDestination) {
-            launchSingleTop = true
-            restoreState = true
-            popUpTo(navHostController.graph.startDestinationId) { saveState = true }
+    fun navigateToCreateScreenDestination(fromEntryScreen: Boolean = false) {
+
+        if (fromEntryScreen) {
+            navHostController.navigate(route = Destinations.CreateScreenDestination)
+        } else {
+            navHostController.navigate(route = Destinations.CreateScreenDestination) {
+                launchSingleTop = true
+                restoreState = true
+                popUpTo(navHostController.graph.startDestinationId) { saveState = true }
+            }
         }
     }
 
@@ -44,6 +50,15 @@ class NavOperations(val navHostController: NavHostController) {
                         prettifiedData = qrData.prettifiedData,
                         qrDataType = qrData.qrDataType,
                         rawDataValue = qrData.rawDataValue
+                )
+        )
+    }
+
+    fun navigateToEntryScreenDestination(qrDataType: QrDataType) {
+        navHostController.navigate(
+                route = Destinations.EntryScreenDestination(
+                        qrDataType = qrDataType
+
                 )
         )
     }

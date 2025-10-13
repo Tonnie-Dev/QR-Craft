@@ -8,11 +8,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateScreen
+import com.tonyxlab.qrcraft.presentation.screens.entry.EntryScreen
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
 import kotlinx.serialization.Serializable
@@ -40,8 +40,15 @@ fun NavGraphBuilder.appDestinations(
     }
 
     composable<Destinations.CreateScreenDestination> {
-
         CreateScreen(
+                navOperations = navOperations,
+                modifier = modifier
+        )
+    }
+
+
+    composable<Destinations.EntryScreenDestination> {
+        EntryScreen(
                 navOperations = navOperations,
                 modifier = modifier
         )
@@ -59,7 +66,6 @@ fun FakeHistoryDestination(modifier: Modifier = Modifier) {
         Text(text = "This is a Fake History Destination")
     }
 }
-
 
 sealed class Destinations {
 
@@ -79,4 +85,8 @@ sealed class Destinations {
         val rawDataValue: String,
         val qrDataType: QrDataType
     ) : Destinations()
+
+
+    @Serializable
+    data class EntryScreenDestination(val qrDataType: QrDataType) : Destinations()
 }
