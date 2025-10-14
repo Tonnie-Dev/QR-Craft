@@ -15,6 +15,7 @@
     <string name="topbar_text_phone_number">Phone Number</string>
     <string name="topbar_text_geo">Geolocation</string>
     <string name="topbar_text_wi_fi">Wi-Fi</string>
+    <string name="topbar_text_preview">Preview</string>
 
     <!--Header Texts-->
     <string name="header_text_your_notes">Your Own Collection of Notes</string>
