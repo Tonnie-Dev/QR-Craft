@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateScreen
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryScreen
+import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewScreen
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
 import kotlinx.serialization.Serializable
@@ -53,6 +54,14 @@ fun NavGraphBuilder.appDestinations(
                 modifier = modifier
         )
     }
+
+
+    composable<Destinations.PreviewScreenDestination> {
+        PreviewScreen(
+                modifier = modifier,
+                navOperations = navOperations
+        )
+    }
 }
 
 @Composable
@@ -64,6 +73,18 @@ fun FakeHistoryDestination(modifier: Modifier = Modifier) {
             contentAlignment = Alignment.Center
     ) {
         Text(text = "This is a Fake History Destination")
+    }
+}
+
+@Composable
+fun FakePreviewDestination(modifier: Modifier = Modifier) {
+    Box(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+            contentAlignment = Alignment.Center
+    ) {
+        Text(text = "This is a Fake Preview Destination")
     }
 }
 
@@ -86,7 +107,9 @@ sealed class Destinations {
         val qrDataType: QrDataType
     ) : Destinations()
 
-
     @Serializable
     data class EntryScreenDestination(val qrDataType: QrDataType) : Destinations()
+
+    @Serializable
+    data class PreviewScreenDestination(val jsonMapString: String) : Destinations()
 }

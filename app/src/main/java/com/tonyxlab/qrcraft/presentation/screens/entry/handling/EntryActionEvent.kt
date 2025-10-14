@@ -4,5 +4,5 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
 
 sealed interface EntryActionEvent: ActionEvent {
     data object NavigateToCreateScreen: EntryActionEvent
-    data object NavigateToPreviewScreen: EntryActionEvent
+    data class NavigateToPreviewScreen (val jsonMapString: String): EntryActionEvent
 }

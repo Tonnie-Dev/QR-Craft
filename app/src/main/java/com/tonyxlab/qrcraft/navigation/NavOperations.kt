@@ -62,7 +62,14 @@ class NavOperations(val navHostController: NavHostController) {
                 )
         )
     }
+    fun navigateToPreviewScreenDestination(jsonMapString: String) {
+        navHostController.navigate(
+                route = Destinations.PreviewScreenDestination(
+                        jsonMapString = jsonMapString
 
+                )
+        )
+    }
     fun popBackStack() {
         navHostController.popBackStack()
     }

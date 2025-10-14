@@ -9,7 +9,8 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 data class EntryUiState(
     val selectedQrType: QrDataType = QrDataType.TEXT,
     val formFields: List<FormFieldData> = listOf(),
-    val isValidForm: Boolean = false
+    val isValidForm: Boolean = false,
+        val previewData: Map<String, String> = emptyMap()
 ) : UiState {
 
     @Stable
