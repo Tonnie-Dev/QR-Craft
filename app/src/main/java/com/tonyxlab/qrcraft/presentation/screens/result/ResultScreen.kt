@@ -19,8 +19,8 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
+import com.tonyxlab.qrcraft.presentation.core.components.PreviewContainer
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.screens.result.components.ResultContainer
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
@@ -114,8 +114,6 @@ fun ResultContentScreen(
         DeviceType.MOBILE_PORTRAIT -> true
         else -> false
     }
-
-
     Box(
             modifier = Modifier
                     .fillMaxSize()
@@ -131,10 +129,11 @@ fun ResultContentScreen(
 
             contentAlignment = Alignment.Center
     ) {
-        ResultContainer(
-                uiState = uiState,
-                onEvent = onEvent,
-                modifier = modifier
+        PreviewContainer(
+                modifier = modifier,
+                qrData = uiState.dataState.qrData,
+                onShare = { onEvent(ResultUiEvent.ShareContent) },
+                onCopy = { onEvent(ResultUiEvent.CopyContent) },
         )
     }
 }

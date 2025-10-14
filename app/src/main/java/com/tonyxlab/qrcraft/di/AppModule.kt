@@ -5,6 +5,7 @@ import com.tonyxlab.qrcraft.data.repository.QrRepositoryImpl
 import com.tonyxlab.qrcraft.domain.repository.QrRepository
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateViewModel
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryViewModel
+import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanViewModel
 import org.koin.android.ext.koin.androidContext
@@ -16,6 +17,7 @@ val viewModelModule = module {
     viewModelOf(::ResultViewModel)
     viewModelOf(::CreateViewModel)
     viewModelOf(::EntryViewModel)
+    viewModelOf(::PreviewViewModel)
 }
 
 val dataStoreModule = module {

@@ -48,9 +48,15 @@ fun EntryScreen(
                 EntryActionEvent.NavigateToCreateScreen -> {
                     navOperations.navigateToCreateScreenDestination(fromEntryScreen = true)
                 }
-                EntryActionEvent.NavigateToPreviewScreen -> {}
+            is    EntryActionEvent.NavigateToPreviewScreen -> {
+
+                    navOperations.navigateToPreviewScreenDestination(jsonMapString = action.jsonMapString)
+                }
             } },
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface,
+            onBackPressed = {
+                viewModel.onEvent(EntryUiEvent.ExitEntryScreen)
+            }
     ) { uiState ->
 
         EntryScreenContent(
