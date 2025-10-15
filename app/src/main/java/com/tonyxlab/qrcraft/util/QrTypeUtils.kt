@@ -34,7 +34,6 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
     )
 
     QrDataType.CONTACT -> listOf(
-
             FormFieldData(
                     key = "name",
                     placeHolder = "name",
@@ -45,13 +44,11 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
                     placeHolder = "Email",
                     keyboardType = KeyboardType.Email
             ),
-
             FormFieldData(
                     key = "phone",
                     placeHolder = "Phone",
                     keyboardType = KeyboardType.Phone
             )
-
     )
 
     QrDataType.PHONE_NUMBER -> listOf(
@@ -70,7 +67,6 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
                     placeHolder = "Latitude",
                     keyboardType = KeyboardType.Decimal
             ),
-
             FormFieldData(
                     key = "long",
                     placeHolder = "Longitude",
@@ -80,7 +76,6 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
     )
 
     QrDataType.WIFI -> listOf(
-
             FormFieldData(
                     key = "ssid",
                     placeHolder = "SSID",
@@ -94,10 +89,8 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
             FormFieldData(
                     key = "encryption",
                     placeHolder = "Encryption",
-
-                    ),
-
-            )
+            ),
+    )
 }
 
 fun mapToQrData(values: Map<String, String>): QrData {
@@ -106,12 +99,11 @@ fun mapToQrData(values: Map<String, String>): QrData {
 
         values.containsKey("email") && values.containsKey("phone") -> QrDataType.CONTACT
         values.containsKey("ssid") -> QrDataType.WIFI
-        values.containsKey("url") -> QrDataType.LINK
+        values.containsKey("link") -> QrDataType.LINK
         values.containsKey("phone_number") -> QrDataType.PHONE_NUMBER
         values.containsKey("lat") && values.containsKey("long") -> QrDataType.GEOLOCATION
         else -> QrDataType.TEXT
     }
-
 
     val prettifiedData = when (qrType) {
         QrDataType.CONTACT -> {
@@ -142,7 +134,6 @@ fun mapToQrData(values: Map<String, String>): QrData {
         QrDataType.PHONE_NUMBER -> values["phone_number"].orEmpty()
     }
 
-
     val rawData = prettifiedData
 
     val displayName = when (qrType) {
@@ -160,6 +151,5 @@ fun mapToQrData(values: Map<String, String>): QrData {
             rawDataValue = rawData,
             qrDataType = qrType
     )
-
 
 }

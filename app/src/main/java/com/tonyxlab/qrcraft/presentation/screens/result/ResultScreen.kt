@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.core.content.getSystemService
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
@@ -67,14 +68,14 @@ fun ResultScreen(
                     }
 
                     is ResultActionEvent.CopyText -> {
-                        val clipboard = context.getSystemService(
-                                ClipboardManager::class.java
-                        )
+                        val clipboardManager =
+                            context.getSystemService<ClipboardManager>()
 
                         val clip = ClipData.newPlainText(
                                 "QR Content", action.text
                         )
-                        clipboard.setPrimaryClip(clip)
+
+                        clipboardManager?.setPrimaryClip(clip)
                     }
 
                     is ResultActionEvent.ShowToastMessage -> {

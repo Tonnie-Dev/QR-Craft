@@ -1,8 +1,23 @@
 package com.tonyxlab.qrcraft.presentation.screens.preview.handling
 
+import androidx.compose.runtime.Stable
+import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
+import com.tonyxlab.qrcraft.util.generateLoremIpsum
 
-data class PreviewUiState(val valuesMap:Map<String, String> = emptyMap()): UiState {
+data class PreviewUiState(
+    val valuesMap: Map<String, String> = emptyMap(),
+    val qrDataState: QrDataState = QrDataState()
+) : UiState {
 
-
+    @Stable
+    data class QrDataState(
+        val qrData: QrData = QrData(
+                displayName = "Text",
+                prettifiedData = generateLoremIpsum(26),
+                qrDataType = QrDataType.TEXT,
+                rawDataValue = ""
+        )
+    )
 }

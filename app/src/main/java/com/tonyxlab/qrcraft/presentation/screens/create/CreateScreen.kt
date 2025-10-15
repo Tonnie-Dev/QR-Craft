@@ -35,7 +35,6 @@ fun CreateScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateViewModel = koinViewModel()
 ) {
-
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,
@@ -43,7 +42,6 @@ fun CreateScreen(
 
                 when (action) {
                     is CreateActionEvent.NavigateToEntryScreen -> {
-
                         navOperations.navigateToEntryScreenDestination(action.qrDataType)
                     }
 
@@ -54,8 +52,15 @@ fun CreateScreen(
 
             },
             topBar = {
-                AppTopBar(screenTitle = stringResource(id = R.string.topbar_text_create_qr),
-                        topBarTextColor = MaterialTheme.colorScheme.onSurface)
+                AppTopBar(
+                        screenTitle = stringResource(id = R.string.topbar_text_create_qr),
+                        topBarTextColor = MaterialTheme.colorScheme.onSurface,
+                        onChevronIconClick = {
+                            viewModel.onEvent(
+                                    CreateUiEvent.ExitCreateScreen
+                            )
+                        }
+                )
             },
             containerColor = MaterialTheme.colorScheme.surface,
             onBackPressed = { viewModel.onEvent(CreateUiEvent.ExitCreateScreen) }
