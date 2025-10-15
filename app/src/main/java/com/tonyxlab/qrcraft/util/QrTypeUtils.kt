@@ -2,6 +2,7 @@ package com.tonyxlab.qrcraft.util
 
 import androidx.compose.ui.text.input.KeyboardType
 import com.tonyxlab.qrcraft.R
+import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState.FormFieldData
 
@@ -19,14 +20,14 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
 
     QrDataType.TEXT -> listOf(
             FormFieldData(
-                    key = "Text",
+                    key = "text",
                     placeHolder = "Text"
             )
     )
 
     QrDataType.LINK -> listOf(
             FormFieldData(
-                    key = "Link",
+                    key = "link",
                     placeHolder = "Link",
                     keyboardType = KeyboardType.Uri
             )
@@ -99,42 +100,66 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
             )
 }
 
-/*
-data class FormFieldData(
-    val key: String,
-    val value: String,
-    val keyboardType: KeyboardType = KeyboardType.Text
-)
+fun mapToQrData(values: Map<String, String>): QrData {
 
-fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
+    val qrType = when {
 
-    QrDataType.TEXT -> listOf(
-            FormFieldData(key = "text", value = "")
+        values.containsKey("email") && values.containsKey("phone") -> QrDataType.CONTACT
+        values.containsKey("ssid") -> QrDataType.WIFI
+        values.containsKey("url") -> QrDataType.LINK
+        values.containsKey("phone_number") -> QrDataType.PHONE_NUMBER
+        values.containsKey("lat") && values.containsKey("long") -> QrDataType.GEOLOCATION
+        else -> QrDataType.TEXT
+    }
+
+
+    val prettifiedData = when (qrType) {
+        QrDataType.CONTACT -> {
+
+            val name = values["name"].orEmpty()
+            val email = values["email"].orEmpty()
+            val phone = values["phone"].orEmpty()
+            "$name\n$email\n$phone"
+        }
+
+        QrDataType.WIFI -> {
+
+            val ssid = values["ssid"].orEmpty()
+            val password = values["password"].orEmpty()
+            val encryption = values["encryption"].orEmpty()
+
+            "WIFE:S:$ssid;T:$encryption;P:$password;;"
+        }
+
+        QrDataType.LINK -> values["link"].orEmpty()
+        QrDataType.TEXT -> values["text"].orEmpty()
+        QrDataType.GEOLOCATION -> {
+            val lat = values["lat"].orEmpty()
+            val long = values["long"].orEmpty()
+            "geo:$lat,$long"
+        }
+
+        QrDataType.PHONE_NUMBER -> values["phone_number"].orEmpty()
+    }
+
+
+    val rawData = prettifiedData
+
+    val displayName = when (qrType) {
+        QrDataType.CONTACT -> "Contact"
+        QrDataType.WIFI -> "Wi-Fi Network"
+        QrDataType.LINK -> "Website"
+        QrDataType.TEXT -> "Text"
+        QrDataType.GEOLOCATION -> "Location"
+        QrDataType.PHONE_NUMBER -> "Phone"
+    }
+
+    return QrData(
+            displayName = displayName,
+            prettifiedData = prettifiedData,
+            rawDataValue = rawData,
+            qrDataType = qrType
     )
 
-    QrDataType.LINK -> listOf(
-            FormFieldData(key = "url", value = "", keyboardType = KeyboardType.Uri)
-    )
 
-    QrDataType.CONTACT -> listOf(
-            FormFieldData(key = "name", value = ""),
-            FormFieldData(key = "email", value = "", keyboardType = KeyboardType.Email),
-            FormFieldData(key = "phone", value = "", keyboardType = KeyboardType.Phone)
-    )
-
-    QrDataType.PHONE_NUMBER -> listOf(
-            FormFieldData(key = "phone_number", value = "", keyboardType = KeyboardType.Phone)
-    )
-
-    QrDataType.GEOLOCATION -> listOf(
-
-            FormFieldData(key = "lat", value = "", keyboardType = KeyboardType.Decimal),
-            FormFieldData(key = "long", value = "", keyboardType = KeyboardType.Decimal)
-    )
-
-    QrDataType.WIFI -> listOf(
-            FormFieldData(key = "ssid", value = ""),
-            FormFieldData(key = "password", value = ""),
-            FormFieldData(key = "encryption", value = "")
-    )
-}*/
+}
