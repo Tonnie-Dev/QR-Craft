@@ -7,6 +7,8 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
+import com.tonyxlab.qrcraft.util.mapToQrData
 import kotlinx.serialization.json.Json
 
 typealias PreviewBaseViewModel = BaseViewModel<PreviewUiState, PreviewUiEvent, PreviewActionEvent>
@@ -20,7 +22,8 @@ class PreviewViewModel(savedStateHandle: SavedStateHandle) : PreviewBaseViewMode
 
         val valuesMap = Json.decodeFromString<Map<String, String>>(jsonMapString)
 
-        updateState { it.copy(valuesMap = valuesMap) }
+        val qrData = mapToQrData(valuesMap)
+        updateState { it.copy(valuesMap = valuesMap, qrDataState = PreviewUiState.QrDataState(qrData = qrData)) }
 
     }
 
@@ -28,10 +31,23 @@ class PreviewViewModel(savedStateHandle: SavedStateHandle) : PreviewBaseViewMode
         get() = PreviewUiState()
 
     override fun onEvent(event: PreviewUiEvent) {
+
         when (event) {
             PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
                     actionEvent = PreviewActionEvent.NavigateToEntryScreen
             )
+
+            PreviewUiEvent.ShareContent -> {
+                val text = currentState.qrDataState.qrData.prettifiedData
+                sendActionEvent(PreviewActionEvent.ShareText(text = text))
+
+            }
+
+            PreviewUiEvent.CopyContent -> {
+                val text = currentState.qrDataState.qrData.prettifiedData
+                sendActionEvent(PreviewActionEvent.CopyText(text = text))
+
+            }
         }
     }
 }
