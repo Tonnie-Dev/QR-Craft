@@ -1,20 +1,29 @@
 package com.tonyxlab.qrcraft.presentation.screens.preview
 
-import androidx.compose.foundation.layout.Column
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Intent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.getSystemService
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
+import com.tonyxlab.qrcraft.presentation.core.components.PreviewContainer
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -23,16 +32,16 @@ fun PreviewScreen(
     modifier: Modifier = Modifier,
     viewModel: PreviewViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,
             topBar = {
-
                 AppTopBar(
                         screenTitle = stringResource(id = R.string.topbar_text_preview),
                         topBarTextColor = MaterialTheme.colorScheme.onTertiary,
-                        iconTintColor =MaterialTheme.colorScheme.onTertiary,
-                        onChevronIconClick = {viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen)}
+                        iconTintColor = MaterialTheme.colorScheme.onTertiary,
+                        onChevronIconClick = { viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen) }
                 )
             },
             actionEventHandler = { _, action ->
@@ -40,19 +49,42 @@ fun PreviewScreen(
                     PreviewActionEvent.NavigateToEntryScreen -> {
                         navOperations.popBackStack()
                     }
+
+                    is PreviewActionEvent.ShareText -> {
+
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, action.text)
+                        }
+
+                        val chooser = Intent.createChooser(
+                                sendIntent,
+                                context.getString(R.string.cap_text_share_with)
+                        )
+                        context.startActivity(chooser)
+                    }
+
+                    is PreviewActionEvent.CopyText -> {
+
+                        val clipboardManager =
+                            context.getSystemService<ClipboardManager>()
+
+                        val clip = ClipData.newPlainText(
+                                "QR Content", action.text
+                        )
+                        clipboardManager?.setPrimaryClip(clip)
+                    }
                 }
             },
             containerColor = MaterialTheme.colorScheme.onSurface,
             onBackPressed = { viewModel.onEvent(PreviewUiEvent.ExitPreviewScreen) }
     ) {
-
         PreviewContentScreen(
                 modifier = modifier,
                 uiState = it,
                 onEvent = viewModel::onEvent
         )
     }
-
 }
 
 @Composable
@@ -61,15 +93,17 @@ private fun PreviewContentScreen(
     onEvent: (PreviewUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    Column(modifier = Modifier.fillMaxSize()) {
-
-        uiState.valuesMap.ifEmpty { Text(text = "Empty Map", color = OnOverlay) }
-
-        uiState.valuesMap.values.forEach { value ->
-
-            Text(text = value, color = OnOverlay)
-        }
+    Box(
+            modifier = modifier
+                    .fillMaxSize()
+                    .padding(MaterialTheme.spacing.spaceMedium),
+            contentAlignment = Alignment.Center
+    ) {
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 22))
+        PreviewContainer(
+                qrData = uiState.qrDataState.qrData,
+                onShare = { onEvent(PreviewUiEvent.ShareContent) },
+                onCopy = { onEvent(PreviewUiEvent.CopyContent) }
+        )
     }
-    // PreviewContainer()
 }
