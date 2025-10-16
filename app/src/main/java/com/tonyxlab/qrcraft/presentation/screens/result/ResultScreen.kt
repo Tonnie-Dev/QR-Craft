@@ -27,7 +27,6 @@ import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.DeviceType
-import com.tonyxlab.qrcraft.util.ifThen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -43,12 +42,15 @@ fun ResultScreen(
                 AppTopBar(
                         modifier = modifier,
                         screenTitle = stringResource(id = R.string.topbar_text_scan_result),
+                        topBarTextColor = MaterialTheme.colorScheme.onTertiary,
+                        iconTintColor = MaterialTheme.colorScheme.onTertiary,
                         onChevronIconClick = {
                             viewModel.onEvent(ResultUiEvent.ExitResultScreen)
                         },
                 )
             },
             actionEventHandler = { _, action ->
+
                 when (action) {
                     ResultActionEvent.NavigateToScanScreen -> {
                         navOperations.popBackStack()
@@ -79,7 +81,6 @@ fun ResultScreen(
                     }
 
                     is ResultActionEvent.ShowToastMessage -> {
-
                         Toast.makeText(
                                 context,
                                 context.getText(action.messageRes),
@@ -92,7 +93,6 @@ fun ResultScreen(
             containerColor = MaterialTheme.colorScheme.onSurface,
             onBackPressed = { viewModel.onEvent(ResultUiEvent.ExitResultScreen) }
     ) {
-
         ResultContentScreen(
                 modifier = modifier,
                 uiState = it,
@@ -110,24 +110,19 @@ fun ResultContentScreen(
 
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceType = DeviceType.fromWindowSizeClass(windowClass)
-    val isWideDevice = when (deviceType) {
 
-        DeviceType.MOBILE_PORTRAIT -> true
-        else -> false
+    val graduatedHorizontalPadding = when (deviceType) {
+        DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
+        DeviceType.TABLET_PORTRAIT -> MaterialTheme.spacing.spaceTen * 6
+        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 15
+        else -> MaterialTheme.spacing.spaceTen * 25
     }
+
     Box(
             modifier = Modifier
                     .fillMaxSize()
-                    .ifThen(isWideDevice) {
-                        padding(horizontal = MaterialTheme.spacing.spaceTen * 6)
-                                .padding(vertical = MaterialTheme.spacing.spaceMedium)
-                    }
-                    .ifThen(isWideDevice.not()) {
-
-                        padding(horizontal = MaterialTheme.spacing.spaceMedium)
-                                .padding(vertical = MaterialTheme.spacing.spaceMedium)
-                    },
-
+                    .padding(horizontal = graduatedHorizontalPadding)
+                    .padding(top = MaterialTheme.spacing.spaceOneHundredFifty),
             contentAlignment = Alignment.Center
     ) {
         PreviewContainer(

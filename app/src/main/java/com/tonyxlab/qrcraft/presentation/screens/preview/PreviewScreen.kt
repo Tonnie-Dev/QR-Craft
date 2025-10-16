@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
+import com.tonyxlab.qrcraft.util.DeviceType
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -65,7 +67,6 @@ fun PreviewScreen(
                     }
 
                     is PreviewActionEvent.CopyText -> {
-
                         val clipboardManager =
                             context.getSystemService<ClipboardManager>()
 
@@ -93,13 +94,28 @@ private fun PreviewContentScreen(
     onEvent: (PreviewUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+    val deviceType = DeviceType.fromWindowSizeClass(windowClass)
+
+    val graduatedHorizontalPadding = when (deviceType) {
+
+        DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
+        DeviceType.TABLET_PORTRAIT -> MaterialTheme.spacing.spaceTen * 6
+        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 15
+        else -> MaterialTheme.spacing.spaceTen * 25
+
+    }
     Box(
             modifier = modifier
                     .fillMaxSize()
-                    .padding(MaterialTheme.spacing.spaceMedium),
-            contentAlignment = Alignment.Center
+                    .padding(horizontal = graduatedHorizontalPadding)
+                    .padding(top = MaterialTheme.spacing.spaceOneHundredFifty)
+
+            ,contentAlignment = Alignment.TopCenter
     ) {
+
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 22))
+
         PreviewContainer(
                 qrData = uiState.qrDataState.qrData,
                 onShare = { onEvent(PreviewUiEvent.ShareContent) },

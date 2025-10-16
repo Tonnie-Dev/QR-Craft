@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.data.generateQrBitmap
@@ -39,6 +41,8 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.components.ExpandableText
 import com.tonyxlab.qrcraft.presentation.theme.ui.Link
 import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
+import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.util.generateLoremIpsum
 import com.tonyxlab.qrcraft.util.ifThen
 
 @Composable
@@ -134,12 +138,12 @@ fun PreviewContainer(
                 )
             }
         }
-        QrImageTile(
-                data = qrData.rawDataValue,
-                qrBoxSizeInDp = qrBoxSize,
-                overlapSize = overlapSize,
-                shape = shape
-        )
+         QrImageTile(
+                 data = qrData.rawDataValue,
+                 qrBoxSizeInDp = qrBoxSize,
+                 overlapSize = overlapSize,
+                 shape = shape
+         )
     }
 }
 
@@ -171,6 +175,36 @@ fun BoxScope.QrImageTile(
                 modifier = Modifier
                         .size(qrBoxSizeInDp)
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewContainer_Preview(modifier: Modifier = Modifier) {
+
+    val qrData = QrData(
+            displayName = "Text",
+            prettifiedData = generateLoremIpsum(26),
+            qrDataType = QrDataType.TEXT,
+            rawDataValue = ""
+    )
+
+    QRCraftTheme {
+        Column(
+                modifier = Modifier
+                        .background(MaterialTheme.colorScheme.onSurface)
+                        .fillMaxSize()
+                        .padding(MaterialTheme.spacing.spaceMedium),
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            PreviewContainer(
+                    qrData = qrData,
+                    onShare = {},
+                    onCopy = {}
+            )
+
+        }
     }
 }
 
