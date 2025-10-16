@@ -27,6 +27,7 @@ import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.DeviceType
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,7 +36,10 @@ fun ResultScreen(
     modifier: Modifier = Modifier,
     viewModel: ResultViewModel = koinViewModel()
 ) {
+    SetStatusBarIconsColor(darkIcons = false)
+
     val context = LocalContext.current
+
     BaseContentLayout(
             viewModel = viewModel,
             topBar = {

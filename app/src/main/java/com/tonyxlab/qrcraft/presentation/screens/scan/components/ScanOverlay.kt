@@ -49,7 +49,7 @@ fun ScanOverlay(
     Box(modifier = modifier) {
         Canvas(
                 modifier = Modifier
-                        .matchParentSize()
+                        .fillMaxSize()
                         .graphicsLayer {
                             compositingStrategy = CompositingStrategy.Offscreen
                         }

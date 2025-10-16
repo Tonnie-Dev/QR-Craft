@@ -27,6 +27,7 @@ import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateActionEve
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent.SelectQrTab
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,6 +36,8 @@ fun CreateScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateViewModel = koinViewModel()
 ) {
+    SetStatusBarIconsColor(darkIcons = true)
+
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,

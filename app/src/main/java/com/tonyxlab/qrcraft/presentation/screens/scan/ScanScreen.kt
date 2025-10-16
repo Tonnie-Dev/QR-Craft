@@ -18,6 +18,8 @@ import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
+import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -26,6 +28,8 @@ fun ScanScreen(
     modifier: Modifier = Modifier,
     viewModel: ScanViewModel = koinViewModel()
 ) {
+    SetStatusBarIconsColor(darkIcons = false)
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     BaseContentLayout(
@@ -41,7 +45,8 @@ fun ScanScreen(
                     )
 
                 }
-            }
+            },
+            containerColor = Overlay
     ) {
         HomeScreenContent(
                 modifier = modifier,

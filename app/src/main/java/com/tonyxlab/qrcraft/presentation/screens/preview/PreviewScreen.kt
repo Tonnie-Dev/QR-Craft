@@ -26,6 +26,7 @@ import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionE
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
 import com.tonyxlab.qrcraft.util.DeviceType
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,7 +35,10 @@ fun PreviewScreen(
     modifier: Modifier = Modifier,
     viewModel: PreviewViewModel = koinViewModel()
 ) {
+    SetStatusBarIconsColor(darkIcons = false)
+
     val context = LocalContext.current
+
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,
