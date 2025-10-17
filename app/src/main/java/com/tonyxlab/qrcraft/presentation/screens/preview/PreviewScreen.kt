@@ -4,9 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -115,8 +113,6 @@ private fun PreviewContentScreen(
                     .padding(top = MaterialTheme.spacing.spaceOneHundredFifty),
             contentAlignment = Alignment.TopCenter
     ) {
-
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 22))
 
         PreviewContainer(
                 qrData = uiState.qrDataState.qrData,

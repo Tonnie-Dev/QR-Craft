@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
 import com.tonyxlab.qrcraft.presentation.core.components.PreviewContainer
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
@@ -116,25 +118,32 @@ fun ResultContentScreen(
     val deviceType = DeviceType.fromWindowSizeClass(windowClass)
 
     val graduatedHorizontalPadding = when (deviceType) {
-
         DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
         DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 10
         else -> MaterialTheme.spacing.spaceTen * 15
-
     }
 
     Box(
-            modifier = Modifier
+            modifier = modifier
                     .fillMaxSize()
                     .padding(horizontal = graduatedHorizontalPadding)
                     .padding(top = MaterialTheme.spacing.spaceOneHundredFifty),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.TopCenter
     ) {
+
         PreviewContainer(
-                modifier = modifier,
                 qrData = uiState.dataState.qrData,
                 onShare = { onEvent(ResultUiEvent.ShareContent) },
                 onCopy = { onEvent(ResultUiEvent.CopyContent) },
+                editableText = {
+                    EditableText(
+                            textFieldState = TextFieldState(),
+                            placeHolderText = uiState.dataState.qrData.displayName,
+                            isEditing = uiState.isEditing,
+                            onEvent = onEvent,
+                            modifier = modifier
+                    )
+                }
         )
     }
 }
