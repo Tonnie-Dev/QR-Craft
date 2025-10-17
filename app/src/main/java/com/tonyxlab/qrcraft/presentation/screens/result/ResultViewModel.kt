@@ -1,14 +1,25 @@
+@file:OptIn(FlowPreview::class)
+
 package com.tonyxlab.qrcraft.presentation.screens.result
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.QrData
 import com.tonyxlab.qrcraft.navigation.Destinations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.*
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 typealias BaseResultViewModel = BaseViewModel<ResultUiState, ResultUiEvent, ResultActionEvent>
 
@@ -24,6 +35,9 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
                         rawDataValue = navArgs.rawDataValue
                 )
         )
+
+        observeEditableText()
+        updateTextContent(value = navArgs.displayName)
     }
 
     override val initialState: ResultUiState
@@ -34,27 +48,53 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
 
             ResultUiEvent.ShareContent -> {
                 val text = currentState.dataState.qrData.prettifiedData
-                sendActionEvent(ResultActionEvent.ShareText(text))
+                sendActionEvent(ShareText(text))
             }
 
             ResultUiEvent.CopyContent -> {
                 val text = currentState.dataState.qrData.prettifiedData
-                sendActionEvent(ResultActionEvent.CopyText(text))
+                sendActionEvent(CopyText(text))
                 sendActionEvent(
-                        ResultActionEvent.ShowToastMessage(
+                        ShowToastMessage(
                                 messageRes = R.string.toast_text_copied
                         )
                 )
             }
 
             ResultUiEvent.ExitResultScreen -> {
-                sendActionEvent(ResultActionEvent.NavigateToScanScreen)
+                sendActionEvent(NavigateToScanScreen)
             }
 
+            ResultUiEvent.EditDetectedContent -> {
+                updateState { it.copy( editableTextState = currentState.editableTextState.copy(isEditing = true)) }
+            }
         }
     }
 
+    private fun observeEditableText() {
+
+        val textFlow =snapshotFlow {
+            currentState.editableTextState.textFieldState.text
+        }
+
+                textFlow.debounce(3_00)
+                .distinctUntilChanged()
+                .onEach {
+
+                    // perform save
+                }.launchIn(viewModelScope)
+
+
+    }
     private fun updateQrData(qrData: QrData) {
         updateState { currentState.copy(dataState = ResultUiState.DataState(qrData = qrData)) }
+    }
+
+   private fun updateTextContent(value: String) {
+
+       updateState { it.copy(currentState.editableTextState.copy(textFieldState = buildTextFieldState(value))) }
+   }
+    private fun buildTextFieldState(value: String) : TextFieldState{
+       return TextFieldState(initialText = value)
     }
 }

@@ -137,9 +137,9 @@ fun ResultContentScreen(
                 onCopy = { onEvent(ResultUiEvent.CopyContent) },
                 editableText = {
                     EditableText(
-                            textFieldState = TextFieldState(),
+                            textFieldState = uiState.editableTextState.textFieldState,
                             placeHolderText = uiState.dataState.qrData.displayName,
-                            isEditing = uiState.isEditing,
+                            isEditing = uiState.editableTextState.isEditing,
                             onEvent = onEvent,
                             modifier = modifier
                     )

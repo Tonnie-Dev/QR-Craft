@@ -51,6 +51,7 @@ fun PreviewContainer(
     onShare: () -> Unit,
     onCopy: () -> Unit,
     modifier: Modifier = Modifier,
+    editableText: @Composable (() -> Unit)? = null
 ) {
 
     val shape = MaterialTheme.shapes.large
@@ -79,12 +80,19 @@ fun PreviewContainer(
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTen)
             ) {
 
-                Text(
-                        text = qrData.displayName,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurface,
-                        )
-                )
+                if (editableText == null) {
+
+                    Text(
+                            text = qrData.displayName,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                            )
+                    )
+
+                } else {
+
+                    editableText()
+                }
 
                 if (qrDataType == QrDataType.TEXT) {
 
@@ -103,7 +111,6 @@ fun PreviewContainer(
                                         color = Link
                                 )
                             } else {
-
                                 MaterialTheme.typography.bodyLarge.copy(
                                         color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -138,12 +145,12 @@ fun PreviewContainer(
                 )
             }
         }
-         QrImageTile(
-                 data = qrData.rawDataValue,
-                 qrBoxSizeInDp = qrBoxSize,
-                 overlapSize = overlapSize,
-                 shape = shape
-         )
+        QrImageTile(
+                data = qrData.rawDataValue,
+                qrBoxSizeInDp = qrBoxSize,
+                overlapSize = overlapSize,
+                shape = shape
+        )
     }
 }
 
