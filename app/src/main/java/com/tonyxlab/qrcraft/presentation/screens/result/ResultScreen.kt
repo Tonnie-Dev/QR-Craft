@@ -116,10 +116,11 @@ fun ResultContentScreen(
     val deviceType = DeviceType.fromWindowSizeClass(windowClass)
 
     val graduatedHorizontalPadding = when (deviceType) {
+
         DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
-        DeviceType.TABLET_PORTRAIT -> MaterialTheme.spacing.spaceTen * 6
-        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 15
-        else -> MaterialTheme.spacing.spaceTen * 25
+        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 10
+        else -> MaterialTheme.spacing.spaceTen * 15
+
     }
 
     Box(

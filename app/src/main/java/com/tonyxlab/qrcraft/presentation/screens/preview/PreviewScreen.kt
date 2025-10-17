@@ -104,18 +104,16 @@ private fun PreviewContentScreen(
     val graduatedHorizontalPadding = when (deviceType) {
 
         DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
-        DeviceType.TABLET_PORTRAIT -> MaterialTheme.spacing.spaceTen * 6
-        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 15
-        else -> MaterialTheme.spacing.spaceTen * 25
+        DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 10
+        else -> MaterialTheme.spacing.spaceTen * 15
 
     }
     Box(
             modifier = modifier
                     .fillMaxSize()
                     .padding(horizontal = graduatedHorizontalPadding)
-                    .padding(top = MaterialTheme.spacing.spaceOneHundredFifty)
-
-            ,contentAlignment = Alignment.TopCenter
+                    .padding(top = MaterialTheme.spacing.spaceOneHundredFifty),
+            contentAlignment = Alignment.TopCenter
     ) {
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.spaceDoubleDp * 22))
