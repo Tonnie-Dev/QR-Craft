@@ -1,7 +1,5 @@
 package com.tonyxlab.qrcraft.presentation.screens.create.components
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,12 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.QrUiType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Contact
 import com.tonyxlab.qrcraft.presentation.theme.ui.ContactBg
@@ -91,62 +88,6 @@ fun QrOptionCard(
                     )
             )
         }
-    }
-}
-
-data class QrUiType(
-    @StringRes
-    val label: Int,
-    @DrawableRes
-    val iconRes: Int,
-    val tint: Color,
-    val tintBg: Color
-)
-
- fun QrDataType.toUi(): QrUiType {
-
-    return when (this) {
-        QrDataType.TEXT -> QrUiType(
-                label = R.string.lab_text_text,
-                iconRes = R.drawable.icon_text,
-                tint = TextAccent,
-                tintBg = TextAccentBg
-        )
-
-        QrDataType.LINK -> QrUiType(
-                label = R.string.lab_text_link,
-                iconRes = R.drawable.icon_link,
-                tint = Link,
-                tintBg = LinkBg
-        )
-
-        QrDataType.CONTACT -> QrUiType(
-                label = R.string.lab_text_contact,
-                iconRes = R.drawable.icon_contact,
-                tint = Contact,
-                tintBg = ContactBg
-        )
-
-        QrDataType.PHONE_NUMBER -> QrUiType(
-                label = R.string.lab_text_phone,
-                iconRes = R.drawable.icon_phone,
-                tint = Phone,
-                tintBg = PhoneBg
-        )
-
-        QrDataType.GEOLOCATION -> QrUiType(
-                label = R.string.lab_text_geo,
-                iconRes = R.drawable.icon_geo,
-                tint = Geo,
-                tintBg = GeoBg
-        )
-
-        QrDataType.WIFI -> QrUiType(
-                label = R.string.lab_text_wifi,
-                iconRes = R.drawable.icon_wifi,
-                tint = WiFi,
-                tintBg = WiFiBg
-        )
     }
 }
 

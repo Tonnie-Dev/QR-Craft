@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.window.core.layout.WindowSizeClass
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.QrDataType
 import com.tonyxlab.qrcraft.navigation.NavOperations
@@ -24,13 +22,13 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.create.components.QrOptionCard
-import com.tonyxlab.qrcraft.presentation.screens.create.components.toUi
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent.SelectQrTab
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.DeviceType
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.util.toUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -88,11 +86,10 @@ fun CreateScreenContent(
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceType = DeviceType.fromWindowSizeClass(windowClass)
 
-    val isWideDevice = when(deviceType){
+    val isWideDevice = when (deviceType) {
         DeviceType.MOBILE_PORTRAIT -> false
         else -> true
     }
-
 
     val numberOfColumns = if (isWideDevice) 3 else 2
     LazyVerticalGrid(
@@ -111,8 +108,8 @@ fun CreateScreenContent(
             QrOptionCard(
                     modifier = Modifier
                             .fillMaxWidth()
-                            //.aspectRatio(1.3f),
-                    ,qrUiType = qrDataType.toUi()
+                    //.aspectRatio(1.3f),
+                    , qrUiType = qrDataType.toUi()
             ) {
 
                 onEvent(SelectQrTab(qrDataType))
