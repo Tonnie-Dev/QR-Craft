@@ -5,4 +5,6 @@ object Constants {
     const val QR_CRAFT_DATASTORE = "Qr_Prefs"
 
     const val DEFAULT_MINIMUM_TEXT_LINE =6
+
+    const val MAX_QR_DESC_CHAR_COUNT = 32
 }

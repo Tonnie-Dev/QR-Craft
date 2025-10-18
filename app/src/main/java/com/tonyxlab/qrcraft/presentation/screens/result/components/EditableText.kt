@@ -1,17 +1,19 @@
 package com.tonyxlab.qrcraft.presentation.screens.result.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +31,10 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.util.Constants.MAX_QR_DESC_CHAR_COUNT
+import kotlin.math.max
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditableText(
     textFieldState: TextFieldState,
@@ -40,22 +45,32 @@ fun EditableText(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium
 ) {
     val isEmpty = textFieldState.text.isEmpty()
-
+    val x = MaterialTheme.typography.bodyLarge.copy(
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Center
+    )
     val focusRequester = remember { FocusRequester() }
 
+    val charCount = textFieldState.text.length
+    val remainingCharCount = max((MAX_QR_DESC_CHAR_COUNT - charCount), 0)
+
     LaunchedEffect(isEditing) {
+
         if (isEditing) {
             focusRequester.requestFocus()
         }
     }
-    if (isEditing) {
 
-        Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+    if (isEditing) {
+        Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+        ) {
             BasicTextField(
-                    modifier = Modifier
+                    modifier = modifier
                             .focusRequester(focusRequester)
                             .fillMaxWidth(),
-
                     state = textFieldState,
                     textStyle = textStyle.copy(
                             color = MaterialTheme.colorScheme.onSurface,
@@ -69,7 +84,22 @@ fun EditableText(
                                 isEmpty = isEmpty,
                                 innerTextField = innerTextField
                         )
+                    },
+                    outputTransformation = {
+
+                        if (length > MAX_QR_DESC_CHAR_COUNT) {
+                            delete(MAX_QR_DESC_CHAR_COUNT, length)
+                        }
                     }
+            )
+
+            Text(
+                    modifier = Modifier.padding(MaterialTheme.spacing.spaceExtraSmall),
+                    text = "$remainingCharCount/$MAX_QR_DESC_CHAR_COUNT",
+                    style = MaterialTheme.typography.labelSmall.copy(
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .7f),
+                            textAlign = TextAlign.Center
+                    )
             )
         }
     } else {
@@ -100,7 +130,8 @@ private fun TextDecorator(
 ) {
     Box(
             modifier = modifier
-                    .fillMaxWidth(), contentAlignment = Alignment.Center
+                    .fillMaxWidth(),
+            contentAlignment = Alignment.Center
 
     ) {
 
@@ -114,7 +145,6 @@ private fun TextDecorator(
             )
         } else {
             innerTextField()
-
         }
     }
 }
@@ -125,8 +155,8 @@ private fun EditableText_Preview() {
 
     val emptyTextField = remember { TextFieldState() }
     val filledTextField = remember { TextFieldState(initialText = "Tonnie XIII") }
-    QRCraftTheme {
 
+    QRCraftTheme {
         Column(
                 modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
@@ -134,7 +164,6 @@ private fun EditableText_Preview() {
                         .padding(MaterialTheme.spacing.spaceMedium),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
-
             EditableText(
                     modifier = Modifier.fillMaxWidth(),
                     textFieldState = emptyTextField,
