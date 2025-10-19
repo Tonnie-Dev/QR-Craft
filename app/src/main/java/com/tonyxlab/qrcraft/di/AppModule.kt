@@ -29,7 +29,7 @@ val dataStoreModule = module {
 }
 
 val repositoryModule = module {
-    single<QrRepository> { QrRepositoryImpl(datastore = get()) }
+    single<QrRepository> { QrRepositoryImpl(datastore = get(), dao = get()) }
 }
 
 val databaseModule = module {

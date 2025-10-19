@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HistoryDao {
     @Upsert
-    suspend fun upsert(historyEntity: HistoryEntity): Long
+    suspend fun upsertItem(historyEntity: HistoryEntity): Long
 
     @Query(""" 
         SELECT * FROM history_table WHERE history_type =:historyType ORDER BY timestamp DESC
     """)
-    fun getScannedItems(historyType: HistoryType): Flow<List<HistoryEntity>>
+    fun getHistoryItems(historyType: HistoryType): Flow<List<HistoryEntity>>
 
     @Query("SELECT * FROM history_table WHERE id = :id")
-    suspend fun getItemById(id: Long): HistoryEntity?
+    suspend fun getHistoryItemById(id: Long): HistoryEntity?
 
     @Query("DELETE FROM history_table WHERE id = :id")
-    suspend fun deleteItemById(id: Long): Int
+    suspend fun deleteHistoryItemById(id: Long): Int
 
     @Query("DELETE FROM history_table")
-    suspend fun clearAll()
+    suspend fun clearAll(): Int
 }
