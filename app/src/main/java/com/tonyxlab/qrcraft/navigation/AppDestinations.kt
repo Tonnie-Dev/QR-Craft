@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateScreen
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryScreen
 import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewScreen

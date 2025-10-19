@@ -1,7 +1,7 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import androidx.lifecycle.viewModelScope
-import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.repository.QrRepository
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent

@@ -2,8 +2,8 @@ package com.tonyxlab.qrcraft.presentation.screens.result.handling
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Stable
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 import com.tonyxlab.qrcraft.util.generateLoremIpsum
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.navigation.Destinations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent

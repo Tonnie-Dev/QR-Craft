@@ -1,8 +1,8 @@
 package com.tonyxlab.qrcraft.presentation.screens.preview.handling
 
 import androidx.compose.runtime.Stable
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 import com.tonyxlab.qrcraft.util.generateLoremIpsum
 

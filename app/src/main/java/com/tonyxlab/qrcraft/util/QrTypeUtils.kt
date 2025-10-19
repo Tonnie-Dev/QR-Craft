@@ -2,9 +2,9 @@ package com.tonyxlab.qrcraft.util
 
 import androidx.compose.ui.text.input.KeyboardType
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.domain.QrDataType
-import com.tonyxlab.qrcraft.domain.QrUiType
+import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.model.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrUiType
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState.FormFieldData
 import com.tonyxlab.qrcraft.presentation.theme.ui.Contact
 import com.tonyxlab.qrcraft.presentation.theme.ui.ContactBg

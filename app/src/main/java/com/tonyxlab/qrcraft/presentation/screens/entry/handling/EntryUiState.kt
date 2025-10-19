@@ -3,7 +3,7 @@ package com.tonyxlab.qrcraft.presentation.screens.entry.handling
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.input.KeyboardType
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 
 data class EntryUiState(

@@ -35,8 +35,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.data.generateQrBitmap
-import com.tonyxlab.qrcraft.domain.QrData
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.components.ExpandableText
 import com.tonyxlab.qrcraft.presentation.theme.ui.Link

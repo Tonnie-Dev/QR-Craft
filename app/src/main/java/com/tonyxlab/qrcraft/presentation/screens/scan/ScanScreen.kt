@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.tonyxlab.qrcraft.domain.QrData
+import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost

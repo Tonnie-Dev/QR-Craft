@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.QrUiType
+import com.tonyxlab.qrcraft.domain.model.QrUiType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Contact
 import com.tonyxlab.qrcraft.presentation.theme.ui.ContactBg

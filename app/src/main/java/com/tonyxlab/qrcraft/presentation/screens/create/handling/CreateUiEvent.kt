@@ -1,6 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.create.handling
 
-import com.tonyxlab.qrcraft.domain.QrDataType
+import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 
 sealed interface CreateUiEvent: UiEvent{
