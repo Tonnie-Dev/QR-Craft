@@ -48,8 +48,7 @@ fun ResultScreen(
                 AppTopBar(
                         modifier = modifier,
                         screenTitle = stringResource(id = R.string.topbar_text_scan_result),
-                        topBarTextColor = MaterialTheme.colorScheme.onTertiary,
-                        iconTintColor = MaterialTheme.colorScheme.onTertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
                         onChevronIconClick = {
                             viewModel.onEvent(ResultUiEvent.ExitResultScreen)
                         },

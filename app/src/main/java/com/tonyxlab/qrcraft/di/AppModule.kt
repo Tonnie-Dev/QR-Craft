@@ -13,6 +13,7 @@ import com.tonyxlab.qrcraft.domain.usecase.GetHistoryUseCase
 import com.tonyxlab.qrcraft.domain.usecase.UpsertHistoryUseCase
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateViewModel
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryViewModel
+import com.tonyxlab.qrcraft.presentation.screens.history.HistoryViewModel
 import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanViewModel
@@ -27,6 +28,7 @@ val viewModelModule = module {
     viewModelOf(::CreateViewModel)
     viewModelOf(::EntryViewModel)
     viewModelOf(::PreviewViewModel)
+    viewModelOf(::HistoryViewModel)
 }
 
 val dataStoreModule = module {
@@ -51,11 +53,10 @@ val databaseModule = module {
     single<HistoryDao> { get<QrCraftDatabase>().dao }
 }
 
-
 val useCaseModule = module {
-    single{ GetHistoryUseCase(get()) }
-    single{ GetHistoryByIdUseCase(get()) }
-    single{ UpsertHistoryUseCase(get()) }
-    single{ DeleteHistoryByIdUseCase(get()) }
-    single{ ClearHistoryUseCase(get()) }
+    single { GetHistoryUseCase(get()) }
+    single { GetHistoryByIdUseCase(get()) }
+    single { UpsertHistoryUseCase(get()) }
+    single { DeleteHistoryByIdUseCase(get()) }
+    single { ClearHistoryUseCase(get()) }
 }

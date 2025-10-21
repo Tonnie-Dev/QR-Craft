@@ -44,8 +44,7 @@ fun EntryScreen(
                         screenTitle = stringResource(
                                 id = state.selectedQrType.toTopBarString()
                         ),
-                        topBarTextColor = MaterialTheme.colorScheme.onSurface,
-                        iconTintColor = MaterialTheme.colorScheme.onSurface
+                        contentColor = MaterialTheme.colorScheme.onSurface
                 ) {
                     viewModel.onEvent(EntryUiEvent.ExitEntryScreen)
                 }

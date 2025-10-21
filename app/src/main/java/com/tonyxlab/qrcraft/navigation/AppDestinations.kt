@@ -37,7 +37,7 @@ fun NavGraphBuilder.appDestinations(
     }
 
     composable<Destinations.HistoryScreenDestination> {
-        HistoryScreen()
+        HistoryScreen(navOperations = navOperations)
 
     }
 

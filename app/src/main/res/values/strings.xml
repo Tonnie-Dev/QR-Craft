@@ -16,9 +16,12 @@
     <string name="topbar_text_geo">Geolocation</string>
     <string name="topbar_text_wi_fi">Wi-Fi</string>
     <string name="topbar_text_preview">Preview</string>
+    <string name="topbar_text_history">Scan History</string>
 
     <!--Header Texts-->
     <string name="header_text_your_notes">Your Own Collection of Notes</string>
+    <string name="header_text_tab_scanned">Scanned</string>
+    <string name="header_text_tab_generated">Generated</string>
 
     <!--Caption Texts-->
     <string name="cap_text_point_camera">Point your Camera at a QR Code</string>

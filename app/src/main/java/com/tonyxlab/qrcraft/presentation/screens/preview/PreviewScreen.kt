@@ -43,9 +43,10 @@ fun PreviewScreen(
             topBar = {
                 AppTopBar(
                         screenTitle = stringResource(id = R.string.topbar_text_preview),
-                        topBarTextColor = MaterialTheme.colorScheme.onTertiary,
-                        iconTintColor = MaterialTheme.colorScheme.onTertiary,
-                        onChevronIconClick = { viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen) }
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
+                        onChevronIconClick = {
+                            viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen)
+                        }
                 )
             },
             actionEventHandler = { _, action ->

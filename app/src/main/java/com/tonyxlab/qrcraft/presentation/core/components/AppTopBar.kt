@@ -30,14 +30,15 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
+
+
 @Composable
 fun AppTopBar(
     screenTitle: String,
     modifier: Modifier = Modifier,
-    topBarTextColor: Color = Overlay,
-    iconTintColor: Color = Overlay,
+    contentColor: Color = Overlay,
     height: Dp = Dp.Unspecified,
-    onChevronIconClick: () -> Unit = {},
+    onChevronIconClick:(()-> Unit)? = null
 ) {
     Row(
             modifier = modifier
@@ -47,23 +48,28 @@ fun AppTopBar(
                     .padding(MaterialTheme.spacing.spaceSmall),
             verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-                modifier = Modifier
-                        .size(MaterialTheme.spacing.spaceTwelve * 2)
-                        .clickable { onChevronIconClick() }
-                        .padding(end = MaterialTheme.spacing.spaceDoubleDp),
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(id = R.string.cds_text_back),
-                tint = iconTintColor
-        )
+
+        if (onChevronIconClick!=null){
+            Icon(
+                    modifier = Modifier
+                            .size(MaterialTheme.spacing.spaceTwelve * 2)
+                            .clickable { onChevronIconClick() }
+                            .padding(end = MaterialTheme.spacing.spaceDoubleDp),
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(id = R.string.cds_text_back),
+                    tint = contentColor
+            )
+
+        }
+
         Text(
                 modifier = Modifier
                         .weight(1f)
-                        .clickable { onChevronIconClick() },
+                        .clickable { onChevronIconClick?.invoke() },
                 text = screenTitle,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium.copy(
-                        color = topBarTextColor
+                        color = contentColor
                 )
         )
     }

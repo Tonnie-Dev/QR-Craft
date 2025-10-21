@@ -4,6 +4,7 @@ import android.app.Application
 import com.tonyxlab.qrcraft.di.dataStoreModule
 import com.tonyxlab.qrcraft.di.databaseModule
 import com.tonyxlab.qrcraft.di.repositoryModule
+import com.tonyxlab.qrcraft.di.useCaseModule
 import com.tonyxlab.qrcraft.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -27,7 +28,8 @@ class QRCraftApp : Application() {
                             viewModelModule,
                             dataStoreModule,
                             repositoryModule,
-                            databaseModule
+                            databaseModule,
+                            useCaseModule
                     )
             )
         }

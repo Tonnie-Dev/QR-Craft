@@ -58,12 +58,7 @@ fun CreateScreen(
             topBar = {
                 AppTopBar(
                         screenTitle = stringResource(id = R.string.topbar_text_create_qr),
-                        topBarTextColor = MaterialTheme.colorScheme.onSurface,
-                        onChevronIconClick = {
-                            viewModel.onEvent(
-                                    CreateUiEvent.ExitCreateScreen
-                            )
-                        }
+                        contentColor = MaterialTheme.colorScheme.onSurface
                 )
             },
             containerColor = MaterialTheme.colorScheme.surface,

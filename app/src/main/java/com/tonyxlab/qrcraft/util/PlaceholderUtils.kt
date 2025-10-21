@@ -17,6 +17,7 @@ fun getRandomQrDataItem(): QrData {
     ).random()
 
     return QrData(
+           //id =System.nanoTime() + (0..1000).random()
             displayName = generateLoremIpsum(1),
             prettifiedData = generateLoremIpsum(26),
             qrDataType = qrType,
@@ -30,7 +31,7 @@ fun getRandomQrDataItems(count: Int = 10): List<QrData> {
     return buildList {
 
         repeat(count) {
-            add(getRandomQrDataItem())
+            add(getRandomQrDataItem().copy(id = it + 1L))
         }
     }
 }
