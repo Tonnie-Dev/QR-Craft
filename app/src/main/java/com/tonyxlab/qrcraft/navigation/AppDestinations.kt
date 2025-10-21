@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateScreen
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryScreen
+import com.tonyxlab.qrcraft.presentation.screens.history.HistoryScreen
 import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewScreen
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultScreen
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanScreen
@@ -36,7 +37,7 @@ fun NavGraphBuilder.appDestinations(
     }
 
     composable<Destinations.HistoryScreenDestination> {
-        FakeHistoryDestination()
+        HistoryScreen()
 
     }
 
@@ -76,17 +77,6 @@ fun FakeHistoryDestination(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun FakePreviewDestination(modifier: Modifier = Modifier) {
-    Box(
-            modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-            contentAlignment = Alignment.Center
-    ) {
-        Text(text = "This is a Fake Preview Destination")
-    }
-}
 
 sealed class Destinations {
 

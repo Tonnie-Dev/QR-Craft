@@ -6,6 +6,11 @@ import com.tonyxlab.qrcraft.data.local.database.QrCraftDatabase
 import com.tonyxlab.qrcraft.data.local.datastore.DataStore
 import com.tonyxlab.qrcraft.data.repository.QrRepositoryImpl
 import com.tonyxlab.qrcraft.domain.repository.QrRepository
+import com.tonyxlab.qrcraft.domain.usecase.ClearHistoryUseCase
+import com.tonyxlab.qrcraft.domain.usecase.DeleteHistoryByIdUseCase
+import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
+import com.tonyxlab.qrcraft.domain.usecase.GetHistoryUseCase
+import com.tonyxlab.qrcraft.domain.usecase.UpsertHistoryUseCase
 import com.tonyxlab.qrcraft.presentation.screens.create.CreateViewModel
 import com.tonyxlab.qrcraft.presentation.screens.entry.EntryViewModel
 import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewViewModel
@@ -44,4 +49,13 @@ val databaseModule = module {
                 .build()
     }
     single<HistoryDao> { get<QrCraftDatabase>().dao }
+}
+
+
+val useCaseModule = module {
+    single{ GetHistoryUseCase(get()) }
+    single{ GetHistoryByIdUseCase(get()) }
+    single{ UpsertHistoryUseCase(get()) }
+    single{ DeleteHistoryByIdUseCase(get()) }
+    single{ ClearHistoryUseCase(get()) }
 }
