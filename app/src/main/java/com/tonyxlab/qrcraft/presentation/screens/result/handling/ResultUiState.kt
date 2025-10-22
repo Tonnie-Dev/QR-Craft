@@ -8,7 +8,7 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 import com.tonyxlab.qrcraft.util.generateLoremIpsum
 
 data class ResultUiState(
-    val editableTextState: EditableTextState = EditableTextState(),
+    val resultEditableTextState: ResultEditableTextState = ResultEditableTextState(),
     val dataState: DataState = DataState()
 ) : UiState {
     @Stable
@@ -22,7 +22,7 @@ data class ResultUiState(
     )
 
     @Stable
-    data class EditableTextState(
+    data class ResultEditableTextState(
         val isEditing: Boolean = false,
         val textFieldState: TextFieldState = TextFieldState( )
     )

@@ -17,6 +17,7 @@ import com.tonyxlab.qrcraft.presentation.screens.history.components.HistoryTabRo
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import com.tonyxlab.qrcraft.util.getRandomQrDataItems
 import org.koin.androidx.compose.koinViewModel
 
@@ -26,7 +27,7 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = koinViewModel()
 ) {
-
+    SetStatusBarIconsColor(darkIcons = true)
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,

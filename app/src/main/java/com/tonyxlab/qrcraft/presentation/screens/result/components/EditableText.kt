@@ -1,7 +1,5 @@
 package com.tonyxlab.qrcraft.presentation.screens.result.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -34,21 +32,17 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.Constants.MAX_QR_DESC_CHAR_COUNT
 import kotlin.math.max
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditableText(
     textFieldState: TextFieldState,
     placeHolderText: String,
     isEditing: Boolean,
-    onEvent: (ResultUiEvent) -> Unit,
+    onClickText: () -> Unit,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium
 ) {
     val isEmpty = textFieldState.text.isEmpty()
-    val x = MaterialTheme.typography.bodyLarge.copy(
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center
-    )
+
     val focusRequester = remember { FocusRequester() }
 
     val charCount = textFieldState.text.length
@@ -110,7 +104,7 @@ fun EditableText(
                         .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null
-                        ) { onEvent(ResultUiEvent.EditDetectedContent) },
+                        ) { onClickText() },
                 text = textFieldState.text.toString()
                         .ifBlank { placeHolderText },
                 style = textStyle.copy(
@@ -169,28 +163,28 @@ private fun EditableText_Preview() {
                     textFieldState = emptyTextField,
                     placeHolderText = "Text",
                     isEditing = false,
-                    onEvent = {}
+                    onClickText = {}
             )
             EditableText(
                     modifier = Modifier.fillMaxWidth(),
                     textFieldState = filledTextField,
                     placeHolderText = "Text",
                     isEditing = false,
-                    onEvent = {}
+                    onClickText = {}
             )
             EditableText(
                     modifier = Modifier.fillMaxWidth(),
                     textFieldState = emptyTextField,
                     placeHolderText = "Text",
                     isEditing = true,
-                    onEvent = {}
+                    onClickText = {}
             )
             EditableText(
                     modifier = Modifier.fillMaxWidth(),
                     textFieldState = filledTextField,
                     placeHolderText = "Text",
                     isEditing = true,
-                    onEvent = {}
+                    onClickText = {}
             )
         }
     }

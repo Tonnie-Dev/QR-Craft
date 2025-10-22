@@ -23,6 +23,7 @@ import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
+import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
 import com.tonyxlab.qrcraft.util.DeviceType
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
@@ -105,8 +106,8 @@ private fun PreviewContentScreen(
         DeviceType.MOBILE_PORTRAIT -> MaterialTheme.spacing.spaceMedium
         DeviceType.MOBILE_LANDSCAPE -> MaterialTheme.spacing.spaceTen * 10
         else -> MaterialTheme.spacing.spaceTen * 15
-
     }
+
     Box(
             modifier = modifier
                     .fillMaxSize()
@@ -118,7 +119,17 @@ private fun PreviewContentScreen(
         PreviewContainer(
                 qrData = uiState.qrDataState.qrData,
                 onShare = { onEvent(PreviewUiEvent.ShareContent) },
-                onCopy = { onEvent(PreviewUiEvent.CopyContent) }
+                onCopy = { onEvent(PreviewUiEvent.CopyContent) },
+                editableText ={
+                    EditableText(
+                           modifier = modifier ,
+                            textFieldState = uiState.previewEditableTextState.textFieldState,
+                            placeHolderText = uiState.qrDataState.qrData.displayName,
+                            isEditing = uiState.previewEditableTextState.isEditing,
+                            onClickText = { onEvent(PreviewUiEvent.EditDetectedContent)}
+                            )
+
+                }
         )
     }
 }

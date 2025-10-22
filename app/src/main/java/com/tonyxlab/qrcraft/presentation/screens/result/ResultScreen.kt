@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -136,11 +135,11 @@ fun ResultContentScreen(
                 onCopy = { onEvent(ResultUiEvent.CopyContent) },
                 editableText = {
                     EditableText(
-                            textFieldState = uiState.editableTextState.textFieldState,
+                            modifier = modifier,
+                            textFieldState = uiState.resultEditableTextState.textFieldState,
                             placeHolderText = uiState.dataState.qrData.displayName,
-                            isEditing = uiState.editableTextState.isEditing,
-                            onEvent = onEvent,
-                            modifier = modifier
+                            isEditing = uiState.resultEditableTextState.isEditing,
+                            onClickText = { onEvent(ResultUiEvent.EditDetectedContent)}
                     )
                 }
         )

@@ -26,6 +26,7 @@ import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.DeviceType
+import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import com.tonyxlab.qrcraft.util.ifThen
 import com.tonyxlab.qrcraft.util.toTopBarString
 import org.koin.androidx.compose.koinViewModel
@@ -36,6 +37,8 @@ fun EntryScreen(
     modifier: Modifier = Modifier,
     viewModel: EntryViewModel = koinViewModel()
 ) {
+
+    SetStatusBarIconsColor(darkIcons = true)
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     BaseContentLayout(
             viewModel = viewModel,
