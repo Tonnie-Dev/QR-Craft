@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.tonyxlab.qrcraft.R
@@ -54,20 +57,25 @@ private fun HistoryScreenContent(uiState: HistoryUiState) {
 
     val pagerState = rememberPagerState { 2 }
 
+    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
+
 
     Column {
 
-        /*Text(
-                text = "Scan History",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-        )*/
-
         HistoryTabRow(
-                uiState = HistoryUiState(historyList = getRandomQrDataItems(13)),
+                uiState = HistoryUiState(
+                        scannedHistoryList = getRandomQrDataItems(10),
+                        generatedHistoryList = getRandomQrDataItems(10)
+                ),
                 pagerState = pagerState
         )
+
+        /*
+                HistoryTabRow(
+                        uiState = uiState,
+                        pagerState = pagerState
+                )
+        */
 
     }
 

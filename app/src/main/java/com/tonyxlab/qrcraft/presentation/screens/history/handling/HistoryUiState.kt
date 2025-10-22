@@ -6,5 +6,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 
 data class HistoryUiState(
     val historyTabType: HistoryType = HistoryType.SCANNED,
-    val historyList: List<QrData> = emptyList()
+    val scannedHistoryList: List<QrData> = emptyList(),
+    val generatedHistoryList: List<QrData> = emptyList()
 ) : UiState

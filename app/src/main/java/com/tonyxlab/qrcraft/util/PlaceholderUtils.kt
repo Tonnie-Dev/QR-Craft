@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.util
 
+import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 
@@ -22,7 +23,8 @@ fun getRandomQrDataItem(): QrData {
             prettifiedData = generateLoremIpsum(26),
             qrDataType = qrType,
             timestamp = timestamp,
-            rawDataValue = ""
+            rawDataValue = "",
+            historyType = HistoryType.entries.random()
     )
 }
 

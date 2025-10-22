@@ -24,4 +24,9 @@ interface HistoryDao {
 
     @Query("DELETE FROM history_table")
     suspend fun clearAll(): Int
+
+
+
+    /*@Query("SELECT * FROM history_table  ORDER BY timestamp DESC")
+    fun getHistoryItems(historyType: HistoryType): Flow<List<HistoryEntity>>*/
 }

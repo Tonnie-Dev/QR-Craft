@@ -27,6 +27,7 @@
     <string name="cap_text_point_camera">Point your Camera at a QR Code</string>
     <string name="cap_text_loading">Loading…</string>
     <string name="cap_text_share_with">Share with…</string>
+    <string name="cap_text_history_empty">History is Empty</string>
 
     <!--Button Texts-->
     <string name="btn_text_share">Share</string>
