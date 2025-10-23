@@ -17,7 +17,7 @@ data class ResultUiState(
                 displayName = "Text",
                 prettifiedData = generateLoremIpsum(26),
                 qrDataType = QrDataType.TEXT,
-                rawDataValue = ""
+                rawData = ""
         )
     )
 

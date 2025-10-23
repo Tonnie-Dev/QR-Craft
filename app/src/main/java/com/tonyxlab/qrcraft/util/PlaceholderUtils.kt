@@ -23,7 +23,7 @@ fun getRandomQrDataItem(): QrData {
             prettifiedData = generateLoremIpsum(26),
             qrDataType = qrType,
             timestamp = timestamp,
-            rawDataValue = "",
+            rawData = "",
             historyType = HistoryType.entries.random()
     )
 }

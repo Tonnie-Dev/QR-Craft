@@ -19,6 +19,8 @@ data class HistoryEntity(
     val historyType: HistoryType,
     @ColumnInfo(name = "prettified_data")
     val prettifiedData: String,
+    @ColumnInfo(name = "raw_data")
+    val rawData: String,
     @ColumnInfo(name = "timestamp")
     val timestamp: Long
 )

@@ -55,9 +55,10 @@
 
     <!--Snackbar Texts-->
     <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
-
-    This app cannot function without camera access. To scan QR codes, please grant permission
-
+    <string name="snack_text_not_saved">Item Not Saved</string>
+    <string name="snack_text_not_found">Item Not Found</string>
+  <!--  This app cannot function without camera access. To scan QR codes, please grant permission
+-->
     <!--Dialog Texts-->
     <string name="dialog_text_camera_required">Camera Required</string>
     <string name="dialog_text_close_app">Close App</string>

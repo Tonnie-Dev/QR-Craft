@@ -206,7 +206,7 @@ fun mapToQrData(values: Map<String, String>): QrData {
     return QrData(
             displayName = displayName,
             prettifiedData = prettifiedData,
-            rawDataValue = rawData,
+            rawData = rawData,
             qrDataType = qrType
     )
 }

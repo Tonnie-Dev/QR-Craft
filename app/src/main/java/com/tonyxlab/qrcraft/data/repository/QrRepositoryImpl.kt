@@ -12,6 +12,7 @@ import com.tonyxlab.qrcraft.domain.repository.QrRepository
 import com.tonyxlab.qrcraft.util.safeIoCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class QrRepositoryImpl(
     private val datastore: DataStore,

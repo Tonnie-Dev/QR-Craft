@@ -11,7 +11,7 @@ fun Barcode.toQrData(): QrData {
                 displayName = "Link",
                 prettifiedData = url.url ?: displayValue.orEmpty(),
                 qrDataType = QrDataType.LINK,
-                rawDataValue = rawValue.orEmpty()
+                rawData = rawValue.orEmpty()
         )
     }
 
@@ -38,7 +38,7 @@ fun Barcode.toQrData(): QrData {
                 prettifiedData = pieces.joinToString("\n")
                         .ifBlank { displayValue.orEmpty() },
                 qrDataType = QrDataType.CONTACT,
-                rawDataValue = rawValue.orEmpty()
+                rawData = rawValue.orEmpty()
         )
     }
 
@@ -47,7 +47,7 @@ fun Barcode.toQrData(): QrData {
                 displayName = "Phone Number",
                 prettifiedData = phone.number ?: displayValue.orEmpty(),
                 qrDataType = QrDataType.PHONE_NUMBER,
-                rawDataValue = rawValue.orEmpty()
+                rawData = rawValue.orEmpty()
         )
     }
 
@@ -57,7 +57,7 @@ fun Barcode.toQrData(): QrData {
                 displayName = "Geolocation",
                 prettifiedData = latLng,
                 qrDataType = QrDataType.GEOLOCATION,
-                rawDataValue = rawValue.orEmpty()
+                rawData = rawValue.orEmpty()
         )
     }
 
@@ -77,7 +77,7 @@ fun Barcode.toQrData(): QrData {
                 displayName = "Wi-Fi",
                 prettifiedData = block,
                 qrDataType = QrDataType.WIFI,
-                rawDataValue = rawValue.orEmpty()
+                rawData = rawValue.orEmpty()
         )
     }
 
@@ -85,7 +85,7 @@ fun Barcode.toQrData(): QrData {
             displayName = "Text",
             prettifiedData = displayValue ?: rawValue.orEmpty(),
             qrDataType = QrDataType.TEXT,
-            rawDataValue = rawValue.orEmpty()
+            rawData = rawValue.orEmpty()
     )
 }
 

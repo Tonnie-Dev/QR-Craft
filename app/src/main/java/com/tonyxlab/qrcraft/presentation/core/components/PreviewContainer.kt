@@ -146,7 +146,7 @@ fun PreviewContainer(
             }
         }
         QrImageTile(
-                data = qrData.rawDataValue,
+                data = qrData.rawData,
                 qrBoxSizeInDp = qrBoxSize,
                 overlapSize = overlapSize,
                 shape = shape
@@ -193,7 +193,7 @@ fun PreviewContainer_Preview(modifier: Modifier = Modifier) {
             displayName = "Text",
             prettifiedData = generateLoremIpsum(26),
             qrDataType = QrDataType.TEXT,
-            rawDataValue = ""
+            rawData = ""
     )
 
     QRCraftTheme {

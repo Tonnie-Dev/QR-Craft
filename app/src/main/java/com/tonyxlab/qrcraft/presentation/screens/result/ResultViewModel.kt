@@ -35,7 +35,7 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
                         displayName = navArgs.displayName,
                         prettifiedData = navArgs.prettifiedData,
                         qrDataType = navArgs.qrDataType,
-                        rawDataValue = navArgs.rawDataValue
+                        rawData = navArgs.rawDataValue
                 )
         )
 

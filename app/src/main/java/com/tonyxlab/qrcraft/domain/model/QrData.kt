@@ -12,7 +12,7 @@ data class QrData(
     val displayName: String,
     val prettifiedData: String,
     val qrDataType: QrDataType,
-    val rawDataValue: String = "",
+    val rawData: String,
     val historyType: HistoryType = HistoryType.SCANNED,
     val timestamp: Long = 0L
 )
