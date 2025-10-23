@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.entry
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,6 +42,9 @@ fun EntryScreen(
 
     SetStatusBarIconsColor(darkIcons = true)
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+
     BaseContentLayout(
             viewModel = viewModel,
             topBar = {
@@ -61,7 +66,14 @@ fun EntryScreen(
 
                     is EntryActionEvent.NavigateToPreviewScreen -> {
 
-                        navOperations.navigateToPreviewScreenDestination(jsonMapString = action.jsonMapString)
+                        navOperations.navigateToPreviewScreenDestination(id = action.id)
+                    }
+
+                    is EntryActionEvent.ShowToastMessage -> {
+
+                        val toastMessage = context.getString(action.messageRes)
+                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT)
+                                .show()
                     }
                 }
             },
