@@ -6,22 +6,26 @@ import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiState
 
 typealias CreateBaseViewModel = BaseViewModel<CreateUiState, CreateUiEvent, CreateActionEvent>
-class CreateViewModel: CreateBaseViewModel(){
+
+class CreateViewModel : CreateBaseViewModel() {
 
     override val initialState: CreateUiState
         get() = CreateUiState()
 
     override fun onEvent(event: CreateUiEvent) {
 
-        when(event){
+        when (event) {
             CreateUiEvent.ExitCreateScreen -> {
-
                 sendActionEvent(CreateActionEvent.NavigateToScanScreen)
             }
+
             is CreateUiEvent.SelectQrTab -> {
 
-
-                sendActionEvent(CreateActionEvent.NavigateToEntryScreen(qrDataType = event.qrDataType))
+                sendActionEvent(
+                        actionEvent = CreateActionEvent.NavigateToEntryScreen(
+                                qrDataType = event.qrDataType
+                        )
+                )
             }
         }
     }

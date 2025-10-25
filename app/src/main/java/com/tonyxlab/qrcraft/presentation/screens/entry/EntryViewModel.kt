@@ -17,6 +17,7 @@ import com.tonyxlab.qrcraft.util.toMillis
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import timber.log.Timber
 import java.time.LocalDateTime
 
 typealias EntryBaseViewModel = BaseViewModel<EntryUiState, EntryUiEvent, EntryActionEvent>
@@ -79,12 +80,12 @@ class EntryViewModel(
                 historyType = HistoryType.GENERATED,
                 timestamp = now.toMillis()
         )
-
+        Timber.tag("EntryViewModel").i("Saved DisplayName: ${qrData.displayName}, isEmpty: ${qrData.displayName.isEmpty()}")
         launchCatching(
                 onError = {
                     sendActionEvent(
                             actionEvent = EntryActionEvent.ShowToastMessage(
-                                    R.string.snack_text_not_saved
+                                    R.string.toast_text_item_not_saved
                             )
                     )
 

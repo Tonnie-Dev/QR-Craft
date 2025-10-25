@@ -49,7 +49,7 @@ class NavOperations(val navHostController: NavHostController) {
                         displayName = qrData.displayName,
                         prettifiedData = qrData.prettifiedData,
                         qrDataType = qrData.qrDataType,
-                        rawDataValue = qrData.rawDataValue
+                        rawDataValue = qrData.rawData
                 )
         )
     }
@@ -62,14 +62,13 @@ class NavOperations(val navHostController: NavHostController) {
                 )
         )
     }
-    fun navigateToPreviewScreenDestination(jsonMapString: String) {
-        navHostController.navigate(
-                route = Destinations.PreviewScreenDestination(
-                        jsonMapString = jsonMapString
 
-                )
+    fun navigateToPreviewScreenDestination(id: Long) {
+        navHostController.navigate(
+                route = Destinations.PreviewScreenDestination(id = id)
         )
     }
+
     fun popBackStack() {
         navHostController.popBackStack()
     }

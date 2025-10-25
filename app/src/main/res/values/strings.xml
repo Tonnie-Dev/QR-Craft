@@ -55,8 +55,7 @@
 
     <!--Snackbar Texts-->
     <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
-    <string name="snack_text_not_saved">Item Not Saved</string>
-    <string name="snack_text_not_found">Item Not Found</string>
+
   <!--  This app cannot function without camera access. To scan QR codes, please grant permission
 -->
     <!--Dialog Texts-->
@@ -84,9 +83,11 @@
     <string name="cds_text_phone">Phone Number</string>
     <string name="cds_text_geo">Geolocation</string>
     <string name="cds_text_wifi">Wi-Fi</string>
+
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>
-
+    <string name="toast_text_item_not_saved">Item Not Saved</string>
+    <string name="toast_text_item_not_found">Item Not Found</string>
     <!--Meta Data Texts-->
     <string name="meta_text_created_on">Date Created</string>
 

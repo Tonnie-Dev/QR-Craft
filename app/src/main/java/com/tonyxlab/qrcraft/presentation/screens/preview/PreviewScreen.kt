@@ -3,6 +3,7 @@ package com.tonyxlab.qrcraft.presentation.screens.preview
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
 import com.tonyxlab.qrcraft.util.DeviceType
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 @Composable
 fun PreviewScreen(
@@ -79,11 +81,18 @@ fun PreviewScreen(
                         )
                         clipboardManager?.setPrimaryClip(clip)
                     }
+
+                    is PreviewActionEvent.ShowToast -> {
+
+                        Toast.makeText(context, action.messageRes, Toast.LENGTH_SHORT)
+                                .show()
+                    }
                 }
             },
             containerColor = MaterialTheme.colorScheme.onSurface,
             onBackPressed = { viewModel.onEvent(PreviewUiEvent.ExitPreviewScreen) }
     ) {
+
         PreviewContentScreen(
                 modifier = modifier,
                 uiState = it,
@@ -120,15 +129,17 @@ private fun PreviewContentScreen(
                 qrData = uiState.qrDataState.qrData,
                 onShare = { onEvent(PreviewUiEvent.ShareContent) },
                 onCopy = { onEvent(PreviewUiEvent.CopyContent) },
-                editableText ={
+                editableText = {
+
+                    Timber.tag("PreviewScreen")
+                            .i("Placeholder: ${uiState.qrDataState.qrData.displayName}")
                     EditableText(
-                           modifier = modifier ,
+                            modifier = modifier,
                             textFieldState = uiState.previewEditableTextState.textFieldState,
                             placeHolderText = uiState.qrDataState.qrData.displayName,
                             isEditing = uiState.previewEditableTextState.isEditing,
-                            onClickText = { onEvent(PreviewUiEvent.EditDetectedContent)}
-                            )
-
+                            onClickText = { onEvent(PreviewUiEvent.EditDetectedContent) }
+                    )
                 }
         )
     }

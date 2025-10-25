@@ -26,7 +26,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.Constants.MAX_QR_DESC_CHAR_COUNT
