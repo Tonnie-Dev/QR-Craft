@@ -1,10 +1,13 @@
 package com.tonyxlab.qrcraft.presentation.screens.history
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
@@ -27,11 +30,12 @@ fun HistoryScreen(
 
     SetStatusBarIconsColor(darkIcons = true)
 
+    val context = LocalContext.current
+
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,
             topBar = {
-
                 AppTopBar(
                         screenTitle = stringResource(id = R.string.topbar_text_history),
                         contentColor = MaterialTheme.colorScheme.onSurface
@@ -40,8 +44,26 @@ fun HistoryScreen(
             containerColor = MaterialTheme.colorScheme.surface,
             actionEventHandler = { _, action ->
                 when (action) {
+
                     HistoryActionEvent.ExitHistoryScreen -> navOperations.popBackStack()
-                    HistoryActionEvent.OpenShareMenu -> {}
+
+                    is HistoryActionEvent.OpenShareMenu -> {
+
+                        val intent = Intent().apply {
+
+                            this.action = Intent.ACTION_SEND
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, action.text)
+                        }
+
+                        context.startActivity(intent)
+                    }
+
+                    is HistoryActionEvent.ShowToast -> {
+
+                        Toast.makeText(context, action.messageRes, Toast.LENGTH_SHORT)
+                                .show()
+                    }
                 }
             }, onBackPressed = { viewModel.onEvent(HistoryUiEvent.ExitHistoryScreen) }
     ) {
@@ -65,6 +87,7 @@ private fun HistoryScreenContent(
     val pagerState = rememberPagerState { 2 }
 
     Column {
+
         HistoryTabRow(
                 uiState = uiState,
                 pagerState = pagerState,
@@ -75,26 +98,4 @@ private fun HistoryScreenContent(
                 onEvent = onEvent
         )
     }
-
-
-
-    /*
-         val currentPage by remember { derivedStateOf { pagerState.currentPage } }
-
-          HistoryTabRow(
-            uiState = HistoryUiState(
-                    scannedHistoryList = getRandomQrDataItems(10),
-                    generatedHistoryList = getRandomQrDataItems(10)
-            ),
-            pagerState = pagerState
-    )
-
-
-
-         HistoryTabRow(
-                    uiState = uiState,
-                    pagerState = pagerState
-            )
-    */
-
 }

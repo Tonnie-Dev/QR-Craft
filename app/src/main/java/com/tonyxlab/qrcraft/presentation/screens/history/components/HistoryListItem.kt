@@ -31,7 +31,6 @@ import com.tonyxlab.qrcraft.util.getRandomQrDataItems
 import com.tonyxlab.qrcraft.util.getTintedIconModifier
 import com.tonyxlab.qrcraft.util.toFormattedDate
 import com.tonyxlab.qrcraft.util.toUi
-import timber.log.Timber
 
 @Composable
 fun HistoryListItem(
@@ -50,15 +49,13 @@ fun HistoryListItem(
     Card(
             modifier = modifier.combinedClickable(
                     onClick = {
-
-
                         onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
                     },
                     onLongClick = {
 
-
                         onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
-                    }),
+                    }
+            ),
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -99,7 +96,9 @@ fun HistoryListItem(
                                 text = qrData.displayName,
                                 style = MaterialTheme.typography.titleSmall.copy(
                                         color = MaterialTheme.colorScheme.onSurface
-                                )
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.MiddleEllipsis
                         )
                         Text(
                                 text = displayText,

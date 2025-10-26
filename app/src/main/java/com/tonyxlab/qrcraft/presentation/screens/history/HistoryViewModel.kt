@@ -1,6 +1,7 @@
 package com.tonyxlab.qrcraft.presentation.screens.history
 
 import androidx.lifecycle.viewModelScope
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.usecase.DeleteHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
@@ -38,18 +39,24 @@ class HistoryViewModel(
 
             is HistoryUiEvent.LongPressHistoryItem -> {
 
-               updateState { it.copy(showBottomHistoryBottomSheet = true) }
+                findClickedItemById(event.id)
+                updateState { it.copy(showBottomHistoryBottomSheet = true) }
 
             }
+
             HistoryUiEvent.ShareHistoryItem -> {
 
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
-                sendActionEvent(actionEvent = HistoryActionEvent.OpenShareMenu)
+                val text = currentState.selectedItemState.data
 
+                sendActionEvent(
+                        actionEvent = HistoryActionEvent.OpenShareMenu(text = text)
+                )
             }
 
             HistoryUiEvent.DeleteHistoryItem -> {
 
+                deleteHistoryItem(id = currentState.selectedItemState.id)
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
             }
 
@@ -87,7 +94,45 @@ class HistoryViewModel(
                     .launchIn(viewModelScope)
 
         }
+    }
 
+    private fun findClickedItemById(id: Long) {
+        launchCatching(
+                onError = {
+                    sendActionEvent(
+                            actionEvent = HistoryActionEvent.ShowToast(
+                                    messageRes = R.string.toast_text_item_not_found
+                            )
+                    )
+                }
+        ) {
+            val qrData = getHistoryByIdUseCase(id = id)
+            updateState {
+                it.copy(
+                        selectedItemState = currentState.selectedItemState.copy(
+                                id = qrData.id,
+                                data = qrData.prettifiedData
+                        )
+                )
+            }
+        }
+    }
+
+    private fun deleteHistoryItem(id: Long) {
+
+        launchCatching(
+                onError = {
+
+                    sendActionEvent(
+                            actionEvent = HistoryActionEvent.ShowToast(
+                                    messageRes = R.string.toast_text_item_not_found
+                            )
+                    )
+                }
+        ) {
+            deleteHistoryByIdUseCase(id = id)
+        }
     }
 }
+
 

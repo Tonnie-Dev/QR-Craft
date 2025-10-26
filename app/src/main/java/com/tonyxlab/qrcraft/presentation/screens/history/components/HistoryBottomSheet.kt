@@ -3,6 +3,7 @@
 package com.tonyxlab.qrcraft.presentation.screens.history.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,6 @@ fun HistoryBottomSheet(
     onEvent: (HistoryUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val clippingShape = MaterialTheme.shapes.HorizontalRoundedCornerShape16
 
     if (uiState.showBottomHistoryBottomSheet) {
@@ -46,7 +46,8 @@ fun HistoryBottomSheet(
         ModalBottomSheet(
                 onDismissRequest = { onEvent(HistoryUiEvent.DismissHistoryBottomSheet) },
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                tonalElevation = MaterialTheme.spacing.spaceDoubleDp
+                tonalElevation = MaterialTheme.spacing.spaceDoubleDp,
+                dragHandle = {}
         ) {
 
             Column(
@@ -57,16 +58,15 @@ fun HistoryBottomSheet(
                                     shape = clippingShape
                             )
                             .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.spaceMedium)
                             .padding(horizontal = MaterialTheme.spacing.spaceMedium)
                             .padding(top = MaterialTheme.spacing.spaceSmall)
-                            .padding(bottom = MaterialTheme.spacing.spaceLarge)
+                            .padding(bottom = MaterialTheme.spacing.spaceMedium)
             ) {
-
                 Row(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .height(MaterialTheme.spacing.spaceDoubleDp * 22)
+                                .clickable{ onEvent(HistoryUiEvent.ShareHistoryItem)}
                                 .padding(horizontal = MaterialTheme.spacing.spaceTwelve),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
@@ -79,6 +79,7 @@ fun HistoryBottomSheet(
                     )
 
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceSmall))
+
                     Text(
                             text = stringResource(id = R.string.btn_text_share),
                             style = MaterialTheme.typography.labelLarge.copy(
@@ -86,10 +87,12 @@ fun HistoryBottomSheet(
                             )
                     )
                 }
+
                 Row(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .height(MaterialTheme.spacing.spaceDoubleDp * 22)
+                                .clickable{ onEvent(HistoryUiEvent.DeleteHistoryItem)}
                                 .padding(horizontal = MaterialTheme.spacing.spaceTwelve),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
@@ -102,6 +105,7 @@ fun HistoryBottomSheet(
                     )
 
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceSmall))
+
                     Text(
                             text = stringResource(id = R.string.btn_text_delete),
                             style = MaterialTheme.typography.labelLarge.copy(
@@ -110,15 +114,13 @@ fun HistoryBottomSheet(
                     )
                 }
             }
-       }
-
+        }
     }
 }
 
 @PreviewLightDark
 @Composable
 private fun HistoryBottomSheet_Preview() {
-
     QRCraftTheme {
         Box(
                 modifier = Modifier
@@ -126,6 +128,7 @@ private fun HistoryBottomSheet_Preview() {
                         .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.BottomCenter
         ) {
+
             HistoryBottomSheet(
                     uiState = HistoryUiState(showBottomHistoryBottomSheet = true),
                     onEvent = {}
