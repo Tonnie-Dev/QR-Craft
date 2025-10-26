@@ -64,6 +64,10 @@ fun HistoryScreen(
                         Toast.makeText(context, action.messageRes, Toast.LENGTH_SHORT)
                                 .show()
                     }
+
+                    is HistoryActionEvent.NavigateToPreview -> {
+                        navOperations.navigateToPreviewScreenDestination(id = action.id)
+                    }
                 }
             }, onBackPressed = { viewModel.onEvent(HistoryUiEvent.ExitHistoryScreen) }
     ) {

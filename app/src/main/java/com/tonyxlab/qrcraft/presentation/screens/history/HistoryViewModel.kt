@@ -8,6 +8,7 @@ import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.GetHistoryUseCase
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
+import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent.OpenShareMenu
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
 import kotlinx.coroutines.FlowPreview
@@ -29,33 +30,28 @@ class HistoryViewModel(
         get() = HistoryUiState()
 
     init {
-
         observeHistory()
     }
 
     override fun onEvent(event: HistoryUiEvent) {
 
         when (event) {
+            is HistoryUiEvent.SelectHistoryItem -> {
+                sendActionEvent(HistoryActionEvent.NavigateToPreview(event.id))
+            }
 
             is HistoryUiEvent.LongPressHistoryItem -> {
-
                 findClickedItemById(event.id)
                 updateState { it.copy(showBottomHistoryBottomSheet = true) }
-
             }
 
             HistoryUiEvent.ShareHistoryItem -> {
-
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
                 val text = currentState.selectedItemState.data
-
-                sendActionEvent(
-                        actionEvent = HistoryActionEvent.OpenShareMenu(text = text)
-                )
+                sendActionEvent(actionEvent = OpenShareMenu(text = text))
             }
 
             HistoryUiEvent.DeleteHistoryItem -> {
-
                 deleteHistoryItem(id = currentState.selectedItemState.id)
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
             }
@@ -67,16 +63,13 @@ class HistoryViewModel(
             HistoryUiEvent.ExitHistoryScreen -> {
                 sendActionEvent(actionEvent = HistoryActionEvent.ExitHistoryScreen)
             }
-
         }
-
     }
 
     @OptIn(FlowPreview::class)
     private fun observeHistory() {
 
         launch {
-
             val scannedHistoryFlow = getHistoryUseCase(HistoryType.SCANNED)
             val generatedHistoryFlow = getHistoryUseCase(HistoryType.GENERATED)
 
@@ -92,7 +85,6 @@ class HistoryViewModel(
                     .debounce(5_00)
                     .distinctUntilChanged()
                     .launchIn(viewModelScope)
-
         }
     }
 

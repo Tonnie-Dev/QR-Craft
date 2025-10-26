@@ -49,7 +49,7 @@ fun HistoryListItem(
     Card(
             modifier = modifier.combinedClickable(
                     onClick = {
-                        onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
+                        onEvent(HistoryUiEvent.SelectHistoryItem(id = qrData.id))
                     },
                     onLongClick = {
 
