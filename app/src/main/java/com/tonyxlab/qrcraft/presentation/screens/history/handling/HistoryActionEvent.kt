@@ -4,5 +4,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
 
 sealed interface HistoryActionEvent : ActionEvent{
 
+    data object OpenShareMenu: HistoryActionEvent
     data object ExitHistoryScreen: HistoryActionEvent
 }

@@ -4,21 +4,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
+import com.tonyxlab.qrcraft.presentation.screens.history.components.HistoryBottomSheet
 import com.tonyxlab.qrcraft.presentation.screens.history.components.HistoryTabRow
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
-import com.tonyxlab.qrcraft.util.getRandomQrDataItems
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -27,7 +24,9 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = koinViewModel()
 ) {
+
     SetStatusBarIconsColor(darkIcons = true)
+
     BaseContentLayout(
             modifier = modifier,
             viewModel = viewModel,
@@ -42,42 +41,60 @@ fun HistoryScreen(
             actionEventHandler = { _, action ->
                 when (action) {
                     HistoryActionEvent.ExitHistoryScreen -> navOperations.popBackStack()
+                    HistoryActionEvent.OpenShareMenu -> {}
                 }
-            }, onBackPressed = { viewModel.onEvent(HistoryUiEvent.PressBack) }
+            }, onBackPressed = { viewModel.onEvent(HistoryUiEvent.ExitHistoryScreen) }
     ) {
 
         uiState ->
 
-        HistoryScreenContent(uiState = uiState)
+        HistoryScreenContent(
+                uiState = uiState,
+                onEvent = viewModel::onEvent
+        )
     }
 
 }
 
 @Composable
-private fun HistoryScreenContent(uiState: HistoryUiState) {
+private fun HistoryScreenContent(
+    uiState: HistoryUiState,
+    onEvent: (HistoryUiEvent) -> Unit
+) {
 
     val pagerState = rememberPagerState { 2 }
 
-    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
-
-
     Column {
-
         HistoryTabRow(
-                uiState = HistoryUiState(
-                        scannedHistoryList = getRandomQrDataItems(10),
-                        generatedHistoryList = getRandomQrDataItems(10)
-                ),
-                pagerState = pagerState
+                uiState = uiState,
+                pagerState = pagerState,
+                onEvent = onEvent
         )
-
-        /*
-                HistoryTabRow(
-                        uiState = uiState,
-                        pagerState = pagerState
-                )
-        */
-
+        HistoryBottomSheet(
+                uiState = uiState,
+                onEvent = onEvent
+        )
     }
+
+
+
+    /*
+         val currentPage by remember { derivedStateOf { pagerState.currentPage } }
+
+          HistoryTabRow(
+            uiState = HistoryUiState(
+                    scannedHistoryList = getRandomQrDataItems(10),
+                    generatedHistoryList = getRandomQrDataItems(10)
+            ),
+            pagerState = pagerState
+    )
+
+
+
+         HistoryTabRow(
+                    uiState = uiState,
+                    pagerState = pagerState
+            )
+    */
 
 }

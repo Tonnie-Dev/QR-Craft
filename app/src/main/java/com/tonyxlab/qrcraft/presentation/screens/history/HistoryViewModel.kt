@@ -2,6 +2,8 @@ package com.tonyxlab.qrcraft.presentation.screens.history
 
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.qrcraft.domain.model.HistoryType
+import com.tonyxlab.qrcraft.domain.usecase.DeleteHistoryByIdUseCase
+import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.GetHistoryUseCase
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
@@ -15,17 +17,51 @@ import kotlinx.coroutines.flow.launchIn
 
 typealias HistoryBaseViewModel = BaseViewModel<HistoryUiState, HistoryUiEvent, HistoryActionEvent>
 
-class HistoryViewModel(private val getHistoryUseCase: GetHistoryUseCase) : HistoryBaseViewModel() {
+class HistoryViewModel(
+    private val getHistoryUseCase: GetHistoryUseCase,
+    private val getHistoryByIdUseCase: GetHistoryByIdUseCase,
+    private val deleteHistoryByIdUseCase: DeleteHistoryByIdUseCase
+
+) : HistoryBaseViewModel() {
 
     override val initialState: HistoryUiState
         get() = HistoryUiState()
-
 
     init {
 
         observeHistory()
     }
+
     override fun onEvent(event: HistoryUiEvent) {
+
+        when (event) {
+
+            is HistoryUiEvent.LongPressHistoryItem -> {
+
+               updateState { it.copy(showBottomHistoryBottomSheet = true) }
+
+            }
+            HistoryUiEvent.ShareHistoryItem -> {
+
+                updateState { it.copy(showBottomHistoryBottomSheet = false) }
+                sendActionEvent(actionEvent = HistoryActionEvent.OpenShareMenu)
+
+            }
+
+            HistoryUiEvent.DeleteHistoryItem -> {
+
+                updateState { it.copy(showBottomHistoryBottomSheet = false) }
+            }
+
+            HistoryUiEvent.DismissHistoryBottomSheet -> {
+                updateState { it.copy(showBottomHistoryBottomSheet = false) }
+            }
+
+            HistoryUiEvent.ExitHistoryScreen -> {
+                sendActionEvent(actionEvent = HistoryActionEvent.ExitHistoryScreen)
+            }
+
+        }
 
     }
 
