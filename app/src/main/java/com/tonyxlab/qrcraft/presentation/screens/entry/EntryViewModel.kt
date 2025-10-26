@@ -28,7 +28,8 @@ class EntryViewModel(
 
     init {
 
-        val navArgs = savedStateHandle.toRoute<Destinations.EntryScreenDestination>()
+        val navArgs =
+            savedStateHandle.toRoute<Destinations.EntryScreenDestination>()
         val selectedQrType = navArgs.qrDataType
 
         updateState { it.copy(selectedQrType = selectedQrType) }
@@ -80,7 +81,7 @@ class EntryViewModel(
                 historyType = HistoryType.GENERATED,
                 timestamp = now.toMillis()
         )
-        Timber.tag("EntryViewModel").i("Saved DisplayName: ${qrData.displayName}, isEmpty: ${qrData.displayName.isEmpty()}")
+
         launchCatching(
                 onError = {
                     sendActionEvent(
@@ -88,7 +89,6 @@ class EntryViewModel(
                                     R.string.toast_text_item_not_saved
                             )
                     )
-
                 }
         ) {
             val id = upsertHistoryUseCase(qrData = qrData)

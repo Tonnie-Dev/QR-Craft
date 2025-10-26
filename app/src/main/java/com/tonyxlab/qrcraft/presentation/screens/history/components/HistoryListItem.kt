@@ -1,6 +1,7 @@
 package com.tonyxlab.qrcraft.presentation.screens.history.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,28 +24,41 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.presentation.theme.ui.ShowLess
-import com.tonyxlab.qrcraft.util.generateLoremIpsum
 import com.tonyxlab.qrcraft.util.getRandomQrDataItems
 import com.tonyxlab.qrcraft.util.getTintedIconModifier
 import com.tonyxlab.qrcraft.util.toFormattedDate
 import com.tonyxlab.qrcraft.util.toUi
+import timber.log.Timber
 
 @Composable
 fun HistoryListItem(
     qrData: QrData,
+    onEvent: (HistoryUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     val qrUiType = qrData.qrDataType.toUi()
 
-    val displayText = when(qrData.qrDataType){
-       QrDataType.CONTACT, QrDataType.WIFI -> middleEllipsis(qrData.prettifiedData, 40)
-       else -> qrData.prettifiedData
+    val displayText = when (qrData.qrDataType) {
+        QrDataType.CONTACT, QrDataType.WIFI -> middleEllipsis(qrData.prettifiedData, 40)
+        else -> qrData.prettifiedData
     }
 
     Card(
+            modifier = modifier.combinedClickable(
+                    onClick = {
+
+
+                        onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
+                    },
+                    onLongClick = {
+
+
+                        onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
+                    }),
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -52,7 +66,7 @@ fun HistoryListItem(
     ) {
 
         Row(
-                modifier = modifier
+                modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = MaterialTheme.spacing.spaceTwelve),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve),
@@ -109,10 +123,10 @@ fun HistoryListItem(
     }
 }
 
-private fun middleEllipsis(text:String, maxLength: Int) : String{
-    if (text.length <=maxLength) return  text
-val keep = (maxLength -3)/2
-    return text.take(keep)  + "...\n" + text.takeLast(keep)
+private fun middleEllipsis(text: String, maxLength: Int): String {
+    if (text.length <= maxLength) return text
+    val keep = (maxLength - 3) / 2
+    return text.take(keep) + "...\n" + text.takeLast(keep)
 }
 
 @PreviewLightDark
@@ -127,13 +141,13 @@ private fun HistoryListItem_Preview() {
                         .padding(MaterialTheme.spacing.spaceMedium),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
-
             getRandomQrDataItems(10).forEach {
 
-                HistoryListItem(qrData = it)
-
+                HistoryListItem(
+                        qrData = it,
+                        onEvent = {}
+                )
             }
-
         }
     }
 }

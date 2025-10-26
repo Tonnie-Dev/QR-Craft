@@ -1,9 +1,12 @@
 package com.tonyxlab.qrcraft.presentation.theme.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 
 val customMaterialShapes = Shapes(
         // Pre-Defined M3 Shapes
@@ -20,8 +23,15 @@ val customMaterialShapes = Shapes(
 object ExtendedShapes {
 
     val RoundedCornerShape100 = RoundedCornerShape(100.dp)
+
+    val HorizontalRoundedCornerShape16 = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
 }
 
 val Shapes.RoundedCornerShape100
     @Composable
     get() = ExtendedShapes.RoundedCornerShape100
+
+
+val Shapes.HorizontalRoundedCornerShape16
+    @Composable
+    get() = ExtendedShapes.HorizontalRoundedCornerShape16

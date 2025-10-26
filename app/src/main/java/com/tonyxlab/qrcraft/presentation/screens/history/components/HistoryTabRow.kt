@@ -43,6 +43,7 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.getRandomQrDataItems
@@ -51,6 +52,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HistoryTabRow(
     uiState: HistoryUiState,
+    onEvent: (HistoryUiEvent) -> Unit,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     indicatorColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -103,7 +105,8 @@ fun HistoryTabRow(
     ) { page ->
         DisplayList(
                 uiState = uiState,
-                selectedTabPage = page
+                selectedTabPage = page,
+                onEvent = onEvent
         )
     }
 }
@@ -111,12 +114,13 @@ fun HistoryTabRow(
 @Composable
 private fun DisplayList(
     uiState: HistoryUiState,
+    onEvent: (HistoryUiEvent) -> Unit,
     selectedTabPage: Int,
     modifier: Modifier = Modifier
 ) {
 
     val historyItems = when (selectedTabPage) {
-        1 -> uiState.scannedHistoryList
+        0 -> uiState.scannedHistoryList
         else -> uiState.generatedHistoryList
     }
 
@@ -156,14 +160,16 @@ private fun DisplayList(
                 contentPadding = PaddingValues(
                         start = MaterialTheme.spacing.spaceMedium,
                         end = MaterialTheme.spacing.spaceMedium,
-
                         bottom = MaterialTheme.spacing.spaceTen * 15
                 ),
                 verticalArrangement =
                     Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
         ) {
             items(items = historyItems, key = { it.id }) { qrData ->
-                HistoryListItem(qrData = qrData)
+                HistoryListItem(
+                        qrData = qrData,
+                        onEvent = onEvent
+                )
             }
         }
 
@@ -215,7 +221,8 @@ private fun HistoryTabRow_Preview() {
                             scannedHistoryList = getRandomQrDataItems(count = 15),
                             generatedHistoryList = getRandomQrDataItems(15)
                     ),
-                    pagerState = pagerState
+                    pagerState = pagerState,
+                    onEvent = {}
             )
         }
     }
