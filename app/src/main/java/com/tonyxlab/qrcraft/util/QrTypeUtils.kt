@@ -74,6 +74,7 @@ fun QrDataType.toUi(): QrUiType {
         )
     }
 }
+
 fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
 
     QrDataType.TEXT -> listOf(
@@ -153,8 +154,7 @@ fun QrDataType.toFormData(): List<FormFieldData> = when (this) {
 
 fun mapToQrData(values: Map<String, String>): QrData {
 
-    val qrType = when {
-
+    val qrDataType = when {
         values.containsKey("email") && values.containsKey("phone") -> QrDataType.CONTACT
         values.containsKey("ssid") -> QrDataType.WIFI
         values.containsKey("link") -> QrDataType.LINK
@@ -163,13 +163,15 @@ fun mapToQrData(values: Map<String, String>): QrData {
         else -> QrDataType.TEXT
     }
 
-    val prettifiedData = when (qrType) {
+    val (prettifiedData, rawData) = when (qrDataType) {
         QrDataType.CONTACT -> {
 
             val name = values["name"].orEmpty()
             val email = values["email"].orEmpty()
             val phone = values["phone"].orEmpty()
-            "$name\n$email\n$phone"
+            val pretty = "$name\n$email\n$phone"
+            val raw = "MECARD:N:$name;TEL:$phone;EMAIL:$email;;"
+            pretty to raw
         }
 
         QrDataType.WIFI -> {
@@ -177,36 +179,50 @@ fun mapToQrData(values: Map<String, String>): QrData {
             val ssid = values["ssid"].orEmpty()
             val password = values["password"].orEmpty()
             val encryption = values["encryption"].orEmpty()
-
-            "WIFE:S:$ssid;T:$encryption;P:$password;;"
+            val pretty = "SSID: $ssid\nPassword: $password\nEncryption type:$encryption"
+            val raw = "WIFI:S:$ssid;T:$encryption;P:$password;;"
+            pretty to raw
         }
 
-        QrDataType.LINK -> values["link"].orEmpty()
-        QrDataType.TEXT -> values["text"].orEmpty()
+        QrDataType.LINK -> {
+            val link = values["link"].orEmpty()
+            link to link
+        }
+
+        QrDataType.TEXT -> {
+
+            val text = values["text"].orEmpty()
+            text to text
+        }
+
         QrDataType.GEOLOCATION -> {
             val lat = values["lat"].orEmpty()
             val long = values["long"].orEmpty()
-            "geo:$lat,$long"
+
+            val pretty = "$lat, $long"
+            val raw = "geo:$lat,$long"
+            pretty to raw
         }
 
-        QrDataType.PHONE_NUMBER -> values["phone_number"].orEmpty()
+        QrDataType.PHONE_NUMBER -> {
+            val phone = values["phone_number"].orEmpty()
+            phone to "tel:$phone"
+        }
     }
 
-    val rawData = prettifiedData
-
-    val displayName = when (qrType) {
+    val displayName = when (qrDataType) {
         QrDataType.CONTACT -> "Contact"
-        QrDataType.WIFI -> "Wi-Fi Network"
-        QrDataType.LINK -> "Website"
+        QrDataType.WIFI -> "Wi-Fi"
+        QrDataType.LINK -> "Link"
         QrDataType.TEXT -> "Text"
-        QrDataType.GEOLOCATION -> "Location"
-        QrDataType.PHONE_NUMBER -> "Phone"
+        QrDataType.GEOLOCATION -> "Geolocation"
+        QrDataType.PHONE_NUMBER -> "Phone Number"
     }
 
     return QrData(
             displayName = displayName,
             prettifiedData = prettifiedData,
             rawData = rawData,
-            qrDataType = qrType
+            qrDataType = qrDataType
     )
 }
