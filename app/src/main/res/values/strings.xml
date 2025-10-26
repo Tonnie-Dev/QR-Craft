@@ -28,6 +28,7 @@
     <string name="cap_text_loading">Loading…</string>
     <string name="cap_text_share_with">Share with…</string>
     <string name="cap_text_history_empty">History is Empty</string>
+    <string name="cap_text_ellipsis">…</string>
 
     <!--Button Texts-->
     <string name="btn_text_share">Share</string>

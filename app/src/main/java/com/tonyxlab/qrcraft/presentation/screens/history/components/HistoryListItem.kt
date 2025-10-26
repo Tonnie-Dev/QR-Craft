@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
@@ -41,9 +42,9 @@ fun HistoryListItem(
 
     val qrUiType = qrData.qrDataType.toUi()
 
-    val displayText = when (qrData.qrDataType) {
-        QrDataType.CONTACT, QrDataType.WIFI -> middleEllipsis(qrData.prettifiedData, 40)
-        else -> qrData.prettifiedData
+    val middleEllipsis = when (qrData.qrDataType) {
+        QrDataType.CONTACT, QrDataType.WIFI -> true
+        else -> false
     }
 
     Card(
@@ -52,7 +53,6 @@ fun HistoryListItem(
                         onEvent(HistoryUiEvent.SelectHistoryItem(id = qrData.id))
                     },
                     onLongClick = {
-
                         onEvent(HistoryUiEvent.LongPressHistoryItem(id = qrData.id))
                     }
             ),
@@ -98,16 +98,27 @@ fun HistoryListItem(
                                         color = MaterialTheme.colorScheme.onSurface
                                 ),
                                 maxLines = 1,
-                                overflow = TextOverflow.MiddleEllipsis
+                                overflow = TextOverflow.Ellipsis
                         )
-                        Text(
-                                text = displayText,
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                ),
-                                overflow = TextOverflow.MiddleEllipsis,
-                                maxLines = 2
-                        )
+                        Row (verticalAlignment = Alignment.CenterVertically){
+                            Text(
+                                    text = qrData.prettifiedData,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    ),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 2
+                            )
+
+                            if (middleEllipsis) {
+                                Text(
+                                        text = stringResource(id = R.string.cap_text_ellipsis),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                )
+                            }
+                        }
                     }
 
                     Text(
@@ -120,12 +131,6 @@ fun HistoryListItem(
             }
         }
     }
-}
-
-private fun middleEllipsis(text: String, maxLength: Int): String {
-    if (text.length <= maxLength) return text
-    val keep = (maxLength - 3) / 2
-    return text.take(keep) + "...\n" + text.takeLast(keep)
 }
 
 @PreviewLightDark
