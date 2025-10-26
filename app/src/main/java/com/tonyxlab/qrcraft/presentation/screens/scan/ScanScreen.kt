@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
@@ -29,7 +31,7 @@ fun ScanScreen(
     viewModel: ScanViewModel = koinViewModel()
 ) {
     SetStatusBarIconsColor(darkIcons = false)
-
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     BaseContentLayout(
@@ -40,10 +42,14 @@ fun ScanScreen(
             actionEventHandler = { _, action ->
                 when (action) {
 
-                    is ScanActionEvent.NavigateToScanResult -> navOperations.navigateToResultScreenDestination(
-                            action.qrData
-                    )
+                    is ScanActionEvent.NavigateToScanResult -> {
+                        navOperations.navigateToResultScreenDestination(qrData = action.qrData)
+                    }
 
+                    is ScanActionEvent.ShowToast -> {
+                        Toast.makeText(context, action.messageRes, Toast.LENGTH_SHORT)
+                                .show()
+                    }
                 }
             },
             containerColor = Overlay
@@ -82,15 +88,12 @@ fun HomeScreenContent(
                 uiState = uiState,
                 updateCamSnackbarShownStatus = updateCamSnackbarShownStatus
         )
-
         CameraPreview(
                 modifier = Modifier.fillMaxSize(),
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )
-
         ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
-
     }
 }
 
