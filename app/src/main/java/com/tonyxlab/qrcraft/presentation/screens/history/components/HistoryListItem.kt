@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
@@ -30,12 +32,14 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.presentation.theme.ui.ShowLess
 import com.tonyxlab.qrcraft.util.getRandomQrDataItems
 import com.tonyxlab.qrcraft.util.getTintedIconModifier
+import com.tonyxlab.qrcraft.util.ifThen
 import com.tonyxlab.qrcraft.util.toFormattedDate
 import com.tonyxlab.qrcraft.util.toUi
 
 @Composable
 fun HistoryListItem(
     qrData: QrData,
+    isDisplayDeviceWide: Boolean,
     onEvent: (HistoryUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -64,7 +68,15 @@ fun HistoryListItem(
 
         Row(
                 modifier = Modifier
-                        .fillMaxWidth()
+                        .ifThen(isDisplayDeviceWide) {
+                            width(630.dp)
+
+
+                        }
+                        .ifThen(isDisplayDeviceWide.not()) {
+                            fillMaxWidth()
+                        }
+                        .align(Alignment.CenterHorizontally)
                         .padding(all = MaterialTheme.spacing.spaceTwelve),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceTwelve),
                 verticalAlignment = Alignment.Top
@@ -100,7 +112,7 @@ fun HistoryListItem(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                         )
-                        Row (verticalAlignment = Alignment.CenterVertically){
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                     text = qrData.prettifiedData,
                                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -149,6 +161,7 @@ private fun HistoryListItem_Preview() {
 
                 HistoryListItem(
                         qrData = it,
+                        isDisplayDeviceWide = false,
                         onEvent = {}
                 )
             }

@@ -38,10 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastFilter
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.model.HistoryType
-import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
@@ -54,6 +51,7 @@ fun HistoryTabRow(
     uiState: HistoryUiState,
     onEvent: (HistoryUiEvent) -> Unit,
     pagerState: PagerState,
+    isDisplayDeviceWide: Boolean,
     modifier: Modifier = Modifier,
     indicatorColor: Color = MaterialTheme.colorScheme.onSurface,
     indicatorHeight: Dp = 2.dp,
@@ -106,7 +104,8 @@ fun HistoryTabRow(
         DisplayList(
                 uiState = uiState,
                 selectedTabPage = page,
-                onEvent = onEvent
+                onEvent = onEvent,
+                isDisplayDeviceWide = isDisplayDeviceWide
         )
     }
 }
@@ -115,6 +114,7 @@ fun HistoryTabRow(
 private fun DisplayList(
     uiState: HistoryUiState,
     onEvent: (HistoryUiEvent) -> Unit,
+    isDisplayDeviceWide: Boolean,
     selectedTabPage: Int,
     modifier: Modifier = Modifier
 ) {
@@ -163,12 +163,14 @@ private fun DisplayList(
                         bottom = MaterialTheme.spacing.spaceTen * 15
                 ),
                 verticalArrangement =
-                    Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall)
+                    Arrangement.spacedBy(MaterialTheme.spacing.spaceSmall),
+                horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(items = historyItems, key = { it.id }) { qrData ->
                 HistoryListItem(
                         qrData = qrData,
-                        onEvent = onEvent
+                        onEvent = onEvent,
+                        isDisplayDeviceWide = isDisplayDeviceWide
                 )
             }
         }
@@ -188,16 +190,6 @@ private fun DisplayList(
                                 )
                         )
         )
-    }
-
-}
-
-private fun List<QrData>.mapQrDataToHistoryType(selectedTab: Int): List<QrData> {
-
-    return when (selectedTab) {
-
-        0 -> this.fastFilter { qrData -> qrData.historyType == HistoryType.SCANNED }
-        else -> this.fastFilter { qrData -> qrData.historyType == HistoryType.GENERATED }
     }
 
 }
@@ -222,7 +214,8 @@ private fun HistoryTabRow_Preview() {
                             generatedHistoryList = getRandomQrDataItems(15)
                     ),
                     pagerState = pagerState,
-                    onEvent = {}
+                    onEvent = {},
+                    isDisplayDeviceWide = false
             )
         }
     }

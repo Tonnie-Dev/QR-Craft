@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -18,6 +19,7 @@ import com.tonyxlab.qrcraft.presentation.screens.history.components.HistoryTabRo
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
+import com.tonyxlab.qrcraft.util.DeviceType
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
@@ -90,12 +92,22 @@ private fun HistoryScreenContent(
 
     val pagerState = rememberPagerState { 2 }
 
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+    val deviceType = DeviceType.fromWindowSizeClass(windowClass)
+
+    val isDisplayDeviceWide = when(deviceType){
+
+        DeviceType.MOBILE_PORTRAIT -> false
+        else -> true
+    }
+
     Column {
 
         HistoryTabRow(
                 uiState = uiState,
                 pagerState = pagerState,
-                onEvent = onEvent
+                onEvent = onEvent,
+                isDisplayDeviceWide = isDisplayDeviceWide
         )
         HistoryBottomSheet(
                 uiState = uiState,
