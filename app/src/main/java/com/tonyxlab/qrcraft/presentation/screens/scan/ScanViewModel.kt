@@ -15,6 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import java.time.LocalDateTime
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
@@ -35,7 +36,7 @@ class ScanViewModel(
 
     override fun onEvent(event: ScanUiEvent) {
         when (event) {
-            is ScanUiEvent.FabOptionSelected -> {}
+            ScanUiEvent.ToggleTorch -> toggleTorch()
         }
     }
 
@@ -93,5 +94,12 @@ class ScanViewModel(
                     )
             )
         }
+    }
+
+    private fun toggleTorch() {
+
+        updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
+        
+        Timber.tag("CameraPreview").i("Toggled - state: ${currentState.isFlashLightOn}")
     }
 }

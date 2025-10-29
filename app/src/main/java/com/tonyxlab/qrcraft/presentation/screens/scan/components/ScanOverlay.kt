@@ -1,12 +1,16 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,27 +30,34 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
+import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
+import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Primary
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.Constants
+import timber.log.Timber
 import kotlin.math.min
 
 @Composable
 fun ScanOverlay(
-    modifier: Modifier = Modifier,
-    isLoading: Boolean
+    isLoading: Boolean,
+    isFlashLightOn: Boolean,
+    onEvent: (ScanUiEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val strokeWidth = MaterialTheme.spacing.spaceSmall.value
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.TopCenter) {
         Canvas(
                 modifier = Modifier
                         .fillMaxSize()
@@ -128,6 +139,10 @@ fun ScanOverlay(
                 )
             }
         }
+        FlashLightOverlay(
+                isFlashLightOn = isFlashLightOn,
+                onEvent = onEvent
+        )
     }
 }
 
@@ -193,6 +208,50 @@ fun DrawScope.drawCornerGuides(
     )
 }
 
+@Composable
+private fun FlashLightOverlay(
+    isFlashLightOn: Boolean,
+    onEvent: (ScanUiEvent) -> Unit,
+    iconSize: Dp = MaterialTheme.spacing.spaceDoubleDp * 22,
+    modifier: Modifier = Modifier,
+
+    ) {
+
+    Row(
+            modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.spaceLarge)
+                    .padding(vertical = MaterialTheme.spacing.spaceLarge),
+            horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+
+        val (painter, contentDescription) = when {
+            isFlashLightOn ->
+                painterResource(R.drawable.flash_on) to
+                        stringResource(id = R.string.cds_text_flash_on)
+
+            else ->
+                painterResource(R.drawable.flash_off) to
+                        stringResource(id = R.string.cds_text_flash_off)
+        }
+
+        Image(
+                modifier = Modifier.size(iconSize).clickable{
+                    Timber.tag("CameraPreview").i("Event Detected")
+                    onEvent(ScanUiEvent.ToggleTorch)
+                },
+                painter = painter,
+                contentDescription = contentDescription
+        )
+
+        Image(
+                modifier = Modifier.size(iconSize),
+                painter = painterResource(R.drawable.open_gallery),
+                contentDescription = stringResource(id = R.string.cds_text_open_gallery)
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun ScanOverlay_Preview() {
@@ -200,7 +259,9 @@ private fun ScanOverlay_Preview() {
     QRCraftTheme {
         ScanOverlay(
                 modifier = Modifier.fillMaxSize(),
-                isLoading = false
+                isLoading = false,
+                isFlashLightOn = true,
+                onEvent = {}
         )
     }
 

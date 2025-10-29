@@ -4,5 +4,5 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 
 sealed interface ScanUiEvent : UiEvent {
 
-    data class FabOptionSelected(val isOk: Boolean): ScanUiEvent
+    data object ToggleTorch: ScanUiEvent
 }

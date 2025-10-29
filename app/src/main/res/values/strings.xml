@@ -38,6 +38,7 @@
     <string name="btn_text_show_less"> Show Less</string>
     <string name="btn_text_generate_qr">Generate QR-Code </string>
 
+
     <!--Text Button Texts-->
     <string name="txt_btn_no_account">Don’t have an account?</string>
 
@@ -85,6 +86,9 @@
     <string name="cds_text_phone">Phone Number</string>
     <string name="cds_text_geo">Geolocation</string>
     <string name="cds_text_wifi">Wi-Fi</string>
+    <string name="cds_text_flash_on">Flash On</string>
+    <string name="cds_text_flash_off">Flash Off</string>
+    <string name="cds_text_open_gallery">Open Gallery</string>
 
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>

@@ -16,6 +16,7 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
+import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreviews
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
@@ -88,12 +89,19 @@ fun HomeScreenContent(
                 uiState = uiState,
                 updateCamSnackbarShownStatus = updateCamSnackbarShownStatus
         )
-        CameraPreview(
+        CameraPreviews(
                 modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                isFlashLightOn = uiState.isFlashLightOn,
                 onScanSuccess = onScanSuccess,
                 onAnalyzing = onAnalyzing,
         )
-        ScanOverlay(modifier = Modifier.matchParentSize(), isLoading = uiState.isLoading)
+        ScanOverlay(
+                modifier = Modifier.matchParentSize(),
+                isFlashLightOn = uiState.isFlashLightOn,
+                isLoading = uiState.isLoading,
+                onEvent = onEvent,
+        )
     }
 }
 
