@@ -28,9 +28,124 @@ import kotlin.math.min
 import kotlin.text.contains
 import kotlin.text.firstOrNull
 import kotlin.text.isEmpty
-
 @Composable
 fun CameraPreview(
+    uiState: ScanUiState,
+    isFlashLightOn: Boolean,
+    onScanSuccess: (QrData) -> Unit,
+    onAnalyzing: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val executor = ContextCompat.getMainExecutor(context)
+
+    // 1️⃣ Remember camera controller so it's not recreated on every recomposition
+    val cameraController = remember {
+        LifecycleCameraController(context).apply {
+            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+        }
+    }
+
+    // 2️⃣ Barcode scanner setup
+    val options = remember {
+        BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build()
+    }
+
+    val scanner = remember { BarcodeScanning.getClient(options) }
+
+    // 3️⃣ Bind analyzer only once (this is heavy work)
+   LaunchedEffect(Unit) {
+        cameraController.setImageAnalysisAnalyzer(
+                executor,
+                MlKitAnalyzer(
+                        listOf(scanner),
+                        ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
+                        executor
+                ) { result ->
+
+                    val barcodes = result?.getValue(scanner).orEmpty()
+
+                    if (barcodes.isEmpty()) {
+                        onAnalyzing(false)
+                        return@MlKitAnalyzer
+                    }
+
+                  //  if(uiState.isLoading) return@MlKitAnalyzer
+                    onAnalyzing(true)
+                    val previewView = PreviewView(context).apply {
+
+                        layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        scaleType = PreviewView.ScaleType.FILL_CENTER
+                    }
+
+                    val w = previewView.width
+                    val h = previewView.height
+
+                    if (w == 0 || h == 0) return@MlKitAnalyzer
+
+                    val sideDimen = (min(w, h) * SCREEN_REGION_OF_INTEREST_FRACTION).toInt()
+                    val left = (w - sideDimen) / 2
+                    val top = (h - sideDimen) / 2
+
+                    val roiRectangle = Rect(left, top, (left + sideDimen), top + sideDimen)
+
+                    val hit = barcodes.firstOrNull { barcode ->
+                        barcode.boundingBox?.let { boundingBox ->
+                            roiRectangle.contains(
+                                    boundingBox.centerX(),
+                                    boundingBox.centerY()
+                            )
+                        } == true
+                    }
+
+                    hit?.let {
+                        onScanSuccess(it.toQrData())
+                   onAnalyzing(false)
+                    }
+                }
+        )
+
+        cameraController.bindToLifecycle(lifecycleOwner)
+    }
+
+    // 4️⃣ Reactively toggle torch when state changes
+    LaunchedEffect(isFlashLightOn) {
+        Timber.tag("CameraPreview").i("Torch toggled: $isFlashLightOn")
+        cameraController.enableTorch(isFlashLightOn)
+    }
+
+    // 5️⃣ AndroidView to display the PreviewView
+    AndroidView(
+            modifier = modifier,
+            factory = { ctx ->
+                PreviewView(ctx).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    scaleType = PreviewView.ScaleType.FILL_CENTER
+                    controller = cameraController
+                }
+            },
+            update = { previewView ->
+                // If you ever want to update settings dynamically, do it here
+            }
+    )
+}
+
+
+
+
+
+
+@Composable
+fun CameraPreviewView(
    uiState: ScanUiState,
    isFlashLightOn: Boolean,
     onScanSuccess: (QrData) -> Unit,
@@ -41,34 +156,27 @@ fun CameraPreview(
     val lifecycleOwner = LocalLifecycleOwner.current
     val executor = ContextCompat.getMainExecutor(context)
 
-    var cameraController = remember {
+    val cameraController = remember {
 
         LifecycleCameraController(context).apply {
             cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
         }
     }
 
-    val options = remember {
-        BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
+    Timber.tag("CameraPreview").i("Composable - Torch toggled: $isFlashLightOn")
+
+
+   LaunchedEffect(isFlashLightOn) {
+
+        cameraController.enableTorch(isFlashLightOn)
 
     }
 
-    val scanner = BarcodeScanning.getClient(options)
 
-    LaunchedEffect(true) {
-       cameraController.setImageAnalysisAnalyzer(
-               executor,
-               MlKitAnalyzer(
-                       listOf(scanner),
-                       ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
-                       executor
-               ){
-
-               }
-       )
-
+    // 4️⃣ Reactively toggle torch when state changes
+    LaunchedEffect(isFlashLightOn) {
+        Timber.tag("CameraPreview").i("Launched Effect Torch toggled: $isFlashLightOn")
+        cameraController.enableTorch(isFlashLightOn)
     }
 
     AndroidView(
@@ -90,12 +198,7 @@ fun CameraPreview(
 
                 val scanner = BarcodeScanning.getClient(options)
 
-                cameraController =
-                    LifecycleCameraController(cxt).apply {
-
-                        cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-                        setImageAnalysisAnalyzer(
+                cameraController.setImageAnalysisAnalyzer(
                                 executor,
                                 MlKitAnalyzer(
                                         listOf(scanner),
@@ -141,7 +244,7 @@ fun CameraPreview(
                                     hit?.let { onScanSuccess(it.toQrData()) }
                                 }
                         )
-                    }
+
                 previewView.controller = cameraController
                 Timber.tag("CameraPreview")
                         .i("State is: ${uiState.isFlashLightOn}")
@@ -150,116 +253,12 @@ fun CameraPreview(
                 previewView
             }
     )
-    cameraController.enableTorch(isFlashLightOn)
+
+
 
 }
 
-@Composable
-fun CameraPreviews(
-    uiState: ScanUiState,
-    isFlashLightOn: Boolean,
-    onScanSuccess: (QrData) -> Unit,
-    onAnalyzing: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val executor = ContextCompat.getMainExecutor(context)
 
-    // 1️⃣ Remember camera controller so it's not recreated on every recomposition
-    val cameraController = remember {
-        LifecycleCameraController(context).apply {
-            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-        }
-    }
-
-    // 2️⃣ Barcode scanner setup
-    val options = remember {
-        BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-    }
-
-    val scanner = remember { BarcodeScanning.getClient(options) }
-
-    // 3️⃣ Bind analyzer only once (this is heavy work)
-    LaunchedEffect(Unit) {
-        cameraController.setImageAnalysisAnalyzer(
-                executor,
-                MlKitAnalyzer(
-                        listOf(scanner),
-                        ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
-                        executor
-                ) { result ->
-
-                    val barcodes = result?.getValue(scanner).orEmpty()
-
-                    if (barcodes.isEmpty()) {
-                        onAnalyzing(false)
-                        return@MlKitAnalyzer
-                    }
-
-                    onAnalyzing(true)
-                    val previewView = PreviewView(context).apply {
-
-                        layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        scaleType = PreviewView.ScaleType.FILL_CENTER
-                    }
-
-                    val w = previewView.width
-                    val h = previewView.height
-
-                    if (w == 0 || h == 0) return@MlKitAnalyzer
-
-                    val sideDimen = (min(w, h) * SCREEN_REGION_OF_INTEREST_FRACTION).toInt()
-                    val left = (w - sideDimen) / 2
-                    val top = (h - sideDimen) / 2
-
-                    val roiRectangle = Rect(left, top, (left + sideDimen), top + sideDimen)
-
-                    val hit = barcodes.firstOrNull { barcode ->
-                        barcode.boundingBox?.let { boundingBox ->
-                            roiRectangle.contains(
-                                    boundingBox.centerX(),
-                                    boundingBox.centerY()
-                            )
-                        } == true
-                    }
-
-                    hit?.let { onScanSuccess(it.toQrData()) }
-                }
-        )
-
-        cameraController.bindToLifecycle(lifecycleOwner)
-    }
-
-    // 4️⃣ Reactively toggle torch when state changes
-    LaunchedEffect(isFlashLightOn) {
-        Timber.tag("CameraPreview").i("Torch toggled: $isFlashLightOn")
-        cameraController.enableTorch(isFlashLightOn)
-    }
-
-    // 5️⃣ AndroidView to display the PreviewView
-    AndroidView(
-            modifier = modifier,
-            factory = { ctx ->
-                PreviewView(ctx).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = PreviewView.ScaleType.FILL_CENTER
-                    controller = cameraController
-                }
-            },
-            update = { previewView ->
-                // If you ever want to update settings dynamically, do it here
-            }
-    )
-}
 
 
 

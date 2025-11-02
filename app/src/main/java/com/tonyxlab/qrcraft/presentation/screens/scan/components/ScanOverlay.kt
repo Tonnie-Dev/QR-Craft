@@ -1,5 +1,8 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,6 +20,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -37,7 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
@@ -45,7 +48,6 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Primary
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.util.Constants
-import timber.log.Timber
 import kotlin.math.min
 
 @Composable
@@ -68,6 +70,7 @@ fun ScanOverlay(
 
             val w = size.width
             val h = size.height
+
             // Using a constant of 0.75f
             val roiFraction = Constants.SCREEN_REGION_OF_INTEREST_FRACTION
 
@@ -125,12 +128,14 @@ fun ScanOverlay(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
             ) {
+
                 CircularProgressIndicator(
                         modifier = Modifier
                                 .size(MaterialTheme.spacing.spaceLarge)
                                 .padding(bottom = MaterialTheme.spacing.spaceMedium),
                         color = OnOverlay
                 )
+
                 Text(
                         text = stringResource(id = R.string.cap_text_loading),
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -212,10 +217,31 @@ fun DrawScope.drawCornerGuides(
 private fun FlashLightOverlay(
     isFlashLightOn: Boolean,
     onEvent: (ScanUiEvent) -> Unit,
-    iconSize: Dp = MaterialTheme.spacing.spaceDoubleDp * 22,
     modifier: Modifier = Modifier,
+    iconSize: Dp = MaterialTheme.spacing.spaceDoubleDp * 22
+) {
 
-    ) {
+    val scale by animateFloatAsState(
+            targetValue = if (isFlashLightOn) 1.2f else 1f,
+            animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
+            label = "flashScaleAnim"
+    )
+
+    val glowAlpha by animateFloatAsState(
+            targetValue = if (isFlashLightOn) 0.5f else 0f,
+            animationSpec = tween(durationMillis = 250),
+            label = "flashGlowAnim"
+    )
+
+    val (painter, contentDescription) = when {
+        isFlashLightOn ->
+            painterResource(R.drawable.flash_on) to
+                    stringResource(id = R.string.cds_text_flash_on)
+
+        else ->
+            painterResource(R.drawable.flash_off) to
+                    stringResource(id = R.string.cds_text_flash_off)
+    }
 
     Row(
             modifier = modifier
@@ -225,24 +251,34 @@ private fun FlashLightOverlay(
             horizontalArrangement = Arrangement.SpaceBetween,
     ) {
 
-        val (painter, contentDescription) = when {
-            isFlashLightOn ->
-                painterResource(R.drawable.flash_on) to
-                        stringResource(id = R.string.cds_text_flash_on)
+        Box(
+                modifier = Modifier
+                        .size(iconSize)
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                        }
+                        .clickable { onEvent(ScanUiEvent.ToggleTorch) },
+                contentAlignment = Alignment.Center
 
-            else ->
-                painterResource(R.drawable.flash_off) to
-                        stringResource(id = R.string.cds_text_flash_off)
+        ) {
+
+            Canvas(modifier = Modifier.matchParentSize()) {
+                if (glowAlpha > 0f) {
+                    drawCircle(
+                            color = Color.Yellow.copy(alpha = glowAlpha),
+                            radius = size.minDimension / 2,
+                            center = center
+                    )
+                }
+            }
+
+            Image(
+                    painter = painter,
+                    contentDescription = contentDescription,
+                    modifier = Modifier.fillMaxSize()
+            )
         }
-
-        Image(
-                modifier = Modifier.size(iconSize).clickable{
-                    Timber.tag("CameraPreview").i("Event Detected")
-                    onEvent(ScanUiEvent.ToggleTorch)
-                },
-                painter = painter,
-                contentDescription = contentDescription
-        )
 
         Image(
                 modifier = Modifier.size(iconSize),
@@ -264,5 +300,4 @@ private fun ScanOverlay_Preview() {
                 onEvent = {}
         )
     }
-
 }
