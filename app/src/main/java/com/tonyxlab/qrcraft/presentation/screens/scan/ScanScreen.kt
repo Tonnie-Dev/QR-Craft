@@ -16,8 +16,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
-import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreviewView
-
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
@@ -32,6 +30,7 @@ fun ScanScreen(
     modifier: Modifier = Modifier,
     viewModel: ScanViewModel = koinViewModel()
 ) {
+
     SetStatusBarIconsColor(darkIcons = false)
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -90,7 +89,7 @@ fun HomeScreenContent(
                 uiState = uiState,
                 updateCamSnackbarShownStatus = updateCamSnackbarShownStatus
         )
-        CameraPreviewView(
+        CameraPreview(
                 modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
                 isFlashLightOn = uiState.isFlashLightOn,

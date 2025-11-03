@@ -97,9 +97,6 @@ class ScanViewModel(
     }
 
     private fun toggleTorch() {
-
         updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
-        
-        Timber.tag("CameraPreview").i("Toggled - state: ${currentState.isFlashLightOn}")
     }
 }
