@@ -4,4 +4,6 @@ import com.tonyxlab.qrcraft.presentation.core.base.handling.UiEvent
 
 sealed interface ScanUiEvent : UiEvent {
     data object ToggleTorch: ScanUiEvent
+
+
 }

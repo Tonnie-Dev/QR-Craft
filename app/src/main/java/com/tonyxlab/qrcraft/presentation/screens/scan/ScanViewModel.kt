@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.HistoryType
@@ -37,6 +38,7 @@ class ScanViewModel(
     override fun onEvent(event: ScanUiEvent) {
         when (event) {
             ScanUiEvent.ToggleTorch -> toggleTorch()
+
         }
     }
 
@@ -98,5 +100,9 @@ class ScanViewModel(
 
     private fun toggleTorch() {
         updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
+    }
+     fun selectImage(imageUri: Uri) {
+
+        updateState { it.copy(imageUri = imageUri) }
     }
 }

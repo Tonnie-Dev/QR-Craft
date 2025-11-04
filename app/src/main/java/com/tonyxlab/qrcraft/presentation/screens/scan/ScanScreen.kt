@@ -1,6 +1,8 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -55,6 +57,15 @@ fun ScanScreen(
             },
             containerColor = Overlay
     ) {
+
+        val imagePickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.GetContent()
+        ) { uri ->
+            uri?.let { imageUri ->
+                viewModel.selectImage(imageUri = imageUri)
+            }
+        }
+
         HomeScreenContent(
                 modifier = modifier,
                 uiState = it,
@@ -62,7 +73,8 @@ fun ScanScreen(
                 updateCamSnackbarShownStatus = viewModel::updateCamSnackbarShownStatus,
                 onEvent = viewModel::onEvent,
                 onAnalyzing = viewModel::onAnalyzing,
-                onScanSuccess = viewModel::onScanSuccess
+                onScanSuccess = viewModel::onScanSuccess,
+                onSelectImage = { imagePickerLauncher.launch("image/*") }
         )
     }
 }
@@ -75,6 +87,7 @@ fun HomeScreenContent(
     onScanSuccess: (QrData) -> Unit,
     onAnalyzing: (Boolean) -> Unit,
     onEvent: (ScanUiEvent) -> Unit,
+    onSelectImage: () -> Unit,
     modifier: Modifier = Modifier,
     updateCamSnackbarShownStatus: (Boolean) -> Unit
 ) {
@@ -101,6 +114,7 @@ fun HomeScreenContent(
                 isFlashLightOn = uiState.isFlashLightOn,
                 isLoading = uiState.isLoading,
                 onEvent = onEvent,
+                onSelectImage = onSelectImage
         )
     }
 }

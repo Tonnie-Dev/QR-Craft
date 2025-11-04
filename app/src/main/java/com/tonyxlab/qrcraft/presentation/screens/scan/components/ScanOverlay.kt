@@ -55,6 +55,7 @@ fun ScanOverlay(
     isLoading: Boolean,
     isFlashLightOn: Boolean,
     onEvent: (ScanUiEvent) -> Unit,
+    onSelectImage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val strokeWidth = MaterialTheme.spacing.spaceSmall.value
@@ -146,7 +147,8 @@ fun ScanOverlay(
         }
         FlashLightOverlay(
                 isFlashLightOn = isFlashLightOn,
-                onEvent = onEvent
+                onEvent = onEvent,
+                onSelectImage = onSelectImage
         )
     }
 }
@@ -217,6 +219,7 @@ fun DrawScope.drawCornerGuides(
 private fun FlashLightOverlay(
     isFlashLightOn: Boolean,
     onEvent: (ScanUiEvent) -> Unit,
+    onSelectImage: () -> Unit,
     modifier: Modifier = Modifier,
     iconSize: Dp = MaterialTheme.spacing.spaceDoubleDp * 22
 ) {
@@ -281,7 +284,11 @@ private fun FlashLightOverlay(
         }
 
         Image(
-                modifier = Modifier.size(iconSize),
+                modifier = Modifier
+                        .size(iconSize)
+                        .clickable {
+                            onSelectImage()
+                        },
                 painter = painterResource(R.drawable.open_gallery),
                 contentDescription = stringResource(id = R.string.cds_text_open_gallery)
         )
@@ -297,7 +304,8 @@ private fun ScanOverlay_Preview() {
                 modifier = Modifier.fillMaxSize(),
                 isLoading = false,
                 isFlashLightOn = true,
-                onEvent = {}
+                onEvent = {},
+                onSelectImage = {},
         )
     }
 }
