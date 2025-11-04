@@ -88,6 +88,9 @@ dependencies {
     // Accompanist Permissions
     implementation(Google.accompanist.permissions)
 
+    // Coroutines Play Services
+    implementation(KotlinX.coroutines.playServices)
+
     // Camera
     implementation(AndroidX.camera.core)
     implementation(AndroidX.camera.camera2)

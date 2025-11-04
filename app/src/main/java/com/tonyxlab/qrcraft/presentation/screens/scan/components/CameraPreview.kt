@@ -21,7 +21,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import com.tonyxlab.qrcraft.presentation.screens.scan.utils.toQrData
+import com.tonyxlab.qrcraft.util.toQrData
 import com.tonyxlab.qrcraft.util.Constants.SCREEN_REGION_OF_INTEREST_FRACTION
 import kotlin.math.min
 

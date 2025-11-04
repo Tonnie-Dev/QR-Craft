@@ -7,5 +7,6 @@ data class ScanUiState(
     val isLoading: Boolean = false,
     val isFlashLightOn: Boolean = false,
     val camSnackbarShown: Boolean? = null,
-    val imageUri: Uri? = null
+    val imageUri: Uri? = null,
+    val showDialog: Boolean = false
 ) : UiState

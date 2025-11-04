@@ -1,7 +1,10 @@
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.model.QrData
@@ -12,11 +15,12 @@ import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
 import com.tonyxlab.qrcraft.util.toMillis
+import com.tonyxlab.qrcraft.util.toQrData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
@@ -38,7 +42,8 @@ class ScanViewModel(
     override fun onEvent(event: ScanUiEvent) {
         when (event) {
             ScanUiEvent.ToggleTorch -> toggleTorch()
-
+            ScanUiEvent.ShowDialog -> { updateState { it.copy(showDialog = true) }}
+            ScanUiEvent.DismissDialog -> { updateState { it.copy(showDialog = false) } }
         }
     }
 
@@ -47,7 +52,6 @@ class ScanViewModel(
     }
 
     fun onScanSuccess(qrData: QrData) {
-
         if (hasScanned) return
         hasScanned = true
 
@@ -101,8 +105,34 @@ class ScanViewModel(
     private fun toggleTorch() {
         updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
     }
-     fun selectImage(imageUri: Uri) {
+
+    fun selectImage(imageUri: Uri) {
 
         updateState { it.copy(imageUri = imageUri) }
+    }
+
+    fun analyze(context: Context, imageUri: Uri) {
+
+        launchCatching(
+                onStart = { updateState { it.copy(isLoading = true) } },
+                onCompletion = { updateState { it.copy(isLoading = false) } }
+        ) {
+
+            val inputImage = InputImage.fromFilePath(context, imageUri)
+            val scanner = BarcodeScanning.getClient()
+
+            val barcodes = scanner.process(inputImage)
+                    .await()
+
+            barcodes.ifEmpty {
+
+               sendActionEvent(ScanActionEvent.ShowDialog)
+                return@launchCatching
+            }
+
+            val qrData = barcodes.first().toQrData()
+
+            onScanSuccess(qrData = qrData)
+        }
     }
 }
