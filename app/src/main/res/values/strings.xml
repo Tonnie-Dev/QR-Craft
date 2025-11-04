@@ -59,12 +59,12 @@
     <!--Snackbar Texts-->
     <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
 
-  <!--  This app cannot function without camera access. To scan QR codes, please grant permission
--->
     <!--Dialog Texts-->
     <string name="dialog_text_camera_required">Camera Required</string>
     <string name="dialog_text_close_app">Close App</string>
     <string name="dialog_text_grant_access">Grant Access</string>
+    <string name="dialog_text_no_qr_found">No QR-CodesFound</string>
+
     <string name="dialog_text_rationale">This app cannot function without camera access.
         To scan QR codes, please grant permission
     </string>
@@ -89,6 +89,7 @@
     <string name="cds_text_flash_on">Flash On</string>
     <string name="cds_text_flash_off">Flash Off</string>
     <string name="cds_text_open_gallery">Open Gallery</string>
+    <string name="cds_text_alert">Alert</string>
 
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>
