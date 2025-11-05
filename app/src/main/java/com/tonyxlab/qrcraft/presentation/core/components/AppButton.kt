@@ -2,6 +2,7 @@ package com.tonyxlab.qrcraft.presentation.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
@@ -29,40 +29,64 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 
 @Composable
 fun AppButton(
-    buttonText: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    buttonText: String = "",
+    isCircularButton: Boolean = false,
     buttonShape: Shape = MaterialTheme.shapes.extraLarge,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     leadingIcon: Painter? = null
 ) {
+    if (isCircularButton) {
 
-    Button(
-            modifier = modifier,
-            onClick = onClick,
-            shape = buttonShape,
-            colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = contentColor,
-                    containerColor = containerColor,
-            )
-    ) {
-
-        if (leadingIcon != null) {
-            Icon(
-                    modifier = Modifier
-                            .size(MaterialTheme.spacing.spaceMedium),
-                    painter = leadingIcon,
-                    contentDescription = buttonText
-            )
+        Box(
+                modifier = modifier
+                        .clip(buttonShape)
+                        .background(color = containerColor, shape = buttonShape)
+                        .size(MaterialTheme.spacing.spaceDoubleDp * 22),
+                contentAlignment = Alignment.Center
+        ) {
+            leadingIcon?.let {
+                Icon(
+                        painter = it,
+                        contentDescription = buttonText,
+                        tint = contentColor
+                )
+            }
         }
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceSmall))
-        Text(
-                text = buttonText,
-                style = MaterialTheme.typography.labelLarge
+    } else
 
-        )
-    }
+        Button(
+                modifier = modifier,
+                onClick = onClick,
+                shape = buttonShape,
+                colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = contentColor,
+                        containerColor = containerColor,
+                )
+        ) {
+
+            if (leadingIcon != null) {
+                Icon(
+                        modifier = Modifier
+                                .size(MaterialTheme.spacing.spaceMedium),
+                        painter = leadingIcon,
+                        contentDescription = buttonText
+                )
+            }
+
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceSmall))
+
+            if (buttonText.isNotBlank()) {
+
+                Text(
+                        text = buttonText,
+                        style = MaterialTheme.typography.labelLarge
+
+                )
+            }
+        }
 }
 
 @PreviewLightDark
@@ -88,7 +112,7 @@ private fun AppButton_Preview() {
             AppButton(
                     buttonText = "Copy",
                     onClick = {},
-                    leadingIcon = painterResource(R.drawable.copy_icon)
+                    leadingIcon = painterResource(R.drawable.icon_copy)
             )
 
 
@@ -96,7 +120,6 @@ private fun AppButton_Preview() {
                     buttonText = "Grant",
                     onClick = {},
             )
-
 
             AppButton(
                     buttonText = "Close App",
