@@ -42,24 +42,13 @@ class ScanViewModel(
     override fun onEvent(event: ScanUiEvent) {
         when (event) {
             ScanUiEvent.ToggleTorch -> toggleTorch()
-            ScanUiEvent.ShowDialog -> { updateState { it.copy(showDialog = true) }}
-            ScanUiEvent.DismissDialog -> { updateState { it.copy(showDialog = false) } }
-        }
-    }
+            ScanUiEvent.ShowDialog -> {
+                updateState { it.copy(showDialog = true) }
+            }
 
-    fun onAnalyzing(active: Boolean) {
-        updateState { it.copy(isLoading = active) }
-    }
-
-    fun onScanSuccess(qrData: QrData) {
-        if (hasScanned) return
-        hasScanned = true
-
-        launch {
-            delay(1_000)
-            updateState { it.copy(isLoading = false) }
-            upsertQrItem(qrData = qrData)
-            sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
+            ScanUiEvent.DismissDialog -> {
+                updateState { it.copy(showDialog = false) }
+            }
         }
     }
 
@@ -77,6 +66,60 @@ class ScanViewModel(
         launch {
             qrRepository.setSnackbarShownStatus(isShown)
         }
+    }
+
+    fun updateCameraAnalyzingState(active: Boolean) {
+        if (currentState.isGalleryAnalyzing) return
+        updateState { it.copy(isLoading = active) }
+    }
+
+    fun onScanSuccess(qrData: QrData, delay: Long = 1_000) {
+        if (hasScanned) return
+        hasScanned = true
+
+        launch {
+            delay(delay)
+            updateState { it.copy(isLoading = false) }
+            upsertQrItem(qrData = qrData)
+            sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
+        }
+    }
+
+    fun selectImage(imageUri: Uri) {
+        updateState { it.copy(imageUri = imageUri) }
+    }
+
+    fun analyzeGalleryImage(context: Context, imageUri: Uri) {
+
+        launchCatching(
+                onStart = { updateState { it.copy(isLoading = true, isGalleryAnalyzing = true) } },
+                onCompletion = {
+                    updateState {
+                        it.copy(isLoading = false, isGalleryAnalyzing = false)
+                    }
+                }
+        ) {
+
+            val inputImage = InputImage.fromFilePath(context, imageUri)
+            val scanner = BarcodeScanning.getClient()
+
+            val barcodes = scanner.process(inputImage)
+                    .await()
+
+            barcodes.ifEmpty {
+                sendActionEvent(ScanActionEvent.ShowDialog)
+                return@launchCatching
+            }
+
+            val qrData = barcodes.first()
+                    .toQrData()
+            delay(1_000)
+            onScanSuccess(qrData = qrData, delay = 0L)
+        }
+    }
+
+    private fun toggleTorch() {
+        updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
     }
 
     private fun upsertQrItem(qrData: QrData) {
@@ -99,40 +142,6 @@ class ScanViewModel(
                             timestamp = now
                     )
             )
-        }
-    }
-
-    private fun toggleTorch() {
-        updateState { it.copy(isFlashLightOn = !currentState.isFlashLightOn) }
-    }
-
-    fun selectImage(imageUri: Uri) {
-
-        updateState { it.copy(imageUri = imageUri) }
-    }
-
-    fun analyze(context: Context, imageUri: Uri) {
-
-        launchCatching(
-                onStart = { updateState { it.copy(isLoading = true) } },
-                onCompletion = { updateState { it.copy(isLoading = false) } }
-        ) {
-
-            val inputImage = InputImage.fromFilePath(context, imageUri)
-            val scanner = BarcodeScanning.getClient()
-
-            val barcodes = scanner.process(inputImage)
-                    .await()
-
-            barcodes.ifEmpty {
-
-               sendActionEvent(ScanActionEvent.ShowDialog)
-                return@launchCatching
-            }
-
-            val qrData = barcodes.first().toQrData()
-
-            onScanSuccess(qrData = qrData)
         }
     }
 }

@@ -1,3 +1,6 @@
+
+@file:OptIn(ExperimentalPermissionsApi::class)
+
 package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import android.widget.Toast
@@ -37,7 +40,6 @@ fun ScanScreen(
     SetStatusBarIconsColor(darkIcons = false)
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-
     BaseContentLayout(
             viewModel = viewModel,
             snackbarHost = {
@@ -63,12 +65,13 @@ fun ScanScreen(
             containerColor = Overlay
     ) {
 
+
         val imagePickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent()
         ) { uri ->
             uri?.let { imageUri ->
                 viewModel.selectImage(imageUri = imageUri)
-                viewModel.analyze(context = context, imageUri = imageUri)
+                viewModel.analyzeGalleryImage(context = context, imageUri = imageUri)
             }
         }
 
@@ -78,14 +81,13 @@ fun ScanScreen(
                 snackbarHostState = snackbarHostState,
                 updateCamSnackbarShownStatus = viewModel::updateCamSnackbarShownStatus,
                 onEvent = viewModel::onEvent,
-                onAnalyzing = viewModel::onAnalyzing,
+                onAnalyzing = viewModel::updateCameraAnalyzingState,
                 onScanSuccess = viewModel::onScanSuccess,
                 onSelectImage = { imagePickerLauncher.launch("image/*") }
         )
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreenContent(
     uiState: ScanUiState,
@@ -123,7 +125,10 @@ fun HomeScreenContent(
                 onSelectImage = onSelectImage
         )
 
-        ScanDialog(showDialog = uiState.showDialog, onDismissDialog = { onEvent(ScanUiEvent.DismissDialog)})
+        ScanDialog(
+                showDialog = uiState.showDialog,
+                onDismissDialog = { onEvent(ScanUiEvent.DismissDialog) }
+        )
     }
 }
 
