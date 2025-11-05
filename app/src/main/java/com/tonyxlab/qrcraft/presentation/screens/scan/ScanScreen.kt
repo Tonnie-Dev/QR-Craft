@@ -22,7 +22,6 @@ import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanDialog
-import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanDialogOne
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
@@ -126,7 +125,7 @@ fun HomeScreenContent(
                 onSelectImage = onSelectImage
         )
 
-        ScanDialogOne(
+        ScanDialog(
                 showDialog = uiState.showDialog,
                 onDismissDialog = { onEvent(ScanUiEvent.DismissDialog) }
         )

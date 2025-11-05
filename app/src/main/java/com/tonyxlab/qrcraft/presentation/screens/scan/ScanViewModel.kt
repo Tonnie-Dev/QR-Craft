@@ -107,6 +107,7 @@ class ScanViewModel(
                     .await()
 
             barcodes.ifEmpty {
+                delay(timeMillis = 1_000)
                 sendActionEvent(ScanActionEvent.ShowDialog)
                 return@launchCatching
             }

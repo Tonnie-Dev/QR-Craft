@@ -8,7 +8,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.tonyxlab.qrcraft.R
 
-val SuseFontFamily = FontFamily(Font(R.font.suse_variable))
+val SuseFontFamily = FontFamily(
+        Font(R.font.suse_regular),
+        Font(R.font.suse_medium),
+        Font(R.font.suse_semi_bold),
+       // Font(R.font.suse_variable),
+        )
+
 
 val Typography = Typography(
 
