@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -119,31 +120,7 @@ fun PreviewContainer(
                     )
                 }
             }
-            Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(
-                            MaterialTheme.spacing.spaceSmall
-                    )
-            ) {
-
-                AppButton(
-                        modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                        buttonText = stringResource(id = R.string.btn_text_share),
-                        onClick = onShare,
-                        leadingIcon = painterResource(R.drawable.share_icon)
-                )
-
-                AppButton(
-                        modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                        buttonText = stringResource(id = R.string.btn_text_copy),
-                        onClick = onCopy,
-                        leadingIcon = painterResource(R.drawable.copy_icon)
-                )
-            }
+            ButtonsRow(onShare = onShare, onCopy = onCopy, modifier = modifier)
         }
         QrImageTile(
                 data = qrData.rawData,
@@ -155,7 +132,45 @@ fun PreviewContainer(
 }
 
 @Composable
-fun BoxScope.QrImageTile(
+private fun ButtonsRow(
+    onShare: () -> Unit,
+    onCopy: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(
+                    MaterialTheme.spacing.spaceSmall
+            )
+    ) {
+
+        AppButton(
+                buttonShape = CircleShape,
+                isCircularButton = true,
+                onClick = onShare,
+                leadingIcon = painterResource(R.drawable.icon_share)
+        )
+
+        AppButton(
+                buttonShape = CircleShape,
+                isCircularButton = true,
+                onClick = onCopy,
+                leadingIcon = painterResource(R.drawable.icon_copy)
+        )
+
+        AppButton(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                buttonText = stringResource(id = R.string.btn_text_save),
+                onClick = onCopy,
+                leadingIcon = painterResource(R.drawable.icon_download)
+        )
+    }
+}
+
+@Composable
+private fun BoxScope.QrImageTile(
     data: String,
     qrBoxSizeInDp: Dp,
     overlapSize: Dp,
