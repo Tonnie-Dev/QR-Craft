@@ -62,7 +62,6 @@ fun PreviewContainer(
 
     val qrDataType = qrData.qrDataType
 
-
     Box(modifier = modifier.fillMaxWidth()) {
 
         Column(
@@ -91,7 +90,6 @@ fun PreviewContainer(
                     )
 
                 } else {
-
                     editableText()
                 }
 
@@ -225,7 +223,6 @@ fun PreviewContainer_Preview(modifier: Modifier = Modifier) {
                     onShare = {},
                     onCopy = {}
             )
-
         }
     }
 }

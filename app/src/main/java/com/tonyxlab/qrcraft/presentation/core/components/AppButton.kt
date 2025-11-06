@@ -106,7 +106,7 @@ private fun AppButton_Preview() {
             AppButton(
                     buttonText = "Share",
                     onClick = {},
-                    leadingIcon = painterResource(R.drawable.share_icon)
+                    leadingIcon = painterResource(R.drawable.icon_share)
             )
 
             AppButton(
@@ -114,7 +114,6 @@ private fun AppButton_Preview() {
                     onClick = {},
                     leadingIcon = painterResource(R.drawable.icon_copy)
             )
-
 
             AppButton(
                     buttonText = "Grant",

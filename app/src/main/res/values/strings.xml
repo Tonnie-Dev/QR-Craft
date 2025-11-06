@@ -91,6 +91,8 @@
     <string name="cds_text_flash_off">Flash Off</string>
     <string name="cds_text_open_gallery">Open Gallery</string>
     <string name="cds_text_alert">Alert</string>
+    <string name="cds_text_favorite">favorite</string>
+    <string name="cds_text_not_favorite">Not Favorite</string>
 
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>
