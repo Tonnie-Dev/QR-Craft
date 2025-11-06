@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
@@ -42,7 +42,7 @@ fun AppTopBar(
     contentColor: Color = Overlay,
     height: Dp = Dp.Unspecified,
     isFavorite: Boolean = false,
-    onMakeFavorite: (() -> Unit)? = null,
+    onMarkFavorite: (() -> Unit)? = null,
     onChevronIconClick: (() -> Unit)? = null,
 ) {
 
@@ -88,15 +88,16 @@ fun AppTopBar(
                 )
         )
 
-        if (onMakeFavorite != null) {
-
-            Icon(
-                    painter = painter,
-                    tint = tint,
-                    contentDescription = if (isFavorite) stringResource(id = R.string.cds_text_favorite)
-                    else
-                        stringResource(id = R.string.cds_text_not_favorite)
-            )
+        if (onMarkFavorite != null) {
+            IconButton(onClick = onMarkFavorite) {
+                Icon(
+                        painter = painter,
+                        tint = tint,
+                        contentDescription = if (isFavorite) stringResource(id = R.string.cds_text_favorite)
+                        else
+                            stringResource(id = R.string.cds_text_not_favorite)
+                )
+            }
         } else {
 
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.spaceMedium))
@@ -129,7 +130,7 @@ private fun AppTopBar_Preview() {
             AppTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     screenTitle = "Scan Result",
-                    onMakeFavorite = {},
+                    onMarkFavorite = {},
                     onChevronIconClick = {}
             )
 
@@ -137,7 +138,7 @@ private fun AppTopBar_Preview() {
                     modifier = Modifier.fillMaxWidth(),
                     screenTitle = "Scan Result",
                     onChevronIconClick = {},
-                    onMakeFavorite = {},
+                    onMarkFavorite = {},
                     isFavorite = true
             )
         }

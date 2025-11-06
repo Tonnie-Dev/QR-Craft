@@ -206,7 +206,8 @@ fun PreviewContainer_Preview(modifier: Modifier = Modifier) {
             displayName = "Text",
             prettifiedData = generateLoremIpsum(26),
             qrDataType = QrDataType.TEXT,
-            rawData = ""
+            rawData = "",
+            favorite = true
     )
 
     QRCraftTheme {

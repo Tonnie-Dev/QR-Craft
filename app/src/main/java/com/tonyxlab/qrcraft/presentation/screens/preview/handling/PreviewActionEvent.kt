@@ -8,4 +8,5 @@ sealed interface PreviewActionEvent : ActionEvent {
     data class ShareText(val text: String) : PreviewActionEvent
     data class CopyText(val text: String) : PreviewActionEvent
     data object NavigateToEntryScreen : PreviewActionEvent
+
 }

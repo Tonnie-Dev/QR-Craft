@@ -50,9 +50,6 @@ class PreviewViewModel(
     override fun onEvent(event: PreviewUiEvent) {
 
         when (event) {
-            PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
-                    actionEvent = PreviewActionEvent.NavigateToEntryScreen
-            )
 
             PreviewUiEvent.ShareContent -> {
                 val text = currentState.qrDataState.qrData.prettifiedData
@@ -73,6 +70,11 @@ class PreviewViewModel(
                     )
                 }
             }
+
+            PreviewUiEvent.MarkFavorite -> toggleFavoriteStatus()
+            PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
+                    actionEvent = PreviewActionEvent.NavigateToEntryScreen
+            )
         }
     }
 
@@ -131,6 +133,7 @@ class PreviewViewModel(
     private fun saveDisplayName(displayName: String) {
 
         val updatedItem = currentState.qrDataState.qrData.copy(displayName = displayName)
+
         launchCatching(
                 onError = {
 
@@ -145,12 +148,34 @@ class PreviewViewModel(
         }
     }
 
+    private fun toggleFavoriteStatus() {
+
+        launchCatching(onError = {
+
+            sendActionEvent(PreviewActionEvent.ShowToast(R.string.toast_text_item_not_saved))
+        }) {
+
+            updateState {
+                it.copy(
+                        qrDataState = currentState.qrDataState.copy(
+                                qrData = currentState.qrDataState.qrData.copy(
+                                        favorite = !currentState.qrDataState.qrData.favorite
+                                )
+                        )
+                )
+            }
+            val favoriteStatus = currentState.qrDataState.qrData.favorite
+
+            upsertHistoryUseCase(currentState.qrDataState.qrData.copy(favorite = favoriteStatus))
+
+        }
+    }
+
     private fun buildTextFieldState(value: String): TextFieldState {
         return TextFieldState(initialText = value)
     }
 
     private fun isDisplayNameEdited(newDisplayName: String): Boolean {
-
         return this::oldDisplayName.isInitialized && oldDisplayName != newDisplayName
     }
 }

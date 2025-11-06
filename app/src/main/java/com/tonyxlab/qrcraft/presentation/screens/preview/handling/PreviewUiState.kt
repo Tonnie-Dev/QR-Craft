@@ -19,7 +19,8 @@ data class PreviewUiState(
                 displayName = "",
                 prettifiedData = generateLoremIpsum(26),
                 qrDataType = QrDataType.TEXT,
-                rawData = generateLoremIpsum(52)
+                rawData = generateLoremIpsum(52),
+                favorite = false
         )
     )
 

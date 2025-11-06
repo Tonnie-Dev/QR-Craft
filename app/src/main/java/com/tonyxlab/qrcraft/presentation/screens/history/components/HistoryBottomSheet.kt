@@ -73,7 +73,7 @@ fun HistoryBottomSheet(
                 ) {
 
                     Icon(
-                            painter = painterResource(R.drawable.share_icon),
+                            painter = painterResource(R.drawable.icon_share),
                             contentDescription = stringResource(id = R.string.btn_text_share),
                             tint = MaterialTheme.colorScheme.onSurface
                     )
