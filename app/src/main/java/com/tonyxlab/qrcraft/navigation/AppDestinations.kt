@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.navigation
 
+import androidx.compose.runtime.internal.illegalDecoyCallException
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -70,12 +71,7 @@ sealed class Destinations {
     data object CreateScreenDestination : Destinations()
 
     @Serializable
-    data class ResultScreenDestination(
-        val displayName: String,
-        val prettifiedData: String,
-        val rawDataValue: String,
-        val qrDataType: QrDataType
-    ) : Destinations()
+    data class ResultScreenDestination(val id: Long) : Destinations()
 
     @Serializable
     data class EntryScreenDestination(val qrDataType: QrDataType) : Destinations()

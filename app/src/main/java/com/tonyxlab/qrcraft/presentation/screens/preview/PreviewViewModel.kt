@@ -37,7 +37,8 @@ class PreviewViewModel(
         get() = PreviewUiState()
 
     init {
-        val navArgs = savedStateHandle.toRoute<Destinations.PreviewScreenDestination>()
+        val navArgs =
+            savedStateHandle.toRoute<Destinations.PreviewScreenDestination>()
         val id = navArgs.id
         loadQrDataItem(id)
     }
@@ -55,7 +56,8 @@ class PreviewViewModel(
             PreviewUiEvent.EditDetectedContent -> {
                 updateState {
                     it.copy(
-                            previewEditableTextState = it.previewEditableTextState.copy(isEditing = true)
+                            previewEditableTextState =
+                                it.previewEditableTextState.copy(isEditing = true)
                     )
                 }
             }
@@ -85,15 +87,18 @@ class PreviewViewModel(
     }
 
     private fun observeEditableText() {
-        val textFlow = snapshotFlow { currentState.previewEditableTextState.textFieldState.text }
+        val textFlow = snapshotFlow {
+            currentState.previewEditableTextState.textFieldState.text
+        }
 
         textFlow
                 .debounce(300)
                 .distinctUntilChanged()
-                .onEach { newDisplayName ->
-                    if (isDisplayNameEdited(newDisplayName.toString())) {
-                        saveDisplayName(newDisplayName.toString())
-                    }
+                .onEach { displayName ->
+                    val newDisplayName =
+                        if (displayName.isBlank()) displayName.toString() else oldDisplayName
+                    if (isDisplayNameEdited(newDisplayName = newDisplayName))
+                        saveDisplayName(displayName = newDisplayName)
                 }
                 .launchIn(viewModelScope)
     }
@@ -109,7 +114,7 @@ class PreviewViewModel(
     }
 
     private fun saveDisplayName(displayName: String) {
-        val updatedItem = currentState.qrData.copy(displayName = displayName)
+        if (displayName.isBlank()) return
 
         launchCatching(
                 onError = {
@@ -118,7 +123,8 @@ class PreviewViewModel(
                     )
                 }
         ) {
-            upsertHistoryUseCase(qrData = updatedItem)
+            val currentQrItem = currentState.qrData
+            upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
         }
     }
 
@@ -141,6 +147,8 @@ class PreviewViewModel(
     }
 
     private fun isDisplayNameEdited(newDisplayName: String): Boolean {
-        return this::oldDisplayName.isInitialized && oldDisplayName != newDisplayName
+        return this::oldDisplayName.isInitialized &&
+                oldDisplayName != newDisplayName &&
+                newDisplayName.isNotBlank()
     }
 }

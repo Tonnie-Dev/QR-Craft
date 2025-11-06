@@ -8,7 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.UpsertHistoryUseCase
 import com.tonyxlab.qrcraft.navigation.Destinations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
@@ -24,27 +24,23 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 typealias BaseResultViewModel = BaseViewModel<ResultUiState, ResultUiEvent, ResultActionEvent>
 
 class ResultViewModel(
+    private val getHistoryByIdUseCase: GetHistoryByIdUseCase,
     private val upsertHistoryUseCase: UpsertHistoryUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseResultViewModel() {
 
-    init {
-        val navArgs = savedStateHandle.toRoute<Destinations.ResultScreenDestination>()
-        updateQrData(
-                qrData = QrData(
-                        displayName = navArgs.displayName,
-                        prettifiedData = navArgs.prettifiedData,
-                        qrDataType = navArgs.qrDataType,
-                        rawData = navArgs.rawDataValue
-                )
-        )
+    private lateinit var oldDisplayName: String
 
-        observeEditableText()
-        updateTextContent(value = navArgs.displayName)
+    init {
+        val navArgs =
+            savedStateHandle.toRoute<Destinations.ResultScreenDestination>()
+        loadQrDataItem(navArgs.id)
+
     }
 
     override val initialState: ResultUiState
@@ -83,7 +79,6 @@ class ResultViewModel(
             ResultUiEvent.ExitResultScreen -> {
                 sendActionEvent(NavigateToScanScreen)
             }
-
         }
     }
 
@@ -95,16 +90,34 @@ class ResultViewModel(
 
         textFlow.debounce(3_00)
                 .distinctUntilChanged()
-                .onEach {
+                .onEach { displayName ->
 
-              saveDisplayName(it.toString())
+                    val newDisplayName =
+                        if (displayName.isBlank()) displayName.toString() else oldDisplayName
+                    if (isDisplayNameEdited(newDisplayName = newDisplayName))
+                        saveDisplayName(displayName = newDisplayName)
                 }
                 .launchIn(viewModelScope)
 
     }
 
-    private fun updateQrData(qrData: QrData) {
-        updateState { currentState.copy(qrData = qrData) }
+    private fun loadQrDataItem(id: Long) {
+
+        launchCatching(
+                onError = {
+                    sendActionEvent(
+                            actionEvent = ShowToastMessage(
+                                    messageRes = R.string.toast_text_item_not_found
+                            )
+                    )
+                }
+        ) {
+            val storedItem = getHistoryByIdUseCase(id = id)
+            oldDisplayName = storedItem.displayName
+            updateState { it.copy(qrData = storedItem) }
+            updateTextContent(value = storedItem.displayName)
+            observeEditableText()
+        }
     }
 
     private fun updateTextContent(value: String) {
@@ -120,6 +133,8 @@ class ResultViewModel(
 
     private fun saveDisplayName(displayName: String) {
 
+        if (displayName.isBlank()) return
+
         launchCatching(onError = {
 
             sendActionEvent(
@@ -127,10 +142,10 @@ class ResultViewModel(
                             R.string.toast_text_item_not_saved
                     )
             )
-
-        }) {
+        }
+        ) {
             val currentQrItem = currentState.qrData
-          //  upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
+            upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
         }
     }
 
@@ -145,14 +160,18 @@ class ResultViewModel(
         }
         ) {
 
-
-
-           updateState { it.copy(qrData = currentState.qrData.copy(favorite = !currentState.qrData.favorite)) }
-           upsertHistoryUseCase(currentState.qrData)
+            updateState { it.copy(qrData = currentState.qrData.copy(favorite = !currentState.qrData.favorite)) }
+            upsertHistoryUseCase(currentState.qrData)
         }
     }
 
     private fun buildTextFieldState(value: String): TextFieldState {
         return TextFieldState(initialText = value)
+    }
+
+    private fun isDisplayNameEdited(newDisplayName: String): Boolean {
+        return this::oldDisplayName.isInitialized &&
+                oldDisplayName != newDisplayName &&
+                newDisplayName.isNotBlank()
     }
 }

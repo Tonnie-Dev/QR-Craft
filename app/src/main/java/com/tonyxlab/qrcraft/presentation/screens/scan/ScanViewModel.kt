@@ -2,6 +2,7 @@ package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import android.content.Context
 import android.net.Uri
+import android.provider.SyncStateContract.Helpers.update
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -81,9 +82,9 @@ class ScanViewModel(
         launch {
             delay(delay)
             updateState { it.copy(isLoading = false) }
-            upsertQrItem(qrData = qrData)
+           upsertQrItem(qrData = qrData)
 
-            sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
+            Timber.tag("ScanVW").i("Packed id is: ${currentState.upsertedId}")
         }
     }
 
@@ -138,13 +139,19 @@ class ScanViewModel(
             val now = LocalDateTime.now()
                     .toMillis()
             val historyType = HistoryType.SCANNED
-            Timber.tag("ScanVW").i("block Called")
-            upsertHistoryUseCase(
+
+           val upsertedId = upsertHistoryUseCase(
                     qrData = qrData.copy(
                             historyType = historyType,
                             timestamp = now
                     )
             )
+            sendActionEvent(ScanActionEvent.NavigateToScanResult(upsertedId = upsertedId))
+
+            Timber.tag("ScanVW").i("Scan upserted id is: $upsertedId")
+
+            updateState { it.copy(upsertedId = upsertedId) }
+            Timber.tag("ScanVW").i("Immediate State Id: ${currentState.upsertedId}")
         }
     }
 }

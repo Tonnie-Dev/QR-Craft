@@ -43,14 +43,9 @@ class NavOperations(val navHostController: NavHostController) {
         }
     }
 
-    fun navigateToResultScreenDestination(qrData: QrData) {
+    fun navigateToResultScreenDestination(id: Long) {
         navHostController.navigate(
-                route = Destinations.ResultScreenDestination(
-                        displayName = qrData.displayName,
-                        prettifiedData = qrData.prettifiedData,
-                        qrDataType = qrData.qrDataType,
-                        rawDataValue = qrData.rawData
-                )
+                route = Destinations.ResultScreenDestination(id = id)
         )
     }
 

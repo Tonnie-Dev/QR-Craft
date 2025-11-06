@@ -49,7 +49,7 @@ fun ScanScreen(
                 when (action) {
 
                     is ScanActionEvent.NavigateToScanResult -> {
-                        navOperations.navigateToResultScreenDestination(qrData = action.qrData)
+                        navOperations.navigateToResultScreenDestination(id = action.upsertedId)
                     }
 
                     is ScanActionEvent.ShowToast -> {
