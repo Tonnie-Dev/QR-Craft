@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.time.LocalDateTime
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
@@ -81,6 +82,7 @@ class ScanViewModel(
             delay(delay)
             updateState { it.copy(isLoading = false) }
             upsertQrItem(qrData = qrData)
+
             sendActionEvent(ScanActionEvent.NavigateToScanResult(qrData))
         }
     }
@@ -136,7 +138,7 @@ class ScanViewModel(
             val now = LocalDateTime.now()
                     .toMillis()
             val historyType = HistoryType.SCANNED
-
+            Timber.tag("ScanVW").i("block Called")
             upsertHistoryUseCase(
                     qrData = qrData.copy(
                             historyType = historyType,

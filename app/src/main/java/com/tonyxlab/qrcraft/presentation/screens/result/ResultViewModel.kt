@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.domain.model.QrData
+import com.tonyxlab.qrcraft.domain.usecase.UpsertHistoryUseCase
 import com.tonyxlab.qrcraft.navigation.Destinations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
@@ -26,7 +27,10 @@ import kotlinx.coroutines.flow.onEach
 
 typealias BaseResultViewModel = BaseViewModel<ResultUiState, ResultUiEvent, ResultActionEvent>
 
-class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel() {
+class ResultViewModel(
+    private val upsertHistoryUseCase: UpsertHistoryUseCase,
+    savedStateHandle: SavedStateHandle
+) : BaseResultViewModel() {
 
     init {
         val navArgs = savedStateHandle.toRoute<Destinations.ResultScreenDestination>()
@@ -50,22 +54,18 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
         when (event) {
 
             ResultUiEvent.ShareContent -> {
-                val text = currentState.dataState.qrData.prettifiedData
+                val text = currentState.qrData.prettifiedData
                 sendActionEvent(ShareText(text))
             }
 
             ResultUiEvent.CopyContent -> {
-                val text = currentState.dataState.qrData.prettifiedData
+                val text = currentState.qrData.prettifiedData
                 sendActionEvent(CopyText(text))
                 sendActionEvent(
                         ShowToastMessage(
                                 messageRes = R.string.toast_text_copied
                         )
                 )
-            }
-
-            ResultUiEvent.ExitResultScreen -> {
-                sendActionEvent(NavigateToScanScreen)
             }
 
             ResultUiEvent.EditDetectedContent -> {
@@ -77,6 +77,13 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
                     )
                 }
             }
+
+            ResultUiEvent.ToggleFavorite -> toggleFavoriteStatus()
+
+            ResultUiEvent.ExitResultScreen -> {
+                sendActionEvent(NavigateToScanScreen)
+            }
+
         }
     }
 
@@ -90,24 +97,58 @@ class ResultViewModel(savedStateHandle: SavedStateHandle) : BaseResultViewModel(
                 .distinctUntilChanged()
                 .onEach {
 
-                    // perform save
+              saveDisplayName(it.toString())
                 }
                 .launchIn(viewModelScope)
 
     }
 
     private fun updateQrData(qrData: QrData) {
-        updateState { currentState.copy(dataState = ResultUiState.DataState(qrData = qrData)) }
+        updateState { currentState.copy(qrData = qrData) }
     }
 
     private fun updateTextContent(value: String) {
 
         updateState {
             it.copy(
-                    currentState.resultEditableTextState.copy(
+                    resultEditableTextState = currentState.resultEditableTextState.copy(
                             textFieldState = buildTextFieldState(value)
                     )
             )
+        }
+    }
+
+    private fun saveDisplayName(displayName: String) {
+
+        launchCatching(onError = {
+
+            sendActionEvent(
+                    actionEvent = ShowToastMessage(
+                            R.string.toast_text_item_not_saved
+                    )
+            )
+
+        }) {
+            val currentQrItem = currentState.qrData
+          //  upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
+        }
+    }
+
+    private fun toggleFavoriteStatus() {
+
+        launchCatching(onError = {
+            sendActionEvent(
+                    actionEvent = ShowToastMessage(
+                            R.string.toast_text_item_not_saved
+                    )
+            )
+        }
+        ) {
+
+
+
+           updateState { it.copy(qrData = currentState.qrData.copy(favorite = !currentState.qrData.favorite)) }
+           upsertHistoryUseCase(currentState.qrData)
         }
     }
 
