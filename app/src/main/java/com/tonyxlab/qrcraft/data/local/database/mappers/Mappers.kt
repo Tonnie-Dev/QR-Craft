@@ -10,7 +10,8 @@ fun HistoryEntity.toModel() = QrData(
         rawData = rawData,
         qrDataType = qrDataType,
         historyType = historyType,
-        timestamp = timestamp
+        favorite = favorite,
+        timestamp = timestamp,
 )
 
 fun QrData.toEntity() = HistoryEntity(
@@ -20,7 +21,8 @@ fun QrData.toEntity() = HistoryEntity(
         historyType = historyType,
         prettifiedData = prettifiedData,
         rawData = rawData,
-        timestamp = timestamp
+        favorite = favorite,
+        timestamp = timestamp,
 )
 
 

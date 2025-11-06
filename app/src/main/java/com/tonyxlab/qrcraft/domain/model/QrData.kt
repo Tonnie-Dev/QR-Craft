@@ -14,7 +14,9 @@ data class QrData(
     val qrDataType: QrDataType,
     val rawData: String,
     val historyType: HistoryType = HistoryType.SCANNED,
-    val timestamp: Long = 0L
+    val favorite: Boolean = false,
+    val timestamp: Long = 0L,
+
 )
 
 data class QrUiType(

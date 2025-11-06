@@ -21,6 +21,8 @@ data class HistoryEntity(
     val prettifiedData: String,
     @ColumnInfo(name = "raw_data")
     val rawData: String,
+    @ColumnInfo(name = "favorite")
+    val favorite: Boolean,
     @ColumnInfo(name = "timestamp")
     val timestamp: Long
 )
