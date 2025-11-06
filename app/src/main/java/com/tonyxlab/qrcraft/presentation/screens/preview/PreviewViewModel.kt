@@ -33,114 +33,88 @@ class PreviewViewModel(
 
     private lateinit var oldDisplayName: String
 
-    init {
-
-        val navArgs = savedStateHandle
-                .toRoute<Destinations.PreviewScreenDestination>()
-
-        val id = navArgs.id
-
-        loadQrDataItem(id = id)
-
-    }
-
     override val initialState: PreviewUiState
         get() = PreviewUiState()
 
+    init {
+        val navArgs = savedStateHandle.toRoute<Destinations.PreviewScreenDestination>()
+        val id = navArgs.id
+        loadQrDataItem(id)
+    }
+
     override fun onEvent(event: PreviewUiEvent) {
-
         when (event) {
-
             PreviewUiEvent.ShareContent -> {
-                val text = currentState.qrDataState.qrData.prettifiedData
-                sendActionEvent(ShareText(text = text))
+                sendActionEvent(ShareText(text = currentState.qrData.prettifiedData))
             }
 
             PreviewUiEvent.CopyContent -> {
-                val text = currentState.qrDataState.qrData.prettifiedData
-                sendActionEvent(CopyText(text = text))
+                sendActionEvent(CopyText(text = currentState.qrData.prettifiedData))
             }
 
             PreviewUiEvent.EditDetectedContent -> {
                 updateState {
                     it.copy(
-                            previewEditableTextState = currentState.previewEditableTextState.copy(
-                                    isEditing = true
-                            )
+                            previewEditableTextState = it.previewEditableTextState.copy(isEditing = true)
                     )
                 }
             }
 
             PreviewUiEvent.MarkFavorite -> toggleFavoriteStatus()
+
             PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
-                    actionEvent = PreviewActionEvent.NavigateToEntryScreen
+                    PreviewActionEvent.NavigateToEntryScreen
             )
         }
     }
 
-    private fun observeEditableText() {
+    private fun loadQrDataItem(id: Long) {
+        launchCatching(
+                onError = {
+                    sendActionEvent(
+                            PreviewActionEvent.ShowToast(R.string.toast_text_item_not_found)
+                    )
+                }
+        ) {
+            val storedItem = getHistoryByIdUseCase(id)
+            oldDisplayName = storedItem.displayName
+            updateState { it.copy(qrData = storedItem) }
+            updateTextFieldContent(storedItem.displayName)
+            observeEditableText()
+        }
+    }
 
+    private fun observeEditableText() {
         val textFlow = snapshotFlow { currentState.previewEditableTextState.textFieldState.text }
-        textFlow.debounce(3_00)
+
+        textFlow
+                .debounce(300)
                 .distinctUntilChanged()
                 .onEach { newDisplayName ->
-
                     if (isDisplayNameEdited(newDisplayName.toString())) {
-
                         saveDisplayName(newDisplayName.toString())
-
                     }
                 }
                 .launchIn(viewModelScope)
     }
 
-    private fun loadQrDataItem(id: Long) {
-
-        launchCatching(
-                onError = {
-                    sendActionEvent(
-                            PreviewActionEvent.ShowToast(
-                                    messageRes = R.string.toast_text_item_not_found
-                            )
-                    )
-                }
-        ) {
-
-            val storedItem = getHistoryByIdUseCase(id = id)
-            oldDisplayName = storedItem.displayName
-            updateState { it.copy(qrDataState = currentState.qrDataState.copy(qrData = storedItem)) }
-
-            updateTextFieldContent(currentState.qrDataState.qrData.displayName)
-
-            observeEditableText()
-        }
-    }
-
     private fun updateTextFieldContent(value: String) {
-
         updateState {
             it.copy(
-                    previewEditableTextState =
-                        currentState.previewEditableTextState.copy(
-                                textFieldState = buildTextFieldState(
-                                        value = value
-                                )
-                        )
+                    previewEditableTextState = it.previewEditableTextState.copy(
+                            textFieldState = buildTextFieldState(value)
+                    )
             )
         }
     }
 
     private fun saveDisplayName(displayName: String) {
-
-        val updatedItem = currentState.qrDataState.qrData.copy(displayName = displayName)
+        val updatedItem = currentState.qrData.copy(displayName = displayName)
 
         launchCatching(
                 onError = {
-
                     sendActionEvent(
-                            actionEvent = PreviewActionEvent.ShowToast(
-                                    messageRes = R.string.toast_text_item_not_saved
-                            )
+                            PreviewActionEvent.ShowToast(R.string.toast_text_item_not_saved)
                     )
                 }
         ) {
@@ -149,25 +123,16 @@ class PreviewViewModel(
     }
 
     private fun toggleFavoriteStatus() {
-
-        launchCatching(onError = {
-
-            sendActionEvent(PreviewActionEvent.ShowToast(R.string.toast_text_item_not_saved))
-        }) {
-
-            updateState {
-                it.copy(
-                        qrDataState = currentState.qrDataState.copy(
-                                qrData = currentState.qrDataState.qrData.copy(
-                                        favorite = !currentState.qrDataState.qrData.favorite
-                                )
-                        )
-                )
-            }
-            val favoriteStatus = currentState.qrDataState.qrData.favorite
-
-            upsertHistoryUseCase(currentState.qrDataState.qrData.copy(favorite = favoriteStatus))
-
+        launchCatching(
+                onError = {
+                    sendActionEvent(
+                            PreviewActionEvent.ShowToast(R.string.toast_text_item_not_saved)
+                    )
+                }
+        ) {
+            val toggled = currentState.qrData.copy(favorite = !currentState.qrData.favorite)
+            updateState { it.copy(qrData = toggled) }
+            upsertHistoryUseCase(toggled)
         }
     }
 

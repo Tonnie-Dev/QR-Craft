@@ -7,26 +7,21 @@ import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
 import com.tonyxlab.qrcraft.util.generateLoremIpsum
 
+@Stable
 data class PreviewUiState(
-    val qrDataState: QrDataState = QrDataState(),
-    val previewEditableTextState: PreviewEditableTextState = PreviewEditableTextState(),
-) : UiState {
+    val qrData: QrData = QrData(
+            id = -1L,
+            displayName = "",
+            prettifiedData = generateLoremIpsum(26),
+            qrDataType = QrDataType.TEXT,
+            rawData = generateLoremIpsum(52),
+            favorite = false
+    ),
+    val previewEditableTextState: PreviewEditableTextState = PreviewEditableTextState()
+) : UiState
 
-    @Stable
-    data class QrDataState(
-        val qrData: QrData = QrData(
-                id = -1L,
-                displayName = "",
-                prettifiedData = generateLoremIpsum(26),
-                qrDataType = QrDataType.TEXT,
-                rawData = generateLoremIpsum(52),
-                favorite = false
-        )
-    )
-
-    @Stable
-    data class PreviewEditableTextState(
-        val isEditing: Boolean = false,
-        val textFieldState: TextFieldState = TextFieldState("")
-    )
-}
+@Stable
+data class PreviewEditableTextState(
+    val isEditing: Boolean = false,
+    val textFieldState: TextFieldState = TextFieldState("")
+)

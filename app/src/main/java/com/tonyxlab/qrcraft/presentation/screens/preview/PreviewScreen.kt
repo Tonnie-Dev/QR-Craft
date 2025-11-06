@@ -53,7 +53,7 @@ fun PreviewScreen(
                         onChevronIconClick = {
                             viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen)
                         },
-                        isFavorite = uiState.qrDataState.qrData.favorite,
+                        isFavorite = uiState.qrData.favorite,
                         onMarkFavorite = { viewModel.onEvent(PreviewUiEvent.MarkFavorite)}
                 )
             },
@@ -131,17 +131,16 @@ private fun PreviewContentScreen(
     ) {
 
         PreviewContainer(
-                qrData = uiState.qrDataState.qrData,
+                qrData = uiState.qrData,
                 onShare = { onEvent(PreviewUiEvent.ShareContent) },
                 onCopy = { onEvent(PreviewUiEvent.CopyContent) },
                 editableText = {
 
-                    Timber.tag("PreviewScreen")
-                            .i("Placeholder: ${uiState.qrDataState.qrData.displayName}")
+
                     EditableText(
                             modifier = modifier,
                             textFieldState = uiState.previewEditableTextState.textFieldState,
-                            placeHolderText = uiState.qrDataState.qrData.displayName,
+                            placeHolderText = uiState.qrData.displayName,
                             isEditing = uiState.previewEditableTextState.isEditing,
                             onClickText = { onEvent(PreviewUiEvent.EditDetectedContent) }
                     )
