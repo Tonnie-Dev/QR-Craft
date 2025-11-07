@@ -51,6 +51,7 @@ fun PreviewContainer(
     qrData: QrData,
     onShare: () -> Unit,
     onCopy: () -> Unit,
+    onSave: () -> Unit,
     modifier: Modifier = Modifier,
     editableText: @Composable (() -> Unit)? = null
 ) {
@@ -118,7 +119,12 @@ fun PreviewContainer(
                     )
                 }
             }
-            ButtonsRow(onShare = onShare, onCopy = onCopy, modifier = modifier)
+            ButtonsRow(
+                    modifier = modifier,
+                    onShare = onShare,
+                    onCopy = onCopy,
+                    onSave = onSave
+            )
         }
         QrImageTile(
                 data = qrData.rawData,
@@ -133,6 +139,7 @@ fun PreviewContainer(
 private fun ButtonsRow(
     onShare: () -> Unit,
     onCopy: () -> Unit,
+    onSave: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -161,7 +168,7 @@ private fun ButtonsRow(
                         .fillMaxWidth()
                         .weight(1f),
                 buttonText = stringResource(id = R.string.btn_text_save),
-                onClick = onCopy,
+                onClick = onSave,
                 leadingIcon = painterResource(R.drawable.icon_download)
         )
     }
@@ -222,7 +229,8 @@ fun PreviewContainer_Preview(modifier: Modifier = Modifier) {
             PreviewContainer(
                     qrData = qrData,
                     onShare = {},
-                    onCopy = {}
+                    onCopy = {},
+                    onSave = {}
             )
         }
     }
