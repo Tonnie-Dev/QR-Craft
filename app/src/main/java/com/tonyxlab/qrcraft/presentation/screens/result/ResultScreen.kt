@@ -127,15 +127,6 @@ fun ResultScreen(
                         clipboardManager?.setPrimaryClip(clip)
                     }
 
-                    is ResultActionEvent.ShowToastMessage -> {
-                        Toast.makeText(
-                                context,
-                                context.getText(action.messageRes),
-                                Toast.LENGTH_SHORT
-                        )
-                                .show()
-                    }
-
                     is ResultActionEvent.SaveQrImage -> {
                         keyboardController?.hide()
                         saveQrImage(
@@ -160,6 +151,15 @@ fun ResultScreen(
                                     )
                                 }
                         )
+                    }
+
+                    is ResultActionEvent.ShowToastMessage -> {
+                        Toast.makeText(
+                                context,
+                                context.getText(action.messageRes),
+                                Toast.LENGTH_SHORT
+                        )
+                                .show()
                     }
                 }
             },

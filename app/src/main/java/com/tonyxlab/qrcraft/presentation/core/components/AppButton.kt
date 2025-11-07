@@ -1,6 +1,7 @@
 package com.tonyxlab.qrcraft.presentation.core.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,8 @@ fun AppButton(
                 modifier = modifier
                         .clip(buttonShape)
                         .background(color = containerColor, shape = buttonShape)
-                        .size(MaterialTheme.spacing.spaceDoubleDp * 22),
+                        .size(MaterialTheme.spacing.spaceDoubleDp * 22)
+                        .clickable { onClick() },
                 contentAlignment = Alignment.Center
         ) {
             leadingIcon?.let {

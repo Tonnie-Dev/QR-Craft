@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,6 +53,15 @@ fun HistoryListItem(
         else -> false
     }
 
+    val favorite = qrData.favorite
+
+    val (iconPainter, iconContentDescription) = if (favorite)
+        painterResource(R.drawable.icon_star_filled) to
+                stringResource(id = R.string.cds_text_starred)
+    else
+        painterResource(R.drawable.icon_star_outline) to
+                stringResource(id = R.string.cds_text_not_starred)
+
     Card(
             modifier = modifier.combinedClickable(
                     onClick = {
@@ -70,7 +81,6 @@ fun HistoryListItem(
                 modifier = Modifier
                         .ifThen(isDisplayDeviceWide) {
                             width(630.dp)
-
 
                         }
                         .ifThen(isDisplayDeviceWide.not()) {
@@ -140,6 +150,16 @@ fun HistoryListItem(
                             )
                     )
                 }
+                IconButton(
+                        modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
+                        onClick = { onEvent(HistoryUiEvent.MarkFavorite(qrData.id))}
+                ) {
+                    Icon(
+                            painter = iconPainter,
+                            contentDescription = iconContentDescription,
+                            tint = if (favorite) MaterialTheme.colorScheme.onSurface else ShowLess
+                    )
+                }
             }
         }
     }
@@ -158,7 +178,6 @@ private fun HistoryListItem_Preview() {
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spaceMedium)
         ) {
             getRandomQrDataItems(10).forEach {
-
                 HistoryListItem(
                         qrData = it,
                         isDisplayDeviceWide = false,

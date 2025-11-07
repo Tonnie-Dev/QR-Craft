@@ -179,7 +179,7 @@ fun mapToQrData(values: Map<String, String>): QrData {
             val ssid = values["ssid"].orEmpty()
             val password = values["password"].orEmpty()
             val encryption = values["encryption"].orEmpty()
-            val pretty = "SSID: $ssid\nPassword: $password\nEncryption type:$encryption"
+            val pretty = "SSID: $ssid\nPassword: $password\nEncryption Type: $encryption"
             val raw = "WIFI:S:$ssid;T:$encryption;P:$password;;"
             pretty to raw
         }

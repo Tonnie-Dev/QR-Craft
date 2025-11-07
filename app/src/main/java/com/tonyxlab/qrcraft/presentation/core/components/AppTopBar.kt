@@ -93,9 +93,9 @@ fun AppTopBar(
                 Icon(
                         painter = painter,
                         tint = tint,
-                        contentDescription = if (isFavorite) stringResource(id = R.string.cds_text_favorite)
+                        contentDescription = if (isFavorite) stringResource(id = R.string.cds_text_starred)
                         else
-                            stringResource(id = R.string.cds_text_not_favorite)
+                            stringResource(id = R.string.cds_text_not_starred)
                 )
             }
         } else {

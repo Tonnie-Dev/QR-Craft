@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package com.tonyxlab.qrcraft.presentation.screens.history
 
 import androidx.lifecycle.viewModelScope
@@ -6,6 +8,7 @@ import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.usecase.DeleteHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.GetHistoryByIdUseCase
 import com.tonyxlab.qrcraft.domain.usecase.GetHistoryUseCase
+import com.tonyxlab.qrcraft.domain.usecase.UpsertHistoryUseCase
 import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent.OpenShareMenu
@@ -22,6 +25,7 @@ typealias HistoryBaseViewModel = BaseViewModel<HistoryUiState, HistoryUiEvent, H
 class HistoryViewModel(
     private val getHistoryUseCase: GetHistoryUseCase,
     private val getHistoryByIdUseCase: GetHistoryByIdUseCase,
+    private val upsertHistoryUseCase: UpsertHistoryUseCase,
     private val deleteHistoryByIdUseCase: DeleteHistoryByIdUseCase
 
 ) : HistoryBaseViewModel() {
@@ -30,7 +34,7 @@ class HistoryViewModel(
         get() = HistoryUiState()
 
     init {
-        observeHistory()
+        getHistoryItems()
     }
 
     override fun onEvent(event: HistoryUiEvent) {
@@ -47,14 +51,16 @@ class HistoryViewModel(
 
             HistoryUiEvent.ShareHistoryItem -> {
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
-                val text = currentState.selectedItemState.data
+                val text = currentState.selectedQrItem.data
                 sendActionEvent(actionEvent = OpenShareMenu(text = text))
             }
 
             HistoryUiEvent.DeleteHistoryItem -> {
-                deleteHistoryItem(id = currentState.selectedItemState.id)
+                deleteHistoryItem(id = currentState.selectedQrItem.id)
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
             }
+
+            is HistoryUiEvent.MarkFavorite -> toggleFavoriteStatus(id = event.id)
 
             HistoryUiEvent.DismissHistoryBottomSheet -> {
                 updateState { it.copy(showBottomHistoryBottomSheet = false) }
@@ -66,8 +72,7 @@ class HistoryViewModel(
         }
     }
 
-    @OptIn(FlowPreview::class)
-    private fun observeHistory() {
+    private fun getHistoryItems() {
 
         launch {
             val scannedHistoryFlow = getHistoryUseCase(HistoryType.SCANNED)
@@ -101,7 +106,7 @@ class HistoryViewModel(
             val qrData = getHistoryByIdUseCase(id = id)
             updateState {
                 it.copy(
-                        selectedItemState = currentState.selectedItemState.copy(
+                        selectedQrItem = currentState.selectedQrItem.copy(
                                 id = qrData.id,
                                 data = qrData.prettifiedData
                         )
@@ -110,11 +115,23 @@ class HistoryViewModel(
         }
     }
 
-    private fun deleteHistoryItem(id: Long) {
+    private fun toggleFavoriteStatus(id: Long) {
+        launchCatching(onError = {
+            sendActionEvent(
+                    actionEvent = HistoryActionEvent.ShowToast(
+                            messageRes = R.string.toast_text_item_not_found
+                    )
+            )
+        }
+        ) {
+            val currentItem = getHistoryByIdUseCase(id = id)
+            upsertHistoryUseCase(qrData = currentItem.copy(favorite = !currentItem.favorite))
+        }
+    }
 
+    private fun deleteHistoryItem(id: Long) {
         launchCatching(
                 onError = {
-
                     sendActionEvent(
                             actionEvent = HistoryActionEvent.ShowToast(
                                     messageRes = R.string.toast_text_item_not_found
