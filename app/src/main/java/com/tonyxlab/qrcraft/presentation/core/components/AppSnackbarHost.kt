@@ -7,13 +7,23 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,40 +35,103 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.Success
 fun AppSnackbarHost(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
+    isError: Boolean = false
 ) {
+
+    val containerColor =
+        if (isError) MaterialTheme.colorScheme.error else Success
+    val contentColor = contentColorFor(containerColor)
+
 
     SnackbarHost(
             modifier = modifier
                     .padding(MaterialTheme.spacing.spaceMedium)
-                    .padding(vertical = MaterialTheme.spacing.spaceExtraSmall)
                     .navigationBarsPadding(),
             hostState = snackbarHostState
     )
-    {
+    { snackbarData ->
         Snackbar(
                 modifier = Modifier.fillMaxWidth(.8f),
                 shape = MaterialTheme.shapes.small,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                containerColor = Success
+                contentColor = contentColor,
+                containerColor = containerColor
         ) {
             Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
             ) {
 
                 Icon(
                         modifier = Modifier.padding(end = MaterialTheme.spacing.spaceSmall),
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(id = R.string.cds_text_check_mark)
+                        imageVector = if (isError) Icons.Default.Error else Icons.Default.Check,
+                        contentDescription = stringResource(id = R.string.cds_text_check_mark),
+                        tint = contentColor
                 )
                 Text(
-                        text = stringResource(id = R.string.snack_text_camera_perm_granted),
+                        text = snackbarData.visuals.message,
                         style = MaterialTheme.typography.labelLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = contentColor
                         )
                 )
             }
         }
     }
+}
+
+@Composable
+fun ShowAppSnackbar(
+    triggerId: Int,
+    snackbarHostState: SnackbarHostState,
+    message: String,
+    actionLabel: String = "",
+    onActionClick: () -> Unit = {},
+    onDismiss: () -> Unit = {}
+) {
+    LaunchedEffect(triggerId) {
+        if (triggerId > 0) {
+
+            val result = snackbarHostState.showSnackbar(
+                    message = message,
+                    actionLabel = actionLabel,
+                    duration = SnackbarDuration.Short
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                onActionClick()
+            }
+            onDismiss()
+        }
+    }
+}
+
+class SnackbarController<T> {
+
+    var triggerId by mutableIntStateOf(0)
+    var message by mutableStateOf("")
+    var actionLabel by mutableStateOf("")
+    var actionEvent by mutableStateOf<T?>(null)
+
+    fun showSnackbar(
+        message: String,
+        actionLabel: String = "",
+        actionEvent: T? = null
+    ) {
+        this.message = message
+        this.actionLabel = actionLabel
+        this.actionEvent = actionEvent
+        triggerId++
+    }
+
+    fun dismissSnackbar() {
+        triggerId = 0
+        actionEvent = null
+    }
+
+}
+
+@Composable
+fun <T> rememberSnackbarController(): SnackbarController<T> {
+
+    return remember { SnackbarController() }
 }
 

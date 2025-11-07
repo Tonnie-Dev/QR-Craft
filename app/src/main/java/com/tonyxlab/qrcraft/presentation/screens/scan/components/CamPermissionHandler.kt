@@ -16,13 +16,13 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.components.AppDialog
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
+import timber.log.Timber
 
 @Composable
 fun CamPermissionHandler(
     snackbarHostState: SnackbarHostState,
     uiState: ScanUiState,
     updateCamSnackbarShownStatus: (Boolean) -> Unit,
-
 ) {
 
     val camPermissionState =
@@ -48,7 +48,6 @@ fun CamPermissionHandler(
 
         permissionStatus.isGranted -> {
 
-
             // Automatically Check Permission State
             if (camSnackbarShown != null) {
                 LaunchedEffect(permissionStatus.isGranted, camSnackbarShown) {
@@ -62,18 +61,14 @@ fun CamPermissionHandler(
                         updateCamSnackbarShownStatus(true)
                     }
                 }
-
             }
-
         }
 
         else -> {
             // First launch — just ask
             LaunchedEffect(Unit) {
-
                 camPermissionState.launchPermissionRequest()
             }
         }
     }
-
 }
