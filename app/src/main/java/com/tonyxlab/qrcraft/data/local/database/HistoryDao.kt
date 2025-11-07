@@ -11,9 +11,13 @@ interface HistoryDao {
     @Upsert
     suspend fun upsertItem(historyEntity: HistoryEntity): Long
 
-    @Query(""" 
-        SELECT * FROM history_table WHERE history_type =:historyType ORDER BY timestamp DESC
-    """)
+    @Query(
+            """ 
+        SELECT * FROM history_table
+         WHERE history_type =:historyType 
+         ORDER BY favorite DESC, timestamp DESC
+    """
+    )
     fun getHistoryItems(historyType: HistoryType): Flow<List<HistoryEntity>>
 
     @Query("SELECT * FROM history_table WHERE id = :id")
@@ -25,8 +29,4 @@ interface HistoryDao {
     @Query("DELETE FROM history_table")
     suspend fun clearAll(): Int
 
-
-
-    /*@Query("SELECT * FROM history_table  ORDER BY timestamp DESC")
-    fun getHistoryItems(historyType: HistoryType): Flow<List<HistoryEntity>>*/
 }
