@@ -32,6 +32,7 @@ class PreviewViewModel(
 ) : PreviewBaseViewModel() {
 
     private lateinit var oldDisplayName: String
+    private var isTogglingFavorite = false
 
     override val initialState: PreviewUiState
         get() = PreviewUiState()
@@ -63,10 +64,17 @@ class PreviewViewModel(
             }
 
             PreviewUiEvent.MarkFavorite -> toggleFavoriteStatus()
+            PreviewUiEvent.SaveQrPhoto -> {
+
+                sendActionEvent(actionEvent = PreviewActionEvent.SaveImage(currentState.qrData))
+
+            }
 
             PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
                     PreviewActionEvent.NavigateToEntryScreen
             )
+
+
         }
     }
 
@@ -96,7 +104,8 @@ class PreviewViewModel(
                 .distinctUntilChanged()
                 .onEach { displayName ->
                     val newDisplayName =
-                        if (displayName.isBlank()) displayName.toString() else oldDisplayName
+                        if (displayName.isBlank()) oldDisplayName
+                        else displayName.toString()
                     if (isDisplayNameEdited(newDisplayName = newDisplayName))
                         saveDisplayName(displayName = newDisplayName)
                 }
@@ -124,21 +133,32 @@ class PreviewViewModel(
                 }
         ) {
             val currentQrItem = currentState.qrData
+            updateState { it.copy(qrData = currentQrItem.copy(displayName = displayName)) }
             upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
         }
     }
 
     private fun toggleFavoriteStatus() {
-        launchCatching(
-                onError = {
-                    sendActionEvent(
-                            PreviewActionEvent.ShowToast(R.string.toast_text_item_not_saved)
+
+        if (isTogglingFavorite) return
+        isTogglingFavorite = true
+
+        val previousQrData = currentState.qrData
+        val updatedQrData = previousQrData.copy(favorite = !previousQrData.favorite)
+
+        updateState { it.copy(qrData = updatedQrData) }
+        launchCatching(onError = {
+            updateState { it.copy(qrData = previousQrData) }
+            sendActionEvent(
+                    actionEvent = PreviewActionEvent.ShowToast(
+                            R.string.toast_text_item_not_saved
                     )
-                }
+            )
+            isTogglingFavorite = false
+        }
         ) {
-            val toggled = currentState.qrData.copy(favorite = !currentState.qrData.favorite)
-            updateState { it.copy(qrData = toggled) }
-            upsertHistoryUseCase(toggled)
+            upsertHistoryUseCase(updatedQrData)
+            isTogglingFavorite = false
         }
     }
 
@@ -151,4 +171,5 @@ class PreviewViewModel(
                 oldDisplayName != newDisplayName &&
                 newDisplayName.isNotBlank()
     }
+
 }

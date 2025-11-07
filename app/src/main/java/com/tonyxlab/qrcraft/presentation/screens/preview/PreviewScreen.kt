@@ -8,20 +8,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
+import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
 import com.tonyxlab.qrcraft.presentation.core.components.AppTopBar
 import com.tonyxlab.qrcraft.presentation.core.components.PreviewContainer
+import com.tonyxlab.qrcraft.presentation.core.components.ShowAppSnackbar
+import com.tonyxlab.qrcraft.presentation.core.components.rememberSnackbarController
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
@@ -29,8 +39,8 @@ import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
 import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
 import com.tonyxlab.qrcraft.util.DeviceType
 import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.util.saveQrImage
 import org.koin.androidx.compose.koinViewModel
-import timber.log.Timber
 
 @Composable
 fun PreviewScreen(
@@ -42,6 +52,27 @@ fun PreviewScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val snackbarController =
+        rememberSnackbarController<PreviewUiEvent>()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    ShowAppSnackbar(
+            triggerId = snackbarController.triggerId,
+            snackbarHostState = snackbarHostState,
+            message = snackbarController.message,
+            actionLabel = snackbarController.actionLabel,
+            onActionClick = {
+                snackbarController.actionEvent?.let {
+                    viewModel.onEvent(it)
+                }
+            }
+    )
+
+    var isError by remember { mutableStateOf(false) }
 
     BaseContentLayout(
             modifier = modifier,
@@ -54,7 +85,14 @@ fun PreviewScreen(
                             viewModel.onEvent(event = PreviewUiEvent.ExitPreviewScreen)
                         },
                         isFavorite = uiState.qrData.favorite,
-                        onMarkFavorite = { viewModel.onEvent(PreviewUiEvent.MarkFavorite)}
+                        onMarkFavorite = { viewModel.onEvent(PreviewUiEvent.MarkFavorite) }
+                )
+            },
+            snackbarHost = {
+                AppSnackbarHost(
+                        modifier = Modifier,
+                        snackbarHostState = snackbarHostState,
+                        isError = isError
                 )
             },
             actionEventHandler = { _, action ->
@@ -85,6 +123,28 @@ fun PreviewScreen(
                                 "QR Content", action.text
                         )
                         clipboardManager?.setPrimaryClip(clip)
+                    }
+
+                    is PreviewActionEvent.SaveImage -> {
+                        keyboardController?.hide()
+                        saveQrImage(
+                                context = context,
+                                coroutineScope = coroutineScope,
+                                qrData = action.qrData,
+                                showSuccessSnackbar = {
+                                    isError = false
+                                    snackbarController.showSnackbar(context.getString(R.string.snack_text_image_saved_to_downloads))
+                                },
+                                showErrorSnackbar = {
+                                    isError = true
+                                    snackbarController.showSnackbar(
+                                            message = context.getString(
+                                                    R.string.snack_text_image_not_saved
+                                            )
+                                    )
+
+                                }
+                        )
                     }
 
                     is PreviewActionEvent.ShowToast -> {
@@ -134,9 +194,8 @@ private fun PreviewContentScreen(
                 qrData = uiState.qrData,
                 onShare = { onEvent(PreviewUiEvent.ShareContent) },
                 onCopy = { onEvent(PreviewUiEvent.CopyContent) },
+                onSave = { onEvent(PreviewUiEvent.SaveQrPhoto) },
                 editableText = {
-
-
                     EditableText(
                             modifier = modifier,
                             textFieldState = uiState.previewEditableTextState.textFieldState,

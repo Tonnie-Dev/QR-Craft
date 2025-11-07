@@ -7,6 +7,7 @@ sealed interface PreviewUiEvent: UiEvent{
     data object EditDetectedContent: PreviewUiEvent
     data object ShareContent: PreviewUiEvent
     data object CopyContent: PreviewUiEvent
+    data object SaveQrPhoto: PreviewUiEvent
     data object ExitPreviewScreen: PreviewUiEvent
     data object MarkFavorite : PreviewUiEvent
 }

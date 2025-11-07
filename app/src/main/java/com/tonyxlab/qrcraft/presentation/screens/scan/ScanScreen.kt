@@ -1,4 +1,3 @@
-
 @file:OptIn(ExperimentalPermissionsApi::class)
 
 package com.tonyxlab.qrcraft.presentation.screens.scan
@@ -8,6 +7,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.navigation.NavOperations
 import com.tonyxlab.qrcraft.presentation.core.base.BaseContentLayout
 import com.tonyxlab.qrcraft.presentation.core.components.AppSnackbarHost
+import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CamPermissionHandler
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.CameraPreview
 import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanDialog
@@ -43,7 +45,10 @@ fun ScanScreen(
     BaseContentLayout(
             viewModel = viewModel,
             snackbarHost = {
-                AppSnackbarHost(snackbarHostState = snackbarHostState)
+                AppSnackbarHost(
+                        modifier = Modifier.padding(bottom = MaterialTheme.spacing.spaceExtraLarge),
+                        snackbarHostState = snackbarHostState
+                )
             },
             actionEventHandler = { _, action ->
                 when (action) {
@@ -58,13 +63,12 @@ fun ScanScreen(
                     }
 
                     ScanActionEvent.ShowDialog -> {
-                       viewModel.onEvent(ScanUiEvent.ShowDialog)
+                        viewModel.onEvent(ScanUiEvent.ShowDialog)
                     }
                 }
             },
             containerColor = Overlay
     ) {
-
 
         val imagePickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent()
@@ -124,7 +128,6 @@ fun HomeScreenContent(
                 onEvent = onEvent,
                 onSelectImage = onSelectImage
         )
-
         ScanDialog(
                 showDialog = uiState.showDialog,
                 onDismissDialog = { onEvent(ScanUiEvent.DismissDialog) }

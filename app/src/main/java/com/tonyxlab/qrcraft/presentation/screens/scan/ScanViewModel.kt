@@ -2,7 +2,6 @@ package com.tonyxlab.qrcraft.presentation.screens.scan
 
 import android.content.Context
 import android.net.Uri
-import android.provider.SyncStateContract.Helpers.update
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import java.time.LocalDateTime
 
 typealias ScanBaseViewModel = BaseViewModel<ScanUiState, ScanUiEvent, ScanActionEvent>
@@ -82,9 +80,8 @@ class ScanViewModel(
         launch {
             delay(delay)
             updateState { it.copy(isLoading = false) }
-           upsertQrItem(qrData = qrData)
+            upsertQrItem(qrData = qrData)
 
-            Timber.tag("ScanVW").i("Packed id is: ${currentState.upsertedId}")
         }
     }
 
@@ -140,18 +137,18 @@ class ScanViewModel(
                     .toMillis()
             val historyType = HistoryType.SCANNED
 
-           val upsertedId = upsertHistoryUseCase(
+            val upsertedId = upsertHistoryUseCase(
                     qrData = qrData.copy(
                             historyType = historyType,
                             timestamp = now
                     )
             )
-            sendActionEvent(ScanActionEvent.NavigateToScanResult(upsertedId = upsertedId))
-
-            Timber.tag("ScanVW").i("Scan upserted id is: $upsertedId")
-
+            sendActionEvent(
+                    ScanActionEvent.NavigateToScanResult(
+                            upsertedId = upsertedId
+                    )
+            )
             updateState { it.copy(upsertedId = upsertedId) }
-            Timber.tag("ScanVW").i("Immediate State Id: ${currentState.upsertedId}")
         }
     }
 }
