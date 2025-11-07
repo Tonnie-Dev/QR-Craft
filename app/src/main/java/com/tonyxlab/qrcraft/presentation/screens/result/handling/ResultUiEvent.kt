@@ -7,5 +7,6 @@ sealed interface ResultUiEvent: UiEvent{
     data object CopyContent: ResultUiEvent
     data object EditDetectedContent: ResultUiEvent
     data object ToggleFavorite: ResultUiEvent
+    data object SaveQrPhoto: ResultUiEvent
     data object ExitResultScreen: ResultUiEvent
 }

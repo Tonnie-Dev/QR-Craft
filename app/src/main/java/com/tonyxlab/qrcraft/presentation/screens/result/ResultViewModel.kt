@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 typealias BaseResultViewModel = BaseViewModel<ResultUiState, ResultUiEvent, ResultActionEvent>
 
@@ -35,6 +34,7 @@ class ResultViewModel(
 ) : BaseResultViewModel() {
 
     private lateinit var oldDisplayName: String
+    private var isTogglingFavorite = false
 
     init {
         val navArgs =
@@ -75,6 +75,9 @@ class ResultViewModel(
             }
 
             ResultUiEvent.ToggleFavorite -> toggleFavoriteStatus()
+            is ResultUiEvent.SaveQrPhoto -> {
+                sendActionEvent(ResultActionEvent.SaveQrImage(currentState.qrData))
+            }
 
             ResultUiEvent.ExitResultScreen -> {
                 sendActionEvent(NavigateToScanScreen)
@@ -91,9 +94,8 @@ class ResultViewModel(
         textFlow.debounce(3_00)
                 .distinctUntilChanged()
                 .onEach { displayName ->
-
                     val newDisplayName =
-                        if (displayName.isBlank()) displayName.toString() else oldDisplayName
+                        if (displayName.isBlank()) oldDisplayName else displayName.toString()
                     if (isDisplayNameEdited(newDisplayName = newDisplayName))
                         saveDisplayName(displayName = newDisplayName)
                 }
@@ -145,23 +147,33 @@ class ResultViewModel(
         }
         ) {
             val currentQrItem = currentState.qrData
+            updateState { it.copy(qrData = currentQrItem.copy(displayName = displayName)) }
             upsertHistoryUseCase(currentQrItem.copy(displayName = displayName))
+
         }
     }
 
     private fun toggleFavoriteStatus() {
 
+        if (isTogglingFavorite) return
+        isTogglingFavorite = true
+
+        val previousQrData = currentState.qrData
+        val updatedQrData = previousQrData.copy(favorite = !previousQrData.favorite)
+
+        updateState { it.copy(qrData = updatedQrData) }
         launchCatching(onError = {
+            updateState { it.copy(qrData = previousQrData) }
             sendActionEvent(
                     actionEvent = ShowToastMessage(
                             R.string.toast_text_item_not_saved
                     )
             )
+            isTogglingFavorite = false
         }
         ) {
-
-            updateState { it.copy(qrData = currentState.qrData.copy(favorite = !currentState.qrData.favorite)) }
-            upsertHistoryUseCase(currentState.qrData)
+            upsertHistoryUseCase(updatedQrData)
+            isTogglingFavorite = false
         }
     }
 
