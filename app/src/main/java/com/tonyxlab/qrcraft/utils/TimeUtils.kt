@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import java.time.Instant
 import java.time.LocalDateTime

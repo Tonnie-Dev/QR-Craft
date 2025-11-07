@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.model.QrData

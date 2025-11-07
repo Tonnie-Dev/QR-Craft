@@ -37,7 +37,7 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.TextAccent
 import com.tonyxlab.qrcraft.presentation.theme.ui.TextAccentBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.WiFi
 import com.tonyxlab.qrcraft.presentation.theme.ui.WiFiBg
-import com.tonyxlab.qrcraft.util.getTintedIconModifier
+import com.tonyxlab.qrcraft.utils.getTintedIconModifier
 
 @Composable
 fun QrOptionCard(

@@ -47,7 +47,7 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.ifThen
+import com.tonyxlab.qrcraft.utils.ifThen
 import kotlinx.coroutines.delay
 
 @Composable

@@ -47,7 +47,7 @@ import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.Primary
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.Constants
+import com.tonyxlab.qrcraft.utils.Constants
 import kotlin.math.min
 
 @Composable

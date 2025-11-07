@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass

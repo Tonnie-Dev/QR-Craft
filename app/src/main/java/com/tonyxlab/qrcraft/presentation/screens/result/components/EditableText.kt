@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.Constants.MAX_QR_DESC_CHAR_COUNT
+import com.tonyxlab.qrcraft.utils.Constants.MAX_QR_DESC_CHAR_COUNT
 import kotlin.math.max
 
 @Composable

@@ -11,13 +11,12 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState
-import com.tonyxlab.qrcraft.util.mapToQrData
-import com.tonyxlab.qrcraft.util.toFormData
-import com.tonyxlab.qrcraft.util.toMillis
+import com.tonyxlab.qrcraft.utils.mapToQrData
+import com.tonyxlab.qrcraft.utils.toFormData
+import com.tonyxlab.qrcraft.utils.toMillis
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import timber.log.Timber
 import java.time.LocalDateTime
 
 typealias EntryBaseViewModel = BaseViewModel<EntryUiState, EntryUiEvent, EntryActionEvent>

@@ -3,7 +3,7 @@ package com.tonyxlab.qrcraft.domain.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
-import com.tonyxlab.qrcraft.util.Constants
+import com.tonyxlab.qrcraft.utils.Constants
 import kotlinx.serialization.Serializable
 
 @Serializable

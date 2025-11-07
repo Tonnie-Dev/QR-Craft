@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.tonyxlab.qrcraft.domain.model.QrData

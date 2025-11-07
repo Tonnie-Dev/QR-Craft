@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import android.app.Activity
 import androidx.compose.runtime.Composable

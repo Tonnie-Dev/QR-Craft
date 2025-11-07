@@ -12,7 +12,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,9 +36,9 @@ import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewActionE
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.preview.handling.PreviewUiState
 import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
-import com.tonyxlab.qrcraft.util.DeviceType
-import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
-import com.tonyxlab.qrcraft.util.saveQrImage
+import com.tonyxlab.qrcraft.utils.DeviceType
+import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.utils.saveQrImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

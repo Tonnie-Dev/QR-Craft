@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import com.tonyxlab.qrcraft.R
-import com.tonyxlab.qrcraft.util.generateQrBitmap
+import com.tonyxlab.qrcraft.utils.generateQrBitmap
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
@@ -43,8 +43,8 @@ import com.tonyxlab.qrcraft.presentation.screens.result.components.ExpandableTex
 import com.tonyxlab.qrcraft.presentation.theme.ui.Link
 import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.generateLoremIpsum
-import com.tonyxlab.qrcraft.util.ifThen
+import com.tonyxlab.qrcraft.utils.generateLoremIpsum
+import com.tonyxlab.qrcraft.utils.ifThen
 
 @Composable
 fun PreviewContainer(

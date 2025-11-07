@@ -5,7 +5,7 @@ import androidx.compose.runtime.Stable
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.base.handling.UiState
-import com.tonyxlab.qrcraft.util.generateLoremIpsum
+import com.tonyxlab.qrcraft.utils.generateLoremIpsum
 
 @Stable
 data class ResultUiState(

@@ -42,9 +42,9 @@ import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEve
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.DeviceType
-import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
-import com.tonyxlab.qrcraft.util.saveQrImage
+import com.tonyxlab.qrcraft.utils.DeviceType
+import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.utils.saveQrImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

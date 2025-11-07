@@ -9,10 +9,9 @@ import com.tonyxlab.qrcraft.domain.exception.ItemNotFoundException
 import com.tonyxlab.qrcraft.domain.model.HistoryType
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.repository.QrRepository
-import com.tonyxlab.qrcraft.util.safeIoCall
+import com.tonyxlab.qrcraft.utils.safeIoCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
 class QrRepositoryImpl(
     private val datastore: DataStore,

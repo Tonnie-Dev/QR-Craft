@@ -29,8 +29,8 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.LocalSpacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
 import com.tonyxlab.qrcraft.presentation.theme.ui.ShowLess
-import com.tonyxlab.qrcraft.util.Constants
-import com.tonyxlab.qrcraft.util.generateLoremIpsum
+import com.tonyxlab.qrcraft.utils.Constants
+import com.tonyxlab.qrcraft.utils.generateLoremIpsum
 
 @Composable
 fun ExpandableText(

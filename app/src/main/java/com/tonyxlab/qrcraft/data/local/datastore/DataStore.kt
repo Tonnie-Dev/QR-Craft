@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.tonyxlab.qrcraft.util.Constants.QR_CRAFT_DATASTORE
+import com.tonyxlab.qrcraft.utils.Constants.QR_CRAFT_DATASTORE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

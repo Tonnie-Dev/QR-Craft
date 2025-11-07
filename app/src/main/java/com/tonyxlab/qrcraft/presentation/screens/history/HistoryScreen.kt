@@ -19,8 +19,8 @@ import com.tonyxlab.qrcraft.presentation.screens.history.components.HistoryTabRo
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
-import com.tonyxlab.qrcraft.util.DeviceType
-import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.utils.DeviceType
+import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

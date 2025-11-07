@@ -14,8 +14,8 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import com.tonyxlab.qrcraft.util.toMillis
-import com.tonyxlab.qrcraft.util.toQrData
+import com.tonyxlab.qrcraft.utils.toMillis
+import com.tonyxlab.qrcraft.utils.toQrData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn

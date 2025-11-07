@@ -27,10 +27,10 @@ import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState
 import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.util.DeviceType
-import com.tonyxlab.qrcraft.util.SetStatusBarIconsColor
-import com.tonyxlab.qrcraft.util.ifThen
-import com.tonyxlab.qrcraft.util.toTopBarString
+import com.tonyxlab.qrcraft.utils.DeviceType
+import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
+import com.tonyxlab.qrcraft.utils.ifThen
+import com.tonyxlab.qrcraft.utils.toTopBarString
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

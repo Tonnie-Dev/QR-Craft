@@ -17,7 +17,7 @@ import com.tonyxlab.qrcraft.presentation.screens.history.HistoryViewModel
 import com.tonyxlab.qrcraft.presentation.screens.preview.PreviewViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.ResultViewModel
 import com.tonyxlab.qrcraft.presentation.screens.scan.ScanViewModel
-import com.tonyxlab.qrcraft.util.Constants
+import com.tonyxlab.qrcraft.utils.Constants
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

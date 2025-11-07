@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.util
+package com.tonyxlab.qrcraft.utils
 
 import androidx.compose.ui.text.input.KeyboardType
 import com.tonyxlab.qrcraft.R
