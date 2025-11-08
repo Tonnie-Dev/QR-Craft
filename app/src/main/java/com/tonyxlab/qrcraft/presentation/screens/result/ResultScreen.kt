@@ -133,14 +133,19 @@ fun ResultScreen(
                                 context = context,
                                 qrData = action.qrData,
                                 coroutineScope = coroutineScope,
-                                showSuccessSnackbar = {
+                                showSuccessSnackbar = { uri ->
 
                                     isError = false
                                     snackbarController.showSnackbar(
                                             message = context.getString(
                                                     R.string.snack_text_image_saved_to_downloads
-                                            )
+                                            ),
+                                            actionLabel = context.getString(
+                                                    R.string.snack_text_open
+                                            ),
+                                            actionEvent = ResultUiEvent.OpenImageLocation
                                     )
+                                    viewModel.setSavedImageUri(uri =  uri)
                                 },
                                 showErrorSnackbar = {
                                     isError = true
@@ -153,6 +158,19 @@ fun ResultScreen(
                         )
                     }
 
+                    is ResultActionEvent.OpenImageLocation -> {
+
+                        val openIntent =Intent(Intent.ACTION_VIEW).apply {
+                           setDataAndType(action.uri, "image/png")
+                           addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+
+                       runCatching { context.startActivity(openIntent) }.onFailure {
+                           Toast.makeText(context,
+                                   context.getString(R.string.toast_text_cannot_open_downloads),
+                                   Toast.LENGTH_SHORT).show()
+                       }
+                    }
                     is ResultActionEvent.ShowToastMessage -> {
                         Toast.makeText(
                                 context,
@@ -161,6 +179,7 @@ fun ResultScreen(
                         )
                                 .show()
                     }
+
                 }
             },
             containerColor = MaterialTheme.colorScheme.onSurface,

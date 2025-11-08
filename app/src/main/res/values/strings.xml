@@ -61,7 +61,7 @@
     <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
     <string name="snack_text_image_saved_to_downloads">Image saved to Downloads</string>
     <string name="snack_text_image_not_saved">Image not saved</string>
-
+    <string name="snack_text_open">Open</string>
 
     <!--Dialog Texts-->
     <string name="dialog_text_camera_required">Camera Required</string>

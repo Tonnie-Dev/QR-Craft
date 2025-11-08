@@ -2,6 +2,7 @@
 
 package com.tonyxlab.qrcraft.presentation.screens.result
 
+import android.net.Uri
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
@@ -15,6 +16,8 @@ import com.tonyxlab.qrcraft.presentation.core.base.BaseViewModel
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.CopyText
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.NavigateToScanScreen
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.OpenImageLocation
+import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.SaveQrImage
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.ShareText
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent.ShowToastMessage
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
@@ -35,6 +38,7 @@ class ResultViewModel(
 
     private lateinit var oldDisplayName: String
     private var isTogglingFavorite = false
+    private var lastSavedImageUri: Uri? = null
 
     init {
         val navArgs =
@@ -75,8 +79,21 @@ class ResultViewModel(
             }
 
             ResultUiEvent.ToggleFavorite -> toggleFavoriteStatus()
+
             is ResultUiEvent.SaveQrPhoto -> {
-                sendActionEvent(ResultActionEvent.SaveQrImage(currentState.qrData))
+                sendActionEvent(SaveQrImage(currentState.qrData))
+            }
+
+            ResultUiEvent.OpenImageLocation -> {
+
+                lastSavedImageUri?.let { uri ->
+                    sendActionEvent(actionEvent = OpenImageLocation(uri = uri))
+                }
+                    ?: sendActionEvent(
+                            actionEvent = ShowToastMessage(
+                                    messageRes = R.string.toast_text_item_not_found
+                            )
+                    )
             }
 
             ResultUiEvent.ExitResultScreen -> {
@@ -185,5 +202,9 @@ class ResultViewModel(
         return this::oldDisplayName.isInitialized &&
                 oldDisplayName != newDisplayName &&
                 newDisplayName.isNotBlank()
+    }
+
+    fun setSavedImageUri(uri: Uri?) {
+        lastSavedImageUri = uri
     }
 }

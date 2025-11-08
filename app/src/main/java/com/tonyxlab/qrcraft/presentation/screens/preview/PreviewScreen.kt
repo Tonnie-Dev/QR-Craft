@@ -138,7 +138,9 @@ fun PreviewScreen(
                                     isError = false
                                     snackbarController.showSnackbar(
                                             message = context.getString(R.string.snack_text_image_saved_to_downloads),
-                                            actionLabel = "Open",
+                                            actionLabel = context.getString(
+                                                    R.string.snack_text_open
+                                            ),
                                             actionEvent = PreviewUiEvent.OpenSavedImageLocation
                                     )
                                     viewModel.setSavedImageUri(uri)
