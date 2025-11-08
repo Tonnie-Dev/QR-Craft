@@ -2,6 +2,7 @@
 
 package com.tonyxlab.qrcraft.presentation.screens.preview
 
+import android.net.Uri
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
@@ -33,6 +34,7 @@ class PreviewViewModel(
 
     private lateinit var oldDisplayName: String
     private var isTogglingFavorite = false
+    private var lastSavedImageUri: Uri? = null
 
     override val initialState: PreviewUiState
         get() = PreviewUiState()
@@ -45,6 +47,7 @@ class PreviewViewModel(
     }
 
     override fun onEvent(event: PreviewUiEvent) {
+
         when (event) {
             PreviewUiEvent.ShareContent -> {
                 sendActionEvent(ShareText(text = currentState.qrData.prettifiedData))
@@ -64,17 +67,26 @@ class PreviewViewModel(
             }
 
             PreviewUiEvent.MarkFavorite -> toggleFavoriteStatus()
+
             PreviewUiEvent.SaveQrPhoto -> {
-
                 sendActionEvent(actionEvent = PreviewActionEvent.SaveImage(currentState.qrData))
-
             }
 
             PreviewUiEvent.ExitPreviewScreen -> sendActionEvent(
                     PreviewActionEvent.NavigateToEntryScreen
             )
 
-
+            PreviewUiEvent.OpenSavedImageLocation -> {
+                lastSavedImageUri?.let { uri ->
+                    sendActionEvent(
+                            PreviewActionEvent.OpenImageLocation(
+                                    uri = uri
+                            )
+                    )
+                } ?: sendActionEvent(
+                        PreviewActionEvent.ShowToast(R.string.toast_text_item_not_found)
+                )
+            }
         }
     }
 
@@ -98,7 +110,6 @@ class PreviewViewModel(
         val textFlow = snapshotFlow {
             currentState.previewEditableTextState.textFieldState.text
         }
-
         textFlow
                 .debounce(300)
                 .distinctUntilChanged()
@@ -123,8 +134,8 @@ class PreviewViewModel(
     }
 
     private fun saveDisplayName(displayName: String) {
-        if (displayName.isBlank()) return
 
+        if (displayName.isBlank()) return
         launchCatching(
                 onError = {
                     sendActionEvent(
@@ -172,4 +183,7 @@ class PreviewViewModel(
                 newDisplayName.isNotBlank()
     }
 
+    fun setSavedImageUri(uri: Uri?) {
+        lastSavedImageUri = uri
+    }
 }

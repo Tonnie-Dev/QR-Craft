@@ -1,10 +1,15 @@
+@file:RequiresApi(Build.VERSION_CODES.Q)
+
 package com.tonyxlab.qrcraft.utils
 
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.core.graphics.createBitmap
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
@@ -53,10 +58,11 @@ fun saveQrImage(
     context: Context,
     coroutineScope: CoroutineScope,
     qrData: QrData,
-    showSuccessSnackbar: () -> Unit,
+    showSuccessSnackbar: (imageUri: Uri?) -> Unit,
     showErrorSnackbar: () -> Unit,
 ) {
     coroutineScope.launch(Dispatchers.IO) {
+
         val resolver = context.contentResolver
         val fileName = "${qrData.displayName.ifBlank { "qr_code" }}.png"
 
@@ -66,29 +72,29 @@ fun saveQrImage(
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
 
+        var savedUri: Uri? = null
+
         val success = try {
             val imageUri = resolver.insert(
                     MediaStore.Downloads.EXTERNAL_CONTENT_URI,
                     contentValues
             ) ?: throw IllegalStateException("Failed to create MediaStore record")
 
-            resolver.openOutputStream(imageUri)
-                    ?.use { outputStream ->
-                        val qrBitmap = generateQrBitmap(qrData.prettifiedData)
-                        qrBitmap.compress(
-                                Bitmap.CompressFormat.PNG, 100,
-                                outputStream
-                        )
-                    } ?: throw IllegalStateException("Failed to open output stream")
+            resolver.openOutputStream(imageUri)?.use { outputStream ->
+                val qrBitmap = generateQrBitmap(qrData.prettifiedData)
+                qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            } ?: throw IllegalStateException("Failed to open output stream")
 
+            savedUri = imageUri
             true
-
         } catch (e: Exception) {
             false
         }
-        withContext(Dispatchers.IO) {
-            if (success) showSuccessSnackbar() else showErrorSnackbar()
+
+        withContext(Dispatchers.Main) {
+            if (success) showSuccessSnackbar(savedUri) else showErrorSnackbar()
         }
     }
 }
+
 

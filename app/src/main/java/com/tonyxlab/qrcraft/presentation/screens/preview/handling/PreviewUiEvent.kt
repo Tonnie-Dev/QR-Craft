@@ -10,4 +10,5 @@ sealed interface PreviewUiEvent: UiEvent{
     data object SaveQrPhoto: PreviewUiEvent
     data object ExitPreviewScreen: PreviewUiEvent
     data object MarkFavorite : PreviewUiEvent
+    data object OpenSavedImageLocation: PreviewUiEvent
 }

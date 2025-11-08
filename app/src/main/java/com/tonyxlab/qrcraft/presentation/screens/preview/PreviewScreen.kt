@@ -1,9 +1,13 @@
+@file:RequiresApi(Build.VERSION_CODES.Q)
+
 package com.tonyxlab.qrcraft.presentation.screens.preview
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -130,9 +134,14 @@ fun PreviewScreen(
                                 context = context,
                                 coroutineScope = coroutineScope,
                                 qrData = action.qrData,
-                                showSuccessSnackbar = {
+                                showSuccessSnackbar = { uri ->
                                     isError = false
-                                    snackbarController.showSnackbar(context.getString(R.string.snack_text_image_saved_to_downloads))
+                                    snackbarController.showSnackbar(
+                                            message = context.getString(R.string.snack_text_image_saved_to_downloads),
+                                            actionLabel = "Open",
+                                            actionEvent = PreviewUiEvent.OpenSavedImageLocation
+                                    )
+                                    viewModel.setSavedImageUri(uri)
                                 },
                                 showErrorSnackbar = {
                                     isError = true
@@ -141,9 +150,29 @@ fun PreviewScreen(
                                                     R.string.snack_text_image_not_saved
                                             )
                                     )
-
                                 }
                         )
+                    }
+
+                    is PreviewActionEvent.OpenImageLocation -> {
+                        val openIntent = Intent(Intent.ACTION_VIEW).apply {
+
+                            setDataAndType(action.uri, "image/png")
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+
+                        runCatching {
+
+                            context.startActivity(openIntent)
+                        }.onFailure {
+
+                            Toast.makeText(
+                                    context,
+                                    R.string.toast_text_cannot_open_downloads,
+                                    Toast.LENGTH_SHORT
+                            )
+                                    .show()
+                        }
                     }
 
                     is PreviewActionEvent.ShowToast -> {

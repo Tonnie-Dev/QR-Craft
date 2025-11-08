@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.core.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,9 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Success
+import com.tonyxlab.qrcraft.utils.ifThen
 
 @Composable
 fun AppSnackbarHost(
@@ -42,7 +45,6 @@ fun AppSnackbarHost(
         if (isError) MaterialTheme.colorScheme.error else Success
     val contentColor = contentColorFor(containerColor)
 
-
     SnackbarHost(
             modifier = modifier
                     .padding(MaterialTheme.spacing.spaceMedium)
@@ -50,8 +52,13 @@ fun AppSnackbarHost(
             hostState = snackbarHostState
     )
     { snackbarData ->
+
+        val actionLabelActive = !snackbarData.visuals.actionLabel.isNullOrBlank()
+
         Snackbar(
-                modifier = Modifier.fillMaxWidth(.8f),
+                modifier = Modifier
+                        .ifThen(actionLabelActive) { fillMaxWidth() }
+                        .ifThen(!actionLabelActive) { fillMaxWidth(.8f) },
                 shape = MaterialTheme.shapes.small,
                 contentColor = contentColor,
                 containerColor = containerColor
@@ -74,6 +81,19 @@ fun AppSnackbarHost(
                                 color = contentColor
                         )
                 )
+
+                if (actionLabelActive) {
+                    Text(
+                            modifier = Modifier
+                                    .clickable { snackbarData.performAction() }
+                                    .padding(start = MaterialTheme.spacing.spaceLarge),
+                            text = snackbarData.visuals.actionLabel!!,
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                    color = contentColor,
+                                    fontWeight = FontWeight.SemiBold
+                            )
+                    )
+                }
             }
         }
     }

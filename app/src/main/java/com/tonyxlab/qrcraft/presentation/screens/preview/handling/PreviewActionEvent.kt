@@ -1,5 +1,6 @@
 package com.tonyxlab.qrcraft.presentation.screens.preview.handling
 
+import android.net.Uri
 import androidx.annotation.StringRes
 import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.presentation.core.base.handling.ActionEvent
@@ -9,6 +10,6 @@ sealed interface PreviewActionEvent : ActionEvent {
     data class ShareText(val text: String) : PreviewActionEvent
     data class CopyText(val text: String) : PreviewActionEvent
     data class SaveImage(val qrData: QrData) : PreviewActionEvent
+    data class OpenImageLocation(val uri: Uri) : PreviewActionEvent
     data object NavigateToEntryScreen : PreviewActionEvent
-
 }
