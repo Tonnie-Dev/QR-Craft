@@ -1,5 +1,4 @@
 <resources>
-
     <!-- App Name-->
     <string name="app_name">QR Craft</string>
 
@@ -30,6 +29,14 @@
     <string name="cap_text_history_empty">History is Empty</string>
     <string name="cap_text_ellipsis">…</string>
 
+    <!--Label Texts-->
+    <string name="lab_text_text">Text</string>
+    <string name="lab_text_link">Link</string>
+    <string name="lab_text_contact">Contact</string>
+    <string name="lab_text_phone">Phone Number</string>
+    <string name="lab_text_geo">Geolocation</string>
+    <string name="lab_text_wifi">Wi-Fi</string>
+
     <!--Button Texts-->
     <string name="btn_text_share">Share</string>
     <string name="btn_text_copy">Copy</string>
@@ -39,42 +46,8 @@
     <string name="btn_text_show_less"> Show Less</string>
     <string name="btn_text_generate_qr">Generate QR-Code </string>
 
-
     <!--Text Button Texts-->
     <string name="txt_btn_no_account">Don’t have an account?</string>
-
-    <!--Settings Presets-->
-    <string name="settings_sync_interval">Sync Interval</string>
-
-    <!--Label Texts-->
-    <string name="lab_text_text">Text</string>
-    <string name="lab_text_link">Link</string>
-    <string name="lab_text_contact">Contact</string>
-    <string name="lab_text_phone">Phone Number</string>
-    <string name="lab_text_geo">Geolocation</string>
-    <string name="lab_text_wifi">Wi-Fi</string>
-
-    <!--Placeholder Texts-->
-    <string name="placeholder_text_email">john.doe@example.com</string>
-
-    <!--Snackbar Texts-->
-    <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
-    <string name="snack_text_image_saved_to_downloads">Image saved to Downloads</string>
-    <string name="snack_text_image_not_saved">Image not saved</string>
-    <string name="snack_text_open">Open</string>
-
-    <!--Dialog Texts-->
-    <string name="dialog_text_camera_required">Camera Required</string>
-    <string name="dialog_text_close_app">Close App</string>
-    <string name="dialog_text_grant_access">Grant Access</string>
-    <string name="dialog_text_no_qr_found">No QR-CodesFound</string>
-
-    <string name="dialog_text_rationale">This app cannot function without camera access.
-        To scan QR codes, please grant permission
-    </string>
-
-    <!--Supporting Texts-->
-    <string name="sup_text_def_username">Use between 3 and 20 characters for your username.</string>
 
     <!--Content Description Texts-->
     <string name="cds_text_add">Add</string>
@@ -97,13 +70,36 @@
     <string name="cds_text_starred">Starred</string>
     <string name="cds_text_not_starred">Not Starred</string>
 
+    <!--Snackbar Texts-->
+    <string name="snack_text_camera_perm_granted">Camera Permission Granted</string>
+    <string name="snack_text_image_saved_to_downloads">Image saved to Downloads</string>
+    <string name="snack_text_image_not_saved">Image not saved</string>
+    <string name="snack_text_open">Open</string>
+
     <!--Toast Texts-->
     <string name="toast_text_copied">Copied to Clipboard</string>
     <string name="toast_text_item_not_saved">Item Not Saved</string>
     <string name="toast_text_item_not_found">Item Not Found</string>
     <string name="toast_text_cannot_open_downloads">Cannot Open Downloads</string>
 
+    <!--Dialog Texts-->
+    <string name="dialog_text_camera_required">Camera Required</string>
+    <string name="dialog_text_close_app">Close App</string>
+    <string name="dialog_text_grant_access">Grant Access</string>
+    <string name="dialog_text_no_qr_found">No QR-CodesFound</string>
+    <string name="dialog_text_rationale">This app cannot function without camera access.
+        To scan QR codes, please grant permission
+    </string>
+
+    <!--Supporting Texts-->
+    <string name="sup_text_def_username">Use between 3 and 20 characters for your username.</string>
+
+    <!--Settings Presets-->
+    <string name="settings_sync_interval">Sync Interval</string>
+
+    <!--Placeholder Texts-->
+    <string name="placeholder_text_email">john.doe@example.com</string>
+
     <!--Meta Data Texts-->
     <string name="meta_text_created_on">Date Created</string>
-
 </resources>

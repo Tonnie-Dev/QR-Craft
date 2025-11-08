@@ -126,6 +126,12 @@ fun PreviewScreen(
                                 "QR Content", action.text
                         )
                         clipboardManager?.setPrimaryClip(clip)
+                        Toast.makeText(
+                                context,
+                                context.getString(R.string.toast_text_copied),
+                                Toast.LENGTH_SHORT
+                        )
+                                .show()
                     }
 
                     is PreviewActionEvent.SaveImage -> {

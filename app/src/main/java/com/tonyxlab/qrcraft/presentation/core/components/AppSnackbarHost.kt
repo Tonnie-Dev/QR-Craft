@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Error
@@ -27,8 +28,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.theme.ui.Success
@@ -45,6 +50,9 @@ fun AppSnackbarHost(
         if (isError) MaterialTheme.colorScheme.error else Success
     val contentColor = contentColorFor(containerColor)
 
+    val configuration = LocalWindowInfo.current.containerSize
+    val screenWidthDp = configuration.width.dp
+
     SnackbarHost(
             modifier = modifier
                     .padding(MaterialTheme.spacing.spaceMedium)
@@ -56,9 +64,11 @@ fun AppSnackbarHost(
         val actionLabelActive = !snackbarData.visuals.actionLabel.isNullOrBlank()
 
         Snackbar(
-                modifier = Modifier
-                        .ifThen(actionLabelActive) { fillMaxWidth() }
-                        .ifThen(!actionLabelActive) { fillMaxWidth(.8f) },
+                modifier = Modifier.widthIn(
+                        max = minOf(screenWidthDp * .6f , 400.dp)
+                ).padding(horizontal = MaterialTheme.spacing.spaceMedium),
+                       /* .ifThen(actionLabelActive) { fillMaxWidth() }
+                        .ifThen(!actionLabelActive) { fillMaxWidth(.8f) },*/
                 shape = MaterialTheme.shapes.small,
                 contentColor = contentColor,
                 containerColor = containerColor
@@ -151,7 +161,6 @@ class SnackbarController<T> {
 
 @Composable
 fun <T> rememberSnackbarController(): SnackbarController<T> {
-
     return remember { SnackbarController() }
 }
 
