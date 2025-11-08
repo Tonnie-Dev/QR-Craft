@@ -41,10 +41,16 @@ import com.tonyxlab.qrcraft.utils.toUi
 @Composable
 fun HistoryListItem(
     qrData: QrData,
+    isSelected: Boolean,
     isDisplayDeviceWide: Boolean,
-    onEvent: (HistoryUiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEvent: (HistoryUiEvent) -> Unit
 ) {
+
+    val selectionColor =
+        if (isSelected) MaterialTheme.colorScheme.error.copy(alpha = .1f)
+        else
+            MaterialTheme.colorScheme.surfaceContainerHigh
 
     val qrUiType = qrData.qrDataType.toUi()
 
@@ -73,7 +79,8 @@ fun HistoryListItem(
             ),
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    containerColor = selectionColor
+   //                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
             )
     ) {
 
@@ -152,7 +159,7 @@ fun HistoryListItem(
                 }
                 IconButton(
                         modifier = Modifier.size(MaterialTheme.spacing.spaceMedium),
-                        onClick = { onEvent(HistoryUiEvent.MarkFavorite(qrData.id))}
+                        onClick = { onEvent(HistoryUiEvent.MarkFavorite(qrData.id)) }
                 ) {
                     Icon(
                             painter = iconPainter,
@@ -181,7 +188,9 @@ private fun HistoryListItem_Preview() {
                 HistoryListItem(
                         qrData = it,
                         isDisplayDeviceWide = false,
-                        onEvent = {}
+                        isSelected = false,
+                        onEvent = {},
+
                 )
             }
         }

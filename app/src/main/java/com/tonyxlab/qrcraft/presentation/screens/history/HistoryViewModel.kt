@@ -46,7 +46,12 @@ class HistoryViewModel(
 
             is HistoryUiEvent.LongPressHistoryItem -> {
                 findClickedItemById(event.id)
-                updateState { it.copy(showBottomHistoryBottomSheet = true) }
+                updateState {
+                    it.copy(
+                            selectedItemId = event.id,
+                            showBottomHistoryBottomSheet = true
+                    )
+                }
             }
 
             HistoryUiEvent.ShareHistoryItem -> {
@@ -63,7 +68,12 @@ class HistoryViewModel(
             is HistoryUiEvent.MarkFavorite -> toggleFavoriteStatus(id = event.id)
 
             HistoryUiEvent.DismissHistoryBottomSheet -> {
-                updateState { it.copy(showBottomHistoryBottomSheet = false) }
+                updateState {
+                    it.copy(
+                            selectedItemId = null,
+                            showBottomHistoryBottomSheet = false
+                    )
+                }
             }
 
             HistoryUiEvent.ExitHistoryScreen -> {

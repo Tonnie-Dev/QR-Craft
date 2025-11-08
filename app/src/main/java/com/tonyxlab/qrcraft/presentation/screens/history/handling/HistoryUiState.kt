@@ -12,7 +12,8 @@ data class HistoryUiState(
     val generatedHistoryList: List<QrData> = emptyList(),
     val historyTabType: HistoryType = HistoryType.SCANNED,
     val showBottomHistoryBottomSheet: Boolean = false,
-    val selectedQrItem: SelectedQrItem = SelectedQrItem()
+    val selectedQrItem: SelectedQrItem = SelectedQrItem(),
+    val selectedItemId: Long? = null
 
 ) : UiState {
 

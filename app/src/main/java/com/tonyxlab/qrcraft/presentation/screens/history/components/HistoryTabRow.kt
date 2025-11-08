@@ -169,8 +169,9 @@ private fun DisplayList(
             items(items = historyItems, key = { it.id }) { qrData ->
                 HistoryListItem(
                         qrData = qrData,
-                        onEvent = onEvent,
-                        isDisplayDeviceWide = isDisplayDeviceWide
+                        isDisplayDeviceWide = isDisplayDeviceWide,
+                        isSelected = uiState.selectedItemId == qrData.id,
+                        onEvent = onEvent
                 )
             }
         }
