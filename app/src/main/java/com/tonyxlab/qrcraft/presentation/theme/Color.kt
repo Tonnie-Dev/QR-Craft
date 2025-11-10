@@ -1,4 +1,4 @@
-package com.tonyxlab.qrcraft.presentation.theme.ui
+package com.tonyxlab.qrcraft.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

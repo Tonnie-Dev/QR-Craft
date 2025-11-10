@@ -1,12 +1,9 @@
-package com.tonyxlab.qrcraft.presentation.theme.ui
+package com.tonyxlab.qrcraft.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
-import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 
 val customMaterialShapes = Shapes(
         // Pre-Defined M3 Shapes

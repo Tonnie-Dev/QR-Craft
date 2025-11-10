@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import kotlinx.coroutines.delay
 
 @Composable

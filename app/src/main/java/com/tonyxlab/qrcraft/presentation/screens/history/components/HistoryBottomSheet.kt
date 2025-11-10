@@ -30,8 +30,8 @@ import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.HorizontalRoundedCornerShape16
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.HorizontalRoundedCornerShape16
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 
 @Composable
 fun HistoryBottomSheet(

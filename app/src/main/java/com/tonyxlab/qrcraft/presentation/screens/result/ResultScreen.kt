@@ -41,7 +41,7 @@ import com.tonyxlab.qrcraft.presentation.screens.result.components.EditableText
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.result.handling.ResultUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.DeviceType
 import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
 import com.tonyxlab.qrcraft.utils.saveQrImage

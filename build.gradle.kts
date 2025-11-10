@@ -7,3 +7,5 @@ plugins {
     alias(libs.plugins.kotlin.serializer.plugin) apply false
 
 }
+
+

@@ -25,7 +25,7 @@ import com.tonyxlab.qrcraft.presentation.screens.create.components.QrOptionCard
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.create.handling.CreateUiEvent.SelectQrTab
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.DeviceType
 import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
 import com.tonyxlab.qrcraft.utils.toUi

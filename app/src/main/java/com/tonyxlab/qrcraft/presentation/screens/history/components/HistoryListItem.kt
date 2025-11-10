@@ -30,8 +30,8 @@ import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.history.handling.HistoryUiEvent
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
-import com.tonyxlab.qrcraft.presentation.theme.ui.ShowLess
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.ShowLess
 import com.tonyxlab.qrcraft.utils.getRandomQrDataItems
 import com.tonyxlab.qrcraft.utils.getTintedIconModifier
 import com.tonyxlab.qrcraft.utils.ifThen

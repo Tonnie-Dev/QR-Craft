@@ -26,7 +26,7 @@ import com.tonyxlab.qrcraft.presentation.screens.entry.components.EntryTextField
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.DeviceType
 import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
 import com.tonyxlab.qrcraft.utils.ifThen

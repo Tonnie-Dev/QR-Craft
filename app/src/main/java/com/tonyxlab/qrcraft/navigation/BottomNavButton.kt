@@ -45,8 +45,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
-import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.LinkBg
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.ifThen
 import kotlinx.coroutines.delay
 

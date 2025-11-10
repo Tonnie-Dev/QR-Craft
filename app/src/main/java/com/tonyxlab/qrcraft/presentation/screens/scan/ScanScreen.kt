@@ -28,7 +28,7 @@ import com.tonyxlab.qrcraft.presentation.screens.scan.components.ScanOverlay
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanActionEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiState
-import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
+import com.tonyxlab.qrcraft.presentation.theme.Overlay
 import com.tonyxlab.qrcraft.utils.SetStatusBarIconsColor
 import org.koin.androidx.compose.koinViewModel
 

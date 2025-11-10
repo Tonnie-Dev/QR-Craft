@@ -43,10 +43,10 @@ import androidx.compose.ui.unit.dp
 import com.tonyxlab.qrcraft.R
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.scan.handling.ScanUiEvent
-import com.tonyxlab.qrcraft.presentation.theme.ui.OnOverlay
-import com.tonyxlab.qrcraft.presentation.theme.ui.Overlay
-import com.tonyxlab.qrcraft.presentation.theme.ui.Primary
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.OnOverlay
+import com.tonyxlab.qrcraft.presentation.theme.Overlay
+import com.tonyxlab.qrcraft.presentation.theme.Primary
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.Constants
 import kotlin.math.min
 

@@ -40,9 +40,9 @@ import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.presentation.core.utils.spacing
 import com.tonyxlab.qrcraft.presentation.screens.result.components.ExpandableText
-import com.tonyxlab.qrcraft.presentation.theme.ui.Link
-import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.QRCraftTheme
+import com.tonyxlab.qrcraft.presentation.theme.Link
+import com.tonyxlab.qrcraft.presentation.theme.LinkBg
+import com.tonyxlab.qrcraft.presentation.theme.QRCraftTheme
 import com.tonyxlab.qrcraft.utils.generateLoremIpsum
 import com.tonyxlab.qrcraft.utils.ifThen
 

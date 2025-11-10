@@ -6,18 +6,18 @@ import com.tonyxlab.qrcraft.domain.model.QrData
 import com.tonyxlab.qrcraft.domain.model.QrDataType
 import com.tonyxlab.qrcraft.domain.model.QrUiType
 import com.tonyxlab.qrcraft.presentation.screens.entry.handling.EntryUiState.FormFieldData
-import com.tonyxlab.qrcraft.presentation.theme.ui.Contact
-import com.tonyxlab.qrcraft.presentation.theme.ui.ContactBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.Geo
-import com.tonyxlab.qrcraft.presentation.theme.ui.GeoBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.Link
-import com.tonyxlab.qrcraft.presentation.theme.ui.LinkBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.Phone
-import com.tonyxlab.qrcraft.presentation.theme.ui.PhoneBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.TextAccent
-import com.tonyxlab.qrcraft.presentation.theme.ui.TextAccentBg
-import com.tonyxlab.qrcraft.presentation.theme.ui.WiFi
-import com.tonyxlab.qrcraft.presentation.theme.ui.WiFiBg
+import com.tonyxlab.qrcraft.presentation.theme.Contact
+import com.tonyxlab.qrcraft.presentation.theme.ContactBg
+import com.tonyxlab.qrcraft.presentation.theme.Geo
+import com.tonyxlab.qrcraft.presentation.theme.GeoBg
+import com.tonyxlab.qrcraft.presentation.theme.Link
+import com.tonyxlab.qrcraft.presentation.theme.LinkBg
+import com.tonyxlab.qrcraft.presentation.theme.Phone
+import com.tonyxlab.qrcraft.presentation.theme.PhoneBg
+import com.tonyxlab.qrcraft.presentation.theme.TextAccent
+import com.tonyxlab.qrcraft.presentation.theme.TextAccentBg
+import com.tonyxlab.qrcraft.presentation.theme.WiFi
+import com.tonyxlab.qrcraft.presentation.theme.WiFiBg
 
 fun QrDataType.toTopBarString(): Int =
     when (this) {
