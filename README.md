@@ -23,7 +23,7 @@
   <a href="#️-author">Author</a> •
   <a href="#-contributing">Contributing</a>
 </p>
-</div>
+</div
 
 ---
 
@@ -53,10 +53,10 @@ Built with Jetpack Compose for a clean and intuitive user experience.
 
 - ⚡ Lightning-fast QR Scanner powered by ML Kit  
 - ✨ Beautiful modern UI with no Ads  
-- 🧩 Generate custom QR Codes (URLs, text, Wi-Fi, contacts & more)  
-- 💾 Auto-save scans to your history  
-- ⭐ Mark favorite QR codes for quick access  
-- 📂 Share or copy QR data instantly  
+- 🧩 Generate custom QR Codes (*URLs, Text, Wi-Fi, contacts & More*)  
+- 💾 Auto-save QR-Scans to your history  
+- ⭐ Mark favorite QR Scans for quick access  
+- 📂 Share or copy QR data text instantly  
 - 🔒 Fully offline – your data stays on your device  
 
 ---
@@ -66,23 +66,22 @@ Built with Jetpack Compose for a clean and intuitive user experience.
 - Kotlin  
 - Jetpack Compose (Material 3)  
 - Room Database + DataStore for local persistence  
-- ML Kit Barcode Scanning API  
+- ML Kit Barcode and Zxing Scanning APIs
 - Koin for Dependency Injection  
-- Kotlin Coroutines + Flow  
-- Navigation Compose  
-- Coil for image loading  
+- Coroutines, Flows and Debouncing when Typing
+- Navigation Compose  II
 
 ---
 
 ## 🧰 Getting Started
 
 ### Prerequisites
-- Android Studio Otter or Later 
-- Android Device or Emulator running Android 6.0 (Marshmallow) or higher  
+- Android Studio [**Otter**](https://developer.android.com/studio) or Later 
+- Android *Device* or *Emulator* running Android 6.0 (Marshmallow) or higher  
 
 ### Installation
 1. Clone the repository:
-   ```sh
+   ```sh 
    git clone https://github.com/Tonnie-Dev/NoteMark.git
 
 Use **Guest Account** for easy Login, alternatively use these credentials:
@@ -108,7 +107,7 @@ Use **Guest Account** for easy Login, alternatively use these credentials:
 
 ## 🛂 Contributing
 
-Contributions NoteMark are welcome and appreciated! Whether it's a bug fix, new feature, improvement, or even a typo correction – you're more than welcome to jump in 🚀
+Contributions E are welcome and appreciated! Whether it's a bug fix, new feature, improvement, or even a typo correction – you're more than welcome to jump in 🚀
 
 If you are interested in seeing a particular feature implemented in this app, please open a new issue after which you can make a PR!
 
