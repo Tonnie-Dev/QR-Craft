@@ -37,6 +37,12 @@ Built with Jetpack Compose for a clean and intuitive user experience.
   </a>
 </p>
 
+<p align="center">
+  <!-- Demo GIF -->
+  <img src="./readme-assets/gif/demo.gif" width="360" alt="App demo" />
+</p>
+
+
 ---
 
 ## 📸 Screenshots
@@ -70,18 +76,19 @@ Built with Jetpack Compose for a clean and intuitive user experience.
 - Koin for Dependency Injection  
 - Coroutines, Flows and Debouncing when Typing
 - Navigation Compose  II
+- Google Accomanist for Camera Permissions
 
 ---
 
 ## 🧰 Getting Started
 
 ### Prerequisites
-- Android Studio [**Otter**](https://developer.android.com/studio) or Later 
-- Android *Device* or *Emulator* running Android 6.0 (Marshmallow) or higher  
+- Android Studio [Otter](https://developer.android.com/studio) or Later 
+- Android Device or Emulator running Android 6.0 (Marshmallow) or higher  
 
 ### Installation
 1. Clone the repository:
-   ```sh 
+   ```sh
    git clone https://github.com/Tonnie-Dev/NoteMark.git
 
 Use **Guest Account** for easy Login, alternatively use these credentials:
@@ -107,7 +114,7 @@ Use **Guest Account** for easy Login, alternatively use these credentials:
 
 ## 🛂 Contributing
 
-Contributions E are welcome and appreciated! Whether it's a bug fix, new feature, improvement, or even a typo correction – you're more than welcome to jump in 🚀
+Contributions NoteMark are welcome and appreciated! Whether it's a bug fix, new feature, improvement, or even a typo correction – you're more than welcome to jump in 🚀
 
 If you are interested in seeing a particular feature implemented in this app, please open a new issue after which you can make a PR!
 
