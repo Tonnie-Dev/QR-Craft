@@ -48,7 +48,7 @@ abstract class BaseViewModel<S : UiState, E : UiEvent, A : ActionEvent> : ViewMo
     protected fun launch(
         context: CoroutineContext = EmptyCoroutineContext,
         block: suspend CoroutineScope.() -> Unit
-    ) = viewModelScope.launch(block = block)
+    ) = viewModelScope.launch(context = context,block = block)
 
     abstract fun onEvent(event: E)
 
